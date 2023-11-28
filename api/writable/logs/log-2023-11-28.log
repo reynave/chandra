@@ -1,0 +1,212 @@
+CRITICAL - 2023-11-28 11:14:06 --> Class "Firebase\JWT\JWT" not found
+in APPPATH\Controllers\Login.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->index()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:14:06 --> Class "Firebase\JWT\JWT" not found
+in APPPATH\Controllers\Login.php on line 21.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->index()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:17:47 --> Call to a member function select() on null
+in APPPATH\Controllers\Login.php on line 37.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->auth()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:17:47 --> Call to a member function select() on null
+in APPPATH\Controllers\Login.php on line 37.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Login->auth()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:34:54 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:35:14 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:35:14 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:35:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:35:59 --> Class "Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:36:56 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:36:56 --> Class "Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:37:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:37:12 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:38:29 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:38:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:38:44 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:40:42 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:40:42 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:40:44 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:40:44 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:40:59 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:40:59 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:41:00 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:41:00 --> Class "Mike42\Escpos\CapabilityProfile" not found
+in APPPATH\Controllers\Printing.php on line 29.
+ 1 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:41:12 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:41:12 --> copy(\\WINDOWS-AN3885S\wintec): Failed to open stream: No such file or directory
+in APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php on line 378.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'copy(\\\\WINDOWS-AN3885S\\wintec): Failed to open stream: No such file or directory', 'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\api\\app\\ThirdParty\\Mike42\\Escpos\\PrintConnectors\\WindowsPrintConnector.php', 378)
+ 2 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(378): copy('C:\\Users\\User\\AppData\\Local\\Temp\\escC339.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 3 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(296): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->runCopy('C:\\Users\\User\\AppData\\Local\\Temp\\escC339.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 4 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(176): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalizeWin('@Hello World!
+
+
+
+
+VAp0<x')
+ 5 APPPATH\ThirdParty\Mike42\Escpos\Printer.php(502): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalize()
+ 6 APPPATH\Controllers\Printing.php(36): Mike42\Escpos\Printer->close()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:42:06 --> copy(\\WINDOWS-AN3885S\wintec): Failed to open stream: No such file or directory
+in APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php on line 378.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'copy(\\\\WINDOWS-AN3885S\\wintec): Failed to open stream: No such file or directory', 'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\api\\app\\ThirdParty\\Mike42\\Escpos\\PrintConnectors\\WindowsPrintConnector.php', 378)
+ 2 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(378): copy('C:\\Users\\User\\AppData\\Local\\Temp\\esc93C8.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 3 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(296): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->runCopy('C:\\Users\\User\\AppData\\Local\\Temp\\esc93C8.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 4 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(176): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalizeWin('@Hello World!
+
+
+
+
+VAp0<x')
+ 5 APPPATH\ThirdParty\Mike42\Escpos\Printer.php(502): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalize()
+ 6 APPPATH\Controllers\Printing.php(36): Mike42\Escpos\Printer->close()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:42:10 --> copy(\\WINDOWS-AN3885S\wintec): Failed to open stream: No such file or directory
+in APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php on line 378.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'copy(\\\\WINDOWS-AN3885S\\wintec): Failed to open stream: No such file or directory', 'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\api\\app\\ThirdParty\\Mike42\\Escpos\\PrintConnectors\\WindowsPrintConnector.php', 378)
+ 2 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(378): copy('C:\\Users\\User\\AppData\\Local\\Temp\\escA26F.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 3 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(296): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->runCopy('C:\\Users\\User\\AppData\\Local\\Temp\\escA26F.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 4 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(176): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalizeWin('@Hello World!
+
+
+
+
+VAp0<x')
+ 5 APPPATH\ThirdParty\Mike42\Escpos\Printer.php(502): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalize()
+ 6 APPPATH\Controllers\Printing.php(36): Mike42\Escpos\Printer->close()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-28 11:42:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\Printing::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-28 11:42:17 --> copy(\\WINDOWS-AN3885S\wintec): Failed to open stream: No such file or directory
+in APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php on line 378.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'copy(\\\\WINDOWS-AN3885S\\wintec): Failed to open stream: No such file or directory', 'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\api\\app\\ThirdParty\\Mike42\\Escpos\\PrintConnectors\\WindowsPrintConnector.php', 378)
+ 2 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(378): copy('C:\\Users\\User\\AppData\\Local\\Temp\\escC02A.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 3 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(296): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->runCopy('C:\\Users\\User\\AppData\\Local\\Temp\\escC02A.tmp', '\\\\WINDOWS-AN3885S\\wintec')
+ 4 APPPATH\ThirdParty\Mike42\Escpos\PrintConnectors\WindowsPrintConnector.php(176): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalizeWin('@Hello World!
+
+
+
+
+VAp0<x')
+ 5 APPPATH\ThirdParty\Mike42\Escpos\Printer.php(502): Mike42\Escpos\PrintConnectors\WindowsPrintConnector->finalize()
+ 6 APPPATH\Controllers\Printing.php(36): Mike42\Escpos\Printer->close()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Printing->test()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Printing))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
