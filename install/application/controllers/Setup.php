@@ -21,7 +21,7 @@ class Setup extends CI_Controller
 			$e = 1;
 		}
 
-		header("Location: ./../?e=$e");
+		header("Location: ./../../");
 		//$this->load->view('welcome_message');
 	}
 
@@ -78,7 +78,7 @@ class Setup extends CI_Controller
 
 	function env()
 	{
-
+		$post = $this->input->post();
 		// Nama file .env
 		$env_file = './../api/.env';
 		$date = date("Y-m-d H:i:s");
@@ -88,12 +88,12 @@ class Setup extends CI_Controller
 # CREATE DATE $date
 CI_ENVIRONMENT = production
 SECRETKEY = 'hY@xL!l^0A5HAOKBm&cX0YoWjbKpTl6nXea@xKtD4oqktQq7o.GECleklxTCnIIj00Lql3uGT04^eAt#H7fTQ8OF6W^ebpu!CMZb'
-SYNC = C:/xampp/htdocs/app/pos2/sync/
+SYNC = ".$post['sync']."
 
 # PLEASE INPUT 
-api = http://localhost/app/clients/chandra/api/public/ 
-server  = http://localhost:7344/app/cso1-api/
-socket = http://128.199.94.89:3000
+api = ".$post['api']."
+server  = ".$post['apiServer']."
+socket = ".$post['socket']."
 
 
 # app.baseURL = ''
@@ -107,6 +107,8 @@ database.default.password =
 
 		// Membuka file untuk penulisan
 		$file_handle = fopen($env_file, 'w');
+
+		 
 
 		// Menulis data konfigurasi ke dalam file
 		if ($file_handle) {
