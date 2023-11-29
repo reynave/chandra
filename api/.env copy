@@ -1,0 +1,16 @@
+CI_ENVIRONMENT = development
+SECRETKEY = 'hY@xL!l^0A5HAOKBm&cX0YoWjbKpTl6n$Xea@xKtD4oqktQq7o.GECleklxTCnIIj00Lql3uGT04^eAt#H7fTQ8OF6W^ebpu!CMZb'
+
+# PLEASE INPUT 
+api = http://localhost/app/clients/chandra/api/public/
+socket = http://128.199.94.89:3000
+server  = http://localhost:7344/app/cso1-api/
+
+# app.baseURL = ''
+database.default.hostname = localhost
+database.default.database = cso1
+database.default.username = root
+database.default.password = 
+# database.default.DBDriver = MySQLi
+# database.default.DBPrefix =
+# database.default.port = 3306

@@ -1,0 +1,20 @@
+1. POS installation STEP
+-git clone & git push (API dan webbase)
+-install.html for nodejs & xampp step by step, setelah selesai harus di delete file tsb
+-install database by php & phpmyadmin, step by step
+-installation socket
+-installation printer name, termasuk printscreen control panel win10
+
+2. POS & Admin-SCO sync
+-voucher (done)
+-user login via API ke server
+-item via txt
+-promotion via Txt
+
+4.Cash Drawer and printer thermal connect
+- Start Account Balance
+- Settlement
+
+3.Payment Gateway
+-BCA
+-mandiri

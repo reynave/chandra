@@ -1,0 +1,16 @@
+CI_ENVIRONMENT = development
+SECRETKEY = '123'
+
+# PLEASE INPUT 
+api = ''
+socket = ''
+server  = ''
+
+# app.baseURL = ''
+database.default.hostname = localhost
+database.default.database = cso1
+database.default.username = root
+database.default.password = 
+# database.default.DBDriver = MySQLi
+# database.default.DBPrefix =
+# database.default.port = 3306
