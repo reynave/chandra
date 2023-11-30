@@ -10,13 +10,24 @@ class BulkInsert extends BaseController
     {
         $data = array(
             "item" => self::item(),
-            "barcode" => self::barcode(),
+            "barcode" => self::barcode(), 
+        );
+
+        return $this->response->setJSON($data);
+    }
+
+    function promo()
+    {
+        $data = array( 
             "promo_header" => self::promo_header(),
             "promo_detail_item" => self::promo_detail_item(),
             "promo_detail_free" => self::promo_detail_free(),
         );
 
         return $this->response->setJSON($data);
+    }
+    function test(){
+        echo 'masuk';
     }
 
     public function item()
@@ -41,7 +52,13 @@ class BulkInsert extends BaseController
         } else {
             $rest = 'Query failed!';
         }
-
+        $this->db->table("cso1_sync")->insert([
+            "fileName" => $file,
+            "result" => $rest,
+            "totalInsert" => "",
+            "lastSycn" =>  date("Y-m-d H:i:s"),
+            "inputDate" => time(),
+        ]);
 
 
         $data = array(
@@ -52,6 +69,7 @@ class BulkInsert extends BaseController
 
         );
         return $data;
+        
     }
     public function barcode()
     {
@@ -74,7 +92,13 @@ class BulkInsert extends BaseController
         } else {
             $rest = 'Query failed!';
         }
-
+        $this->db->table("cso1_sync")->insert([
+            "fileName" => $file,
+            "result" => $rest,
+            "totalInsert" => "",
+            "lastSycn" =>  date("Y-m-d H:i:s"),
+            "inputDate" => time(),
+        ]);
 
 
         $data = array(

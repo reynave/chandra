@@ -415,3 +415,301 @@ in SYSTEMPATH\Database\BaseConnection.php on line 428.
  4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
  5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
  6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:27:24 --> mysqli_sql_exception: LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-11-29 17:27:24 --> LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:27:29 --> mysqli_sql_exception: LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-11-29 17:27:29 --> LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:27:46 --> mysqli_sql_exception: LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(12): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->index()
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2023-11-29 17:27:46 --> LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(39): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 APPPATH\Controllers\BulkInsert.php(12): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->index()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:28:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:28:30 --> mysqli_sql_exception: LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(12): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->index()
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2023-11-29 17:28:30 --> LOAD DATA LOCAL INFILE is forbidden, check related settings like mysqli.allow_local_infile|mysqli.local_infile_directory or PDO::MYSQL_ATTR_LOCAL_INFILE|PDO::MYSQL_ATTR_LOCAL_INFILE_DIRECTORY
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 APPPATH\Controllers\BulkInsert.php(12): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->index()
+ 5 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 6 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:32:25 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:32:25 --> mysqli_sql_exception: Can't find file 'C:/xampp/htdocs/app/chandra/sync/item.txt'. in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-11-29 17:32:25 --> Can't find file 'C:/xampp/htdocs/app/chandra/sync/item.txt'.
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:33:46 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:33:47 --> mysqli_sql_exception: Can't find file 'C:/xampp8240/htdocs/app/chandra/sync/item.txt'. in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-11-29 17:33:47 --> Can't find file 'C:/xampp8240/htdocs/app/chandra/sync/item.txt'.
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp8240/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:/xampp8240/htdocs/app/chandra/sync/item.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:34:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-29 17:34:07 --> mysqli_sql_exception: Can't find file 'C:xampp8240htdocsappclientschandrasyncitem.txt'. in C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\MySQLi\Connection.php(306): mysqli->query(' LOAD DATA LOCA...', 0)
+#1 C:\xampp8240\htdocs\app\clients\chandra\api\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCA...')
+#2 C:\xampp8240\htdocs\app\clients\chandra\api\app\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCA...')
+#3 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+#4 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+#5 C:\xampp8240\htdocs\app\clients\chandra\api\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 C:\xampp8240\htdocs\app\clients\chandra\api\public\index.php(87): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2023-11-29 17:34:07 --> Can't find file 'C:xampp8240htdocsappclientschandrasyncitem.txt'.
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute(' LOAD DATA LOCAL INFILE  
+        \'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\syncitem.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 2 APPPATH\Controllers\BulkInsert.php(42): CodeIgniter\Database\BaseConnection->simpleQuery(' LOAD DATA LOCAL INFILE  
+        \'C:\\xampp8240\\htdocs\\app\\clients\\chandra\\syncitem.txt\'
+        INTO TABLE cso1_item
+        FIELDS TERMINATED BY \'|\'  
+        LINES TERMINATED BY \'
+\' 
+        (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
+        `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)')
+ 3 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\BulkInsert->item()
+ 4 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\BulkInsert))
+ 5 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:34:30 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:35:04 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:35:23 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:36:19 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:39:07 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:40:17 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:40:40 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:49:28 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:50:06 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
+WARNING - 2023-11-29 17:51:15 --> [DEPRECATED] Creation of dynamic property App\Controllers\BulkInsert::$db is deprecated in APPPATH\Controllers\BaseController.php on line 58.
+ 1 SYSTEMPATH\CodeIgniter.php(915): App\Controllers\BaseController->initController(Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), Object(CodeIgniter\Log\Logger))
+ 2 SYSTEMPATH\CodeIgniter.php(493): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(87): CodeIgniter\CodeIgniter->run()
