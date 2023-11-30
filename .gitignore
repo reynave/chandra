@@ -1,12 +1,12 @@
 #-------------------------
 # Operating Specific Junk Files
 #-------------------------
-
+PHASE 4 - TO DO LIST.txt
 # OS X
 .DS_Store
 .AppleDouble
 .LSOverride
-.PHASE 4 - TO DO LIST.txt
+
 # OS X Thumbnails
 ._*
 
