@@ -248,4 +248,7 @@ class Core extends Model
 
     }
 
+    function printer(){
+        return self::select("value","cso1_account","id=400");
+    }
 }

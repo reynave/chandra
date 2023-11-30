@@ -25,15 +25,16 @@ class Printing extends BaseController
         return $this->response->setJSON($data);
     }
 
-    function test(){
+    function test()
+    {
         $profile = CapabilityProfile::load("simple");
         $connector = new WindowsPrintConnector("wintec");
         $printer = new Printer($connector, $profile);
-        
-        $printer -> text("Hello World!\n\n\n\n\n");
-        $printer -> cut();
+
+        $printer->text("Hello World!\n\n\n\n\n");
+        $printer->cut();
         $printer->pulse();
-        $printer -> close();
+        $printer->close();
         echo "Sukses";
     }
 
@@ -41,8 +42,8 @@ class Printing extends BaseController
     {
         $data = [];
 
-    
-        if ($this->request->getVar()['id']   && $this->request->getVar()['id']  != "undefined") {
+
+        if ($this->request->getVar()['id'] && $this->request->getVar()['id'] != "undefined") {
             $id = str_replace(["'", '"', "-"], "", $this->request->getVar()['id']);
             $isId = model("Core")->select("endDate", "cso1_transaction", "id='" . $id . "'");
 
@@ -112,8 +113,8 @@ class Printing extends BaseController
                 "paymentMethod" => model("Core")->sql("SELECT tp.id, tp.amount, tp.paymentTypeId, p.label, tp.input_date, tp.voucherNumber
                 FROM cso1_transaction_payment AS tp 
                 LEFT JOIN cso1_payment_type AS p ON p.id = tp.paymentTypeId
-                WHERE tp.transactionId = '$id' AND tp.presence = 1"),  
-                
+                WHERE tp.transactionId = '$id' AND tp.presence = 1"),
+
                 "balance" => model("Core")->sql("SELECT SUM(cashIn) AS 'caseIn', SUM(cashOut)*-1 AS 'caseOut'
                     FROM cso2_balance 
                     WHERE transactionId = '$id'
@@ -125,25 +126,55 @@ class Printing extends BaseController
                     "companyAddress" => model("Core")->select("value", "cso1_account", "name='companyAddress'"),
                     "companyPhone" => 'Telp : ' . model("Core")->select("value", "cso1_account", "name='companyPhone'"),
                     "footer" => model("Core")->select("value", "cso1_account", "id='1007'"),
+                    "brandId" => model("Core")->select("value", "cso1_account", "id='22'"),
+                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"),
+
                 ),
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
+                "isCash" => (int) model("Core")->sql(" SELECT count(id) as 'cash' from cso1_transaction_payment WHERE paymentTypeId = 'CASH' and  transactionId ='$id'"),
 
-            ); 
-             $i = 0;
-            foreach($data['paymentMethod'] as $rec){
-                if($rec['paymentTypeId'] == 'VOUCHER'){
+            );
+
+
+            $i = 0;
+            foreach ($data['paymentMethod'] as $rec) {
+                if ($rec['paymentTypeId'] == 'VOUCHER') {
                     $voucherNumber = $rec['voucherNumber'];
-                    $data['paymentMethod'][$i]['label'] = $rec['label']." ".number_format(model("Core")->select("amount","voucher","number= '$voucherNumber' ")); 
+                    $data['paymentMethod'][$i]['label'] = $rec['label'] . " " . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
                 }
                 $i++;
             }
-            
 
-            $data['promo_fixed'] =  model("Promo")->promo_fixed($data['summary']['total']);
+
+            $data['promo_fixed'] = model("Promo")->promo_fixed($data['summary']['total']);
         }
         return $this->response->setJSON($data);
     }
 
+
+    function fnOpenCashDrawerAndPrinting()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+            // $profile = CapabilityProfile::load("simple");
+            // $connector = new WindowsPrintConnector("wintec");
+            // $printer = new Printer($connector, $profile);
+
+            // $printer -> text("Hello World!\n\n\n\n\n");
+            // $printer -> cut();
+            // $printer->pulse();
+            // $printer -> close();
+            $data = array(
+                "note" => 'success',
+                "post" => $post,
+            );
+        }
+        return $this->response->setJSON($data);
+    }
     function copyPrinting()
     {
         $data = [];

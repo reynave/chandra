@@ -5,6 +5,10 @@ namespace App\Controllers;
 use CodeIgniter\Model;
 use Unsplash\HttpClient;
 
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
+
 class Balance extends BaseController
 {
     public function index()
@@ -15,6 +19,7 @@ class Balance extends BaseController
         $data = array(
             "error" => false,
             "items" => $items,
+            "total" => model("Core")->select("count(id)","cso2_balance","close = 0"),
             "cashIn" => model("Core")->select("SUM(cashIn)","cso2_balance","close = 0"),
             "cashOut" => model("Core")->select("SUM(cashOut)","cso2_balance","close = 0"),
             "startBalance" => model("Core")->select("cashIn","cso2_balance","close = 0 and transactionId = '_S1' "),
@@ -41,9 +46,23 @@ class Balance extends BaseController
                 "input_date" => date("Y-m-d H:i:s")
             ]);
 
+            if(model("Core")->printer() != "" ){
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector(model("Core")->printer());
+                $printer = new Printer($connector, $profile);
+                
+              //  $printer -> text("Hello World!\n\n\n\n\n");
+              //  $printer -> cut();
+                $printer->pulse();
+                $printer->close();
+            }
+       
+
+
             $data = array(
                 "error" => false,
                 "post" => $post,
+                "printer" => model("Core")->printer(),
             );
         }
 

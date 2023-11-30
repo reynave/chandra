@@ -8,6 +8,19 @@ class BulkInsert extends BaseController
 {
     function index()
     {
+        $q1 = "SELECT *, CONVERT_TZ(`lastSycn`,'+00:00','+07:00') AS 'date'
+        FROM cso1_sync 
+        ORDER BY inputDate DESC limit 30";
+        $items = $this->db->query($q1)->getResultArray(); 
+        $data = array(
+            "error" => false,
+            "items" => $items, 
+        );
+        return $this->response->setJSON($data); 
+    }
+
+    function items()
+    {
         $data = array(
             "item" => self::item(),
             "barcode" => self::barcode(), 
@@ -26,10 +39,7 @@ class BulkInsert extends BaseController
 
         return $this->response->setJSON($data);
     }
-    function test(){
-        echo 'masuk';
-    }
-
+ 
     public function item()
     {
         if ($this->db->simpleQuery("TRUNCATE cso1_item")) {
@@ -38,14 +48,17 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file = $_ENV['SYNC'].'item.txt';
+        $file = 'item.txt';
+        $path = $_ENV['SYNC'].'item.txt';
         $bulk = " LOAD DATA LOCAL INFILE  
-        '$file'
+        '$path'
         INTO TABLE cso1_item
         FIELDS TERMINATED BY '|'  
         LINES TERMINATED BY '\r\n' 
         (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
         `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)";
+
+         
 
         if ($this->db->simpleQuery($bulk)) {
             $rest = 'Success!';
@@ -53,6 +66,7 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
+            "path"  => $path,
             "fileName" => $file,
             "result" => $rest,
             "totalInsert" => "",
@@ -79,9 +93,10 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file = $_ENV['SYNC'].'barcode.txt';
+        $file =  'barcode.txt';
+        $path = $_ENV['SYNC'].'barcode.txt';
         $bulk = " LOAD DATA LOCAL INFILE  
-        '$file'
+        '$path'
         INTO TABLE cso1_item_barcode  
         FIELDS TERMINATED BY '|'  
         LINES TERMINATED BY '\r\n' 
@@ -93,6 +108,7 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
+            "path"  => $path,
             "fileName" => $file,
             "result" => $rest,
             "totalInsert" => "",
@@ -212,4 +228,6 @@ class BulkInsert extends BaseController
         );
         return $data;
     }
+
+    
 }

@@ -4,19 +4,21 @@ namespace App\Controllers;
 
 use CodeIgniter\Model;
 
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
+
 class Payment extends BaseController
 {
     function method()
     {
-        $q1 = "SELECT p.*, t.name, t.label, t.image FROM cso2_payment_method AS p 
-        LEFT JOIN cso1_payment_type AS t ON t.id = p.paymentTypeId
-        ORDER BY t.label ASC";
+        $q1 = "SELECT *, id as 'paymentTypeId' FROM cso1_payment_type  
+        ORDER BY label ASC";
         $items = $this->db->query($q1)->getResultArray();
 
         $data = array(
             "error" => false,
-            "items" => $items,
-
+            "items" => $items, 
         );
 
         return $this->response->setJSON($data);
@@ -215,6 +217,17 @@ class Payment extends BaseController
                 $this->db->table("cso2_balance")->update([ "transactionId" =>  $id, ]," kioskUuid = '$kioskUuid' ");
               
             $this->db->transComplete();
+
+            // if ($this->db->transStatus() != false) {
+            //     $profile = CapabilityProfile::load("simple");
+            //     $connector = new WindowsPrintConnector(model("Core")->printer());
+            //     $printer = new Printer($connector, $profile);
+                
+            //     $printer -> text("Hello World!\n\n\n\n\n");
+            //     $printer -> cut();
+            //     $printer->pulse();
+            //     $printer -> close();
+            // }
 
             $data = array(
                 "error" => false,
