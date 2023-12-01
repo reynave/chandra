@@ -88,8 +88,7 @@ class Setup extends CI_Controller
 # CREATE DATE $date
 CI_ENVIRONMENT = production
 SECRETKEY = 'hY@xL!l^0A5HAOKBm&cX0YoWjbKpTl6nXea@xKtD4oqktQq7o.GECleklxTCnIIj00Lql3uGT04^eAt#H7fTQ8OF6W^ebpu!CMZb'
-SYNC = ".$post['sync']."
-
+ 
 # PLEASE INPUT 
 api = ".$post['api']."
 server  = ".$post['apiServer']."

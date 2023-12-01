@@ -216,18 +216,18 @@ class Payment extends BaseController
                 $this->db->table("cso1_kiosk_uuid")->update([ "presence" => 4,]," kioskUuid = '$kioskUuid' ");
                 $this->db->table("cso2_balance")->update([ "transactionId" =>  $id, ]," kioskUuid = '$kioskUuid' ");
               
-            $this->db->transComplete();
+                $isCash = (int) model("Core")->sql(" SELECT count(id) as 'cash' from cso1_transaction_payment 
+                WHERE paymentTypeId = 'CASH' and  transactionId ='$id'");
 
-            // if ($this->db->transStatus() != false) {
-            //     $profile = CapabilityProfile::load("simple");
-            //     $connector = new WindowsPrintConnector(model("Core")->printer());
-            //     $printer = new Printer($connector, $profile);
-                
-            //     $printer -> text("Hello World!\n\n\n\n\n");
-            //     $printer -> cut();
-            //     $printer->pulse();
-            //     $printer -> close();
-            // }
+                if($isCash < 1){
+                    $this->db->table("cso1_transaction")->update([
+                        "cashDrawer" => 1,
+                    ],"id = '$id' ");
+                }
+
+
+            $this->db->transComplete();
+ 
 
             $data = array(
                 "error" => false,

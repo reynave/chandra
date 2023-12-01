@@ -160,21 +160,72 @@ class Printing extends BaseController
             "post" => $post,
         );
         if ($post) {
-            // $profile = CapabilityProfile::load("simple");
-            // $connector = new WindowsPrintConnector("wintec");
-            // $printer = new Printer($connector, $profile);
+            $this->db->table("cso1_transaction")->update([
+                "cashDrawer" => 1,
+            ], " id = '" . $post['id'] . "'");
+            $printer = model("Core")->printer();
+            if ($printer != "") {
+ 
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile); 
+                $printer->text($post['outputPrint']); 
+                $printer->cut();
+                if ($post['cashDrawer'] == 0) {
+                    $printer->pulse();
+                }
+                $printer->close();
+            }
+          
 
-            // $printer -> text("Hello World!\n\n\n\n\n");
-            // $printer -> cut();
-            // $printer->pulse();
-            // $printer -> close();
+
+
             $data = array(
                 "note" => 'success',
+                "printer" => $printer,
                 "post" => $post,
+                "action" => "Print, Cut and Cash Drawer"
             );
         }
         return $this->response->setJSON($data);
     }
+    function fnPrinting()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+ 
+            $printer = model("Core")->printer();
+
+            $this->db->table("cso1_transaction")->update([
+                "printing" => 1, 
+            ]," id = '".$post['id']."'");
+
+
+            if ($printer != "") {
+ 
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile);
+
+                $printer->text($post['outputPrint']); 
+                $printer->cut(); 
+                $printer->close();
+            }
+             
+            $data = array(
+                "note" => 'success',
+                "printer" => $printer,
+                "post" => $post,
+                "action" => "Print and Cut"
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+
     function copyPrinting()
     {
         $data = [];
@@ -187,9 +238,11 @@ class Printing extends BaseController
                     "inputDate" => time(),
                     "input_date" => date("Y-m-d H:i:s"),
                 ]);
+                
             }
             $data = array(
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
+            
             );
         }
 

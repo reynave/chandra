@@ -7,6 +7,11 @@ use CURLFile;
 use Unsplash\HttpClient;
 use App\Helpers\CSVHelper;
 
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\CapabilityProfile;
+
+
 class Settlement extends BaseController
 {
     function index()
@@ -47,7 +52,7 @@ class Settlement extends BaseController
             where settlementId = '" . $post['id'] . "' order by input_date ASC";
             $cso2_balance = $this->db->query($q2)->getResultArray();
 
- 
+
             $q2 = "SELECT *  FROM cso1_transaction  
             where settlementId = '" . $post['id'] . "' order by input_date ASC";
             $cso1_transaction = $this->db->query($q2)->getResultArray();
@@ -60,32 +65,22 @@ class Settlement extends BaseController
             $q2 = "SELECT a.* , t.id
             FROM cso1_transaction_payment AS a
             LEFT JOIN cso1_transaction AS t ON t.id = a.transactionId
-            WHERE t.settlementId = '".$post['id']."';
+            WHERE t.settlementId = '" . $post['id'] . "';
             ";
             $cso1_transaction_payment = $this->db->query($q2)->getResultArray();
 
-            $settlementId = $post['id']; 
-         
-            $date = strtotime(model("Core")->select("input_date","cso2_settlement"," id = '$settlementId' "));
-            $date  = date("Y-m-d", $date);
+            $settlementId = $post['id'];
+
+            $date = strtotime(model("Core")->select("input_date", "cso2_settlement", " id = '$settlementId' "));
+            $date = date("Y-m-d", $date);
 
             $data = array(
                 "error" => false,
                 "post" => $post,
-                "csv" => array(
-                    "cso1_transaction" => CSVHelper::arrayToCsv($cso1_transaction, $settlementId.'_pos_transaction' , $date),
-                    "cso1_transaction_detail" => CSVHelper::arrayToCsv($cso1_transaction_detail, $settlementId.'_pos_transaction_detail', $date), 
-                    "cso2_settlement" => CSVHelper::arrayToCsv($cso2_settlement, $settlementId.'_pos_settlement', $date),  
-                    "cso2_balance" => CSVHelper::arrayToCsv($cso2_balance, $settlementId.'_pos_balance', $date),
-                    "cso1_transaction_payment" => CSVHelper::arrayToCsv($cso1_transaction_payment, $settlementId.'_pos_transaction_payment', $date),
-                    
-                    //"voucher" => CSVHelper::arrayToCsv($cso2_balance, 'pos_balance_' . $settlementId, $date),
-                
-                ),
-                "cso1_transaction" => $cso1_transaction, 
+                "cso1_transaction" => $cso1_transaction,
                 "cso2_settlement" => $cso2_settlement,
-                "cso2_balance" => $cso2_balance, 
-              
+                "cso2_balance" => $cso2_balance,
+
             );
         }
         return $this->response->setJSON($data);
@@ -103,11 +98,11 @@ class Settlement extends BaseController
         if ($post) {
             $this->db->transStart();
             $settlementId = $post['terminalId'] . model("Core")->number("settlement");
- 
+
             $this->db->table("cso1_transaction")->update([
                 "settlementId" => $settlementId,
             ], "   presence  = 1 AND locked = 1 AND settlementId = '' ");
- 
+
             $this->db->table("cso2_balance")->update([
                 "settlementId" => $settlementId,
                 "close" => 1,
@@ -119,33 +114,49 @@ class Settlement extends BaseController
                 "total" => model("Core")->select("count(id)", "cso1_transaction", "settlementId = '$settlementId' "),
                 "input_date" => date("Y-m-d H:i:s")
             ]);
-  
 
-            $q1 = "SELECT * FROM cso1_transaction 
-            WHERE settlementId = '$settlementId'
-            order by inputDate DESC";
-            $cso1_transaction = $this->db->query($q1)->getResultArray();
 
-            $q1 = "SELECT * FROM cso1_transaction 
-            WHERE settlementId = '$settlementId'
-            order by inputDate DESC";
-            $cso2_balance = $this->db->query($q1)->getResultArray();
-
-            $q1 = "SELECT * FROM cso1_transaction 
-            WHERE settlementId = '$settlementId'
-            order by inputDate DESC";
+            $q1 = "SELECT *  FROM cso2_settlement  
+            where id = '" . $settlementId . "'";
             $cso2_settlement = $this->db->query($q1)->getResultArray();
 
+            $q2 = "SELECT *  FROM cso2_balance  
+            where settlementId = '" . $settlementId . "' order by input_date ASC";
+            $cso2_balance = $this->db->query($q2)->getResultArray();
+
+
+            $q2 = "SELECT *  FROM cso1_transaction  
+            where settlementId = '" . $settlementId . "' order by input_date ASC";
+            $cso1_transaction = $this->db->query($q2)->getResultArray();
+
+            $q2 = "SELECT t.settlementId, d.* FROM cso1_transaction_detail AS d
+            LEFT JOIN cso1_transaction AS t ON t.id = d.transactionId
+            WHERE t.settlementId =  '" . $settlementId . "'  ORDER BY t.inputDate ASC";
+            $cso1_transaction_detail = $this->db->query($q2)->getResultArray();
+
+            $q2 = "SELECT a.* , t.id
+            FROM cso1_transaction_payment AS a
+            LEFT JOIN cso1_transaction AS t ON t.id = a.transactionId
+            WHERE t.settlementId = '" . $settlementId . "';
+            ";
+            $cso1_transaction_payment = $this->db->query($q2)->getResultArray();
+
+            $date = strtotime(model("Core")->select("input_date", "cso2_settlement", " id = '$settlementId' "));
+            $date = date("Y-m-d", $date);
 
             $csv = array(
-                "cso1_transaction" => $cso1_transaction, 
-                "cso2_settlement" => $cso2_settlement,
-                "cso2_balance" => $cso2_balance, 
+                "cso1_transaction" => CSVHelper::arrayToCsv($cso1_transaction, $settlementId . '_pos_transaction', $date),
+                "cso1_transaction_detail" => CSVHelper::arrayToCsv($cso1_transaction_detail, $settlementId . '_pos_transaction_detail', $date),
+                "cso2_settlement" => CSVHelper::arrayToCsv($cso2_settlement, $settlementId . '_pos_settlement', $date),
+                "cso2_balance" => count($cso2_balance) > 0 ? CSVHelper::arrayToCsv($cso2_balance, $settlementId . '_pos_balance', $date) : false,
+                "cso1_transaction_payment" => CSVHelper::arrayToCsv($cso1_transaction_payment, $settlementId . '_pos_transaction_payment', $date),
+
             );
 
             $this->db->transComplete();
- 
-           
+
+
+
             $data = array(
                 "error" => false,
                 "id" => $settlementId,
@@ -157,7 +168,7 @@ class Settlement extends BaseController
 
         return $this->response->setJSON($data);
     }
- 
+
     function testCSV()
     {
         $data = [
@@ -176,5 +187,63 @@ class Settlement extends BaseController
         } else {
             echo "Gagal membuat file CSV.";
         }
+    }
+
+    function fnOpenCashDrawer()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post && $post['token'] === "8zrGkEgUfVJM9XfUHuvYBMipLHMBEHES6HKkGqytFYq36h67gE") {
+            $printer = model("Core")->printer();
+            if ($printer != "") {
+
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile);
+                $printer->pulse();
+                $printer->close();
+            }
+
+            $data = array(
+                "note" => 'success',
+                "printer" => $printer,
+                "action" => "Cash Drawer"
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+
+    function fnPrint()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) { 
+            $printer = model("Core")->printer();
+            if ($printer != "") { 
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile); 
+                $printer->text($post['outputPrint']); 
+                $printer->cut();
+                if ($post['cashDrawer'] == 0) {
+                    $printer->pulse();
+                }
+                $printer->close();
+            }
+           
+            $data = array(
+                "note" => 'success',
+                "printer" => $printer,
+                "post" => $post,
+                "action" => "Print, Cut and Cash Drawer"
+            );
+        }
+        return $this->response->setJSON($data);
     }
 }

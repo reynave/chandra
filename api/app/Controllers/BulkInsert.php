@@ -49,7 +49,9 @@ class BulkInsert extends BaseController
         }
 
         $file = 'item.txt';
-        $path = $_ENV['SYNC'].'item.txt';
+       // $path = $_ENV['SYNC'].'item.txt';
+        $path = './../../sync/item.txt';
+       
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
         INTO TABLE cso1_item
@@ -94,7 +96,7 @@ class BulkInsert extends BaseController
         }
 
         $file =  'barcode.txt';
-        $path = $_ENV['SYNC'].'barcode.txt';
+        $path = './../../sync/barcode.txt';
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
         INTO TABLE cso1_item_barcode  

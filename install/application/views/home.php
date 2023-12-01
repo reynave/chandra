@@ -132,19 +132,7 @@
 
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>SYNC FOLDER</td>
-                                                    <td>
-                                                        <input type="text" class="form-control" id="sync" name="sync"
-                                                            value="C:/xampp/htdocs/chandra/sync/">
-                                                        <div class="px-2">
-                                                            <em><small>Absolute path untuk folder sync</small></em>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-
-                                                    </td>
-                                                </tr>
+                                                
                                                 <tr>
                                                     <td></td>
                                                     <td>
@@ -199,8 +187,7 @@
     </script>
 
     <script>
-        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
-            ':35729/livereload.js?snipver=1"></' + 'script>')
+      //  document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +  ':35729/livereload.js?snipver=1"></' + 'script>')
     </script>
 </body>
 
