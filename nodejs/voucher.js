@@ -1,16 +1,18 @@
 const mysql = require('mysql2');
 const request = require('request-promise');
 const fs = require('fs');
-const url = "http://localhost:7344/app/cso1-api/voucher/";
 const options = { json: true };
+require('dotenv').config()
 
+
+const url = process.env.SERVER;
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'cso1'
+    host: process.env.HOST,
+    user: process.env.USER,
+    database: process.env.DATABASE
 });
 
-connection.connect((err) => {
+connection.connect((err) => { 
     if (err) {
         console.error('Error connecting to MySQL:', err);
         return;
@@ -22,7 +24,7 @@ connection.connect((err) => {
                 let query = 'SELECT * FROM `voucher_master` WHERE id = "' + el['id'] + '" ';
                 connection.query(query,
                     function (err, results, fields) {
-                       
+                       // console.log(request)
                         if (results.length === 0) { 
                             // Jika hasil query kosong, maka lakukan operasi INSERT
                             const insertQuery = 'INSERT INTO `voucher_master` (id, name,amount,expDate,input_date,filename) VALUES (?, ?, ? ,?,?,? )';

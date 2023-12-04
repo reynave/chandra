@@ -11,35 +11,24 @@ class BulkInsert extends BaseController
         $q1 = "SELECT *, CONVERT_TZ(`lastSycn`,'+00:00','+07:00') AS 'date'
         FROM cso1_sync 
         ORDER BY inputDate DESC limit 30";
-        $items = $this->db->query($q1)->getResultArray(); 
+        $items = $this->db->query($q1)->getResultArray();
         $data = array(
             "error" => false,
-            "items" => $items, 
+            "items" => $items,
         );
-        return $this->response->setJSON($data); 
+        return $this->response->setJSON($data);
     }
 
     function items()
     {
         $data = array(
             "item" => self::item(),
-            "barcode" => self::barcode(), 
+            "barcode" => self::barcode(),
         );
 
         return $this->response->setJSON($data);
     }
 
-    function promo()
-    {
-        $data = array( 
-            "promo_header" => self::promo_header(),
-            "promo_detail_item" => self::promo_detail_item(),
-            "promo_detail_free" => self::promo_detail_free(),
-        );
-
-        return $this->response->setJSON($data);
-    }
- 
     public function item()
     {
         if ($this->db->simpleQuery("TRUNCATE cso1_item")) {
@@ -49,9 +38,9 @@ class BulkInsert extends BaseController
         }
 
         $file = 'item.txt';
-       // $path = $_ENV['SYNC'].'item.txt';
+        // $path = $_ENV['SYNC'].'item.txt';
         $path = './../../sync/item.txt';
-       
+
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
         INTO TABLE cso1_item
@@ -60,7 +49,7 @@ class BulkInsert extends BaseController
         (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
         `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)";
 
-         
+
 
         if ($this->db->simpleQuery($bulk)) {
             $rest = 'Success!';
@@ -68,11 +57,11 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
-            "path"  => $path,
+            "path" => $path,
             "fileName" => $file,
             "result" => $rest,
             "totalInsert" => "",
-            "lastSycn" =>  date("Y-m-d H:i:s"),
+            "lastSycn" => date("Y-m-d H:i:s"),
             "inputDate" => time(),
         ]);
 
@@ -85,7 +74,7 @@ class BulkInsert extends BaseController
 
         );
         return $data;
-        
+
     }
     public function barcode()
     {
@@ -95,7 +84,7 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file =  'barcode.txt';
+        $file = 'barcode.txt';
         $path = './../../sync/barcode.txt';
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -110,11 +99,11 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
-            "path"  => $path,
+            "path" => $path,
             "fileName" => $file,
             "result" => $rest,
             "totalInsert" => "",
-            "lastSycn" =>  date("Y-m-d H:i:s"),
+            "lastSycn" => date("Y-m-d H:i:s"),
             "inputDate" => time(),
         ]);
 
@@ -129,17 +118,38 @@ class BulkInsert extends BaseController
         return $data;
     }
 
+
+
+    
+    function promo()
+    {
+
+        $this->db->simpleQuery("TRUNCATE cso1_promotion");
+        $this->db->simpleQuery("TRUNCATE cso1_promotion_item");
+        $this->db->simpleQuery("TRUNCATE cso1_promotion_free");
+        
+        $data = array(
+            "promo_header" => self::promo_header(),
+            "promo_detail_item" => self::promo_detail_item(),
+            "promo_detail_free" => self::promo_detail_free(),
+        );
+
+        return $this->response->setJSON($data);
+    }
+
     public function promo_header()
     {
         if ($this->db->simpleQuery("TRUNCATE cso1_promotion")) {
             $truncate = 'Success!';
         } else {
             $truncate = 'Query failed!';
-        }
+        } 
+      
+        $file = 'promo_header.txt'; 
+        $path = './../../sync/'. $file ;
 
-        $file = $_ENV['SYNC'].'promo_header.txt';
         $bulk = " LOAD DATA LOCAL INFILE  
-        '$file'
+        '$path'
         INTO TABLE cso1_promotion  
         FIELDS TERMINATED BY '|'  
         LINES TERMINATED BY '\r\n' 
@@ -151,7 +161,14 @@ class BulkInsert extends BaseController
         } else {
             $rest = 'Query failed!';
         }
-
+        $this->db->table("cso1_sync")->insert([
+            "path" => $path,
+            "fileName" => $file,
+            "result" => $rest,
+            "totalInsert" => "",
+            "lastSycn" => date("Y-m-d H:i:s"),
+            "inputDate" => time(),
+        ]);
 
 
         $data = array(
@@ -172,9 +189,12 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file = $_ENV['SYNC'].'promo_detail.txt';
+       
+        $file = 'promo_detail.txt'; 
+        $path = './../../sync/'. $file ;
+
         $bulk = " LOAD DATA LOCAL INFILE  
-        '$file'
+        '$path'
         INTO TABLE cso1_promotion_item  
         FIELDS TERMINATED BY '|'  
         LINES TERMINATED BY '\r\n' 
@@ -185,7 +205,14 @@ class BulkInsert extends BaseController
         } else {
             $rest = 'Query failed!';
         }
-
+        $this->db->table("cso1_sync")->insert([
+            "path" => $path,
+            "fileName" => $file,
+            "result" => $rest,
+            "totalInsert" => "",
+            "lastSycn" => date("Y-m-d H:i:s"),
+            "inputDate" => time(),
+        ]);
 
 
         $data = array(
@@ -206,9 +233,12 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file = $_ENV['SYNC'].'promo_free.txt';
+        $file = $_ENV['SYNC'] . 'promo_free.txt';
+        $file = 'promo_free.txt'; 
+        $path = './../../sync/'. $file ;
+
         $bulk = " LOAD DATA LOCAL INFILE  
-        '$file'
+        '$path'
         INTO TABLE cso1_promotion_free  
         FIELDS TERMINATED BY '|'  
         LINES TERMINATED BY '\r\n' 
@@ -219,7 +249,14 @@ class BulkInsert extends BaseController
         } else {
             $rest = 'Query failed!';
         }
- 
+        $this->db->table("cso1_sync")->insert([
+            "path" => $path,
+            "fileName" => $file,
+            "result" => $rest,
+            "totalInsert" => "",
+            "lastSycn" => date("Y-m-d H:i:s"),
+            "inputDate" => time(),
+        ]);
 
         $data = array(
             "error" => false,
@@ -231,5 +268,40 @@ class BulkInsert extends BaseController
         return $data;
     }
 
-    
+    function onSyncVoucher()
+    {
+        $data = array(
+            "server" => $_ENV['server'],
+        );
+
+
+        // URL file yang akan diunduh
+        $fileUrl = $_ENV['server'] . 'uploads/voucher/V000017.txt';
+
+        // Nama file untuk menyimpan hasil unduhan
+        $localFile = './../../sync/voucher/V000017.txt';
+
+        // Inisialisasi cURL
+        $ch = curl_init($fileUrl);
+
+        // Menentukan opsi cURL
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Melakukan request untuk mengunduh file
+        $fileContent = curl_exec($ch);
+
+        // Menutup koneksi cURL
+        curl_close($ch);
+
+        // Menyimpan hasil unduhan ke dalam file lokal
+        file_put_contents($localFile, $fileContent);
+ 
+        $data = array(
+            "error" => false, 
+            "respons" => "File berhasil diunduh dan disimpan dalam $localFile",
+        );  
+
+
+        return $this->response->setJSON($data);
+    }
 }

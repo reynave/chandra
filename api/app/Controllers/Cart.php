@@ -149,7 +149,7 @@ class Cart extends BaseController
         );
         if ($post) {
             $barcode = str_replace(["'", "\"",], "", $post['barcode']);
-
+            $qty = $post['qty'];
             $cashierId = model("Core")->select("id", "cso1_user", "id = '$barcode' AND userAccessId  = 1 ");
             if ($cashierId != "") {
                 $isItem = false;
@@ -180,19 +180,21 @@ class Cart extends BaseController
                 $result = "ITEMS";
                 $originPrice = model("Core")->select("price$i", "cso1_item", "id = '$itemId' ");
 
-                $insert = [
-                    "kioskUuid" => $post['kioskUuid'],
-                    "itemId" => $itemId,
-                    "barcode" => $post['barcode'],
-                    "originPrice" => $originPrice,
-                    "price" => $originPrice,
-                    "promotionId" => "0",
-                    "input_date" => date("Y-m-d H:i:s"),
-                    "inputDate" => time(),
-                    "note" => $note,
-                ];
+                for ($i = 1; $i <= $qty; $i++) {
+                    $insert = [
+                        "kioskUuid" => $post['kioskUuid'],
+                        "itemId" => $itemId,
+                        "barcode" => $post['barcode'],
+                        "originPrice" => $originPrice,
+                        "price" => $originPrice,
+                        "promotionId" => "0",
+                        "input_date" => date("Y-m-d H:i:s"),
+                        "inputDate" => time(),
+                        "note" => $note,
+                    ];
+                    $this->db->table("cso1_kiosk_cart")->insert($insert);
+                }
 
-                $this->db->table("cso1_kiosk_cart")->insert($insert);
                 $kioskCartId = model("Core")->select("id", "cso1_kiosk_cart", " kioskUuid = '" . $post['kioskUuid'] . "' ORDER BY  id DESC");
 
 
@@ -525,7 +527,7 @@ class Cart extends BaseController
             $itemId = $post['item']['itemId'];
             $barcode = $post['item']['barcode'];
             $price = $post['item']['price'];
-            
+
             $where = " presence = 1 and kioskUuid = '$kioskUuid' and itemId = '$itemId' and barcode = '$barcode' AND  price = '$price' ";
 
             $total = model("Core")->select("count(id)", "cso1_kiosk_cart", $where) - $post['addQty'];
@@ -659,9 +661,9 @@ class Cart extends BaseController
                 "presence" => 0,
                 "update_date" => date("Y-m-d H:i:s"),
             ], "  kioskUuid =  '" . $post['kioskUuid'] . "' 
-                AND  itemId = '".$post['activeCart']['itemId']."' 
-                AND  barcode = '".$post['activeCart']['barcode']."'
-                AND  price = '".$post['activeCart']['price']."' 
+                AND  itemId = '" . $post['activeCart']['itemId'] . "' 
+                AND  barcode = '" . $post['activeCart']['barcode'] . "'
+                AND  price = '" . $post['activeCart']['price'] . "' 
             ");
 
             $data = array(
