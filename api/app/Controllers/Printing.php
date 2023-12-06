@@ -152,7 +152,7 @@ class Printing extends BaseController
     }
 
 
-    function fnOpenCashDrawerAndPrinting()
+    function fnOpenCashDrawer()
     {
         $post = json_decode(file_get_contents('php://input'), true);
         $data = array(
@@ -169,8 +169,8 @@ class Printing extends BaseController
                 $profile = CapabilityProfile::load("simple");
                 $connector = new WindowsPrintConnector($printer);
                 $printer = new Printer($connector, $profile); 
-                $printer->text($post['outputPrint']); 
-                $printer->cut();
+            //    $printer->text($post['outputPrint']); 
+               // $printer->cut();
                 if ($post['cashDrawer'] == 0) {
                     $printer->pulse();
                 }
@@ -212,7 +212,7 @@ class Printing extends BaseController
                 $printer = new Printer($connector, $profile);
 
                 $printer->text($post['outputPrint']); 
-                $printer->cut(); 
+              //  $printer->cut(); 
                 $printer->close();
             }
              
