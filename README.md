@@ -1,8 +1,8 @@
-## Installation POS
+## Installation POS 
+#### Doc versi Win10
 
-sangat di sarankan install git cmd
+*Sangat disarankan install dengan **git cmd**  untuk memudahkan update version*
 https://gitforwindows.org/
-untuk update version
 
 ####  1. Insall XAMPP and Update PHP.INI (manual and required) 
 update PHP.ini 

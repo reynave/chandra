@@ -45,23 +45,36 @@ class Balance extends BaseController
                 "cashierId" => model("Core")->accountId(),
                 "input_date" => date("Y-m-d H:i:s")
             ]);
-
-            if(model("Core")->printer() != "" ){
-                $profile = CapabilityProfile::load("simple");
-                $connector = new WindowsPrintConnector(model("Core")->printer());
-                $printer = new Printer($connector, $profile);
-                
-              //  $printer -> text("Hello World!\n\n\n\n\n");
-              //  $printer -> cut();
-                $printer->pulse();
-                $printer->close();
-            }
-       
-
-
+ 
             $data = array(
                 "error" => false,
                 "post" => $post,
+                "printer" => model("Core")->printer(),
+            );
+        }
+
+        return $this->response->setJSON($data);
+    }
+
+    function fnOpenCashDrawer()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post && $post['token'] == 'YbgQmalu1sr9LmoOKJmy2BeI3vy70CV2RKg8thPw3I4TxXhlwg') {
+            
+            if(model("Core")->printer() != "" ){
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector(model("Core")->printer());
+                $printer = new Printer($connector, $profile); 
+                $printer->pulse();
+                $printer->close();
+            }
+         
+            $data = array(
+                "error" => false, 
                 "printer" => model("Core")->printer(),
             );
         }
