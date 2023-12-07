@@ -115,7 +115,8 @@ nb-configuration.xml
 *.sublime-project
 .phpintel
 /api/writable/*
-
+settlement/*
+!settlement/index.html
 # Visual Studio Code
 .vscode/
 

@@ -203,6 +203,7 @@ class Settlement extends BaseController
                 $profile = CapabilityProfile::load("simple");
                 $connector = new WindowsPrintConnector($printer);
                 $printer = new Printer($connector, $profile);
+                $printer->text($post['outputPrint']); 
                 $printer->pulse();
                 $printer->close();
             }
@@ -230,10 +231,7 @@ class Settlement extends BaseController
                 $connector = new WindowsPrintConnector($printer);
                 $printer = new Printer($connector, $profile); 
                 $printer->text($post['outputPrint']); 
-                $printer->cut();
-                if ($post['cashDrawer'] == 0) {
-                    $printer->pulse();
-                }
+                $printer->cut(); 
                 $printer->close();
             }
            
