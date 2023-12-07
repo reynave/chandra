@@ -27,16 +27,60 @@ class Printing extends BaseController
 
     function test()
     {
-        $profile = CapabilityProfile::load("simple");
-        $connector = new WindowsPrintConnector("wintec");
-        $printer = new Printer($connector, $profile);
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+ 
+            $printer = $post['printerName'];
 
-        $printer->text("Hello World!\n\n\n\n\n");
-        $printer->cut();
-        $printer->pulse();
-        $printer->close();
-        echo "Sukses";
+           
+            if ($printer != "") { 
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile); 
+                $printer->text("\n\n\n".$post['outputPrint']."\n\n\n"); 
+                $printer->cut(); 
+                $printer->close();
+            }
+             
+            $data = array( 
+                "printer" => $printer,
+                "post" => $post, 
+            );
+        }
+        return $this->response->setJSON($data);
     }
+
+
+    function fnSavePrinterName()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+ 
+            $printer = $post['printerName'];
+            
+            $this->db->table("cso1_account")->update([
+                "value" =>  $printer,
+            ]," id = 400");
+               
+            $data = array( 
+                "printer" => $printer,
+                "post" => $post, 
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+
+
+
+
 
     function detail()
     {

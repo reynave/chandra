@@ -24,6 +24,7 @@ class Settlement extends BaseController
         $data = array(
             "error" => false,
             "items" => $items,
+            "printerName" => model("Core")->printer(),
             "total" => (int) model("Core")->select("count(id)", "cso1_transaction", "presence  = 1 and locked = 1 and settlementId = ''"),
         );
         return $this->response->setJSON($data);
