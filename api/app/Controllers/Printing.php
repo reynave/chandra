@@ -188,8 +188,7 @@ class Printing extends BaseController
                 }
                 $i++;
             }
-
-
+            $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '".$data['detail']['memberId']."' "));
             $data['promo_fixed'] = model("Promo")->promo_fixed($data['summary']['total']);
         }
         return $this->response->setJSON($data);
