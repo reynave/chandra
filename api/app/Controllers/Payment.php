@@ -84,6 +84,11 @@ class Payment extends BaseController
                     "input_date" => date("Y-m-d H:i:s")
                 ]);
             }
+            $this->db->table("cso1_kiosk_uuid")->update([
+                   "ilock" => 1,
+                  "update_date" => date("Y-m-d H:i:s"),
+              ], "  kioskUuid =  '" . $post['kioskUuid'] . "' ");
+  
 
             $data = array(
                 "error" => false,
@@ -115,7 +120,7 @@ class Payment extends BaseController
             $this->db->transStart();
                 $terminalId = $get['terminalId'];
                 $storeOutlesId = "Comingsoon";
-                $id =  $terminalId."." .date("ymd"). "." .model("Core")->number("transaction");
+                $id =  $get['accountId']."." .model("Core")->number("transaction");
             
                 $this->db->table("cso1_transaction")->insert([
                     "id" => $id,

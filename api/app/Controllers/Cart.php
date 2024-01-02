@@ -636,7 +636,7 @@ class Cart extends BaseController
         );
         if ($post) {
             $this->db->table("cso1_kiosk_uuid")->update([
-                "ilock" => 1,
+              //  "ilock" => 1,
                 "update_date" => date("Y-m-d H:i:s"),
             ], "  kioskUuid =  '" . $post['kioskUuid'] . "' ");
 
