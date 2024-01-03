@@ -12,13 +12,13 @@ class Cart extends BaseController
         $memberDiscount = model("Promo")->calculationMemberDiscount($kioskUuid, $memberId);
 
         $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice, c.memberDiscountAmount,
-        i.shortDesc, i.description, c.price, '' as promotionFreeId
+        i.shortDesc, i.description, c.price, '' as promotionFreeId, c.validationNota
         FROM (
             SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId,  k.memberDiscountAmount,
-            sum(k.price) AS 'total', sum(k.discount) AS 'discount', k.price, k.originPrice
+            sum(k.price) AS 'total', sum(k.discount) AS 'discount', k.price, k.originPrice, k.validationNota
             FROM cso1_kiosk_cart AS k 
             WHERE k.kioskUuid = '$kioskUuid'  AND k.void = 0 and k.presence = 1
-            GROUP BY k.barcode, k.itemId, k.promotionId, k.price, k.originPrice, k.discount,  k.memberDiscountAmount
+            GROUP BY k.barcode, k.itemId, k.promotionId, k.price, k.originPrice, k.discount,  k.memberDiscountAmount, k.validationNota
         ) AS c
         LEFT JOIN cso1_item AS i ON  i.id = c.itemId";
         $items = $this->db->query($q1)->getResultArray();
@@ -88,6 +88,31 @@ class Cart extends BaseController
         return $this->response->setJSON($data);
     }
 
+    function validationNota(){
+        $i = 1;
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+
+            $this->db->table("cso1_kiosk_cart")->update([
+                "validationNota" => 1,  
+            ]," kioskUuid = '".$post['kioskUuid']."' AND 
+            price = '".$post['item']['price']."'  AND 
+            itemId = '".$post['item']['itemId']."'  AND
+            barcode = '".$post['item']['barcode']."'  
+            ");
+
+            $data = array(
+                "error" => false,
+                "post" => $post,
+            );
+        }
+
+        return $this->response->setJSON($data);
+    }
     function getPromo($itemId, $qty = 1)
     {
         return $this->response->setJSON(model("Promo")->getPromo($itemId, $qty));
@@ -205,6 +230,7 @@ class Cart extends BaseController
                             "promotionId" => "0",
                             "input_date" => date("Y-m-d H:i:s"),
                             "inputDate" => time(),
+                            "validationNota" => 0,
                             "note" => $note,
                         ];
                         $this->db->table("cso1_kiosk_cart")->insert($insert);
@@ -378,6 +404,8 @@ class Cart extends BaseController
                     "barcode" => $post['item']['barcode'],
                     "price" => $post['activeCart']['price'],
                     "discount" => $post['activeCart']['discount'],
+                    "validationNota" => $post['activeCart']['validationNota'],
+                    
                     "promotionId" => $post['activeCart']['promotionId'],
                     "originPrice" => model("Core")->select("price$i", "cso1_item", "id = '$itemid' "),
                     "input_date" => date("Y-m-d H:i:s")
