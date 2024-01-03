@@ -10,18 +10,26 @@ class Items extends BaseController
     {
         $i = 1;
         $search = strtoupper($this->request->getVar()['search']);
-        $q1 = "SELECT i.id, i.description, i.price$i , b.barcode
+
+        $q2 = "SELECT a.itemId AS 'id',i.description, i.price1,  a.barcode
+        FROM cso1_item_barcode  AS a
+        LEFT JOIN cso1_item AS i ON a.itemId = i.id
+        WHERE a.barcode  = '$search'";
+        $items = $this->db->query($q2)->getResultArray();
+
+        if (count($items) < 1) { 
+            $q1 = "SELECT i.id, i.description, i.price$i , b.barcode
         FROM cso1_item AS i 
         LEFT JOIN cso1_item_barcode AS b ON b.itemId = i.id
         WHERE 
-        description LIKE '%$search %' OR 
-        shortDesc LIKE '%$search %'     
+        description LIKE '%$search%' OR 
+        shortDesc LIKE '%$search%'    
         ORDER BY description ASC";
-        $items = $this->db->query($q1)->getResultArray();
-
+            $items = $this->db->query($q1)->getResultArray();
+        }
         $data = array(
             "error" => false,
-            "items" => $items,
+            "items" => $items, 
             "s" => $search,
         );
 
@@ -37,11 +45,11 @@ class Items extends BaseController
 
         $total = $total > 0 ? $total : 0;
         $totalCart = $totalCart > 0 ? $totalCart : 0;
-         $maxItem = (int) model("Core")->select("SUM(maxItem)", "cso1_tebus_murah", "minTransaction <= $total and status = 1 and presence = 1 ");
+        $maxItem = (int) model("Core")->select("SUM(maxItem)", "cso1_tebus_murah", "minTransaction <= $total and status = 1 and presence = 1 ");
         $items = [];
         $q1 = null;
-        if ( $totalCart < $maxItem) {
- 
+        if ($totalCart < $maxItem) {
+
             $q1 = "SELECT i.id, i.itemId, i.price, t.expDate, t.maxItem,
                 t.exp_date, t.minTransaction, t.maxItem, m.description
                 FROM cso1_tebus_murah_items AS i 

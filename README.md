@@ -32,6 +32,9 @@ pm2 start app.js
 
 - nodejs untuk Edisi Mandiri / BCA
 
+####  4. Install via browser
+1.  https://localhost/[your_folder]/install
+ 
 
 
 Credit 

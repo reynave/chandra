@@ -92,15 +92,16 @@ class Printing extends BaseController
             $isId = model("Core")->select("endDate", "cso1_transaction", "id='" . $id . "'");
 
             $items = model("Core")->sql("SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
-            FROM (
-                SELECT count(td.itemId) as qty, td.itemId, sum(td.price - td.discount) as 'totalPrice', td.price, td.barcode,
-                sum(td.isSpecialPrice) as 'isSpecialPrice', sum(td.discount) as 'totalDiscount', td.note, td.promotionId
-                from cso1_transaction_detail as td
-                where td.presence = 1 and td.void = 0 and td.transactionId = '$id' and td.isFreeItem = 0
-                group by td.itemId, td.price, td.note , td.barcode, td.promotionId
-            ) as t1
-            JOIN cso1_item as i on i.id = t1.itemId
-            ORDER BY i.description ASC
+                FROM (
+                    SELECT count(td.itemId) as qty, td.itemId, sum(td.price - td.discount) as 'totalPrice', td.originPrice,
+                    td.price, td.barcode, td.memberDiscountAmount,
+                    sum(td.isSpecialPrice) as 'isSpecialPrice', sum(td.discount) as 'totalDiscount', td.note, td.promotionId
+                    from cso1_transaction_detail as td
+                    where td.presence = 1 and td.void = 0 and td.transactionId = '$id' and td.isFreeItem = 0
+                    group by td.itemId, td.price, td.originPrice, td.note , td.barcode, td.promotionId, td.memberDiscountAmount
+                ) as t1
+                JOIN cso1_item as i on i.id = t1.itemId
+                ORDER BY i.description ASC
             ");
             $i = 0;
             foreach ($items as $row) {
@@ -171,8 +172,7 @@ class Printing extends BaseController
                     "companyPhone" => 'Telp : ' . model("Core")->select("value", "cso1_account", "name='companyPhone'"),
                     "footer" => model("Core")->select("value", "cso1_account", "id='1007'"),
                     "brandId" => model("Core")->select("value", "cso1_account", "id='22'"),
-                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"),
-
+                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"), 
                 ),
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
                 "isCash" => (int) model("Core")->sql(" SELECT count(id) as 'cash' from cso1_transaction_payment WHERE paymentTypeId = 'CASH' and  transactionId ='$id'"),

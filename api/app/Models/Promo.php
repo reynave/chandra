@@ -388,4 +388,39 @@ class Promo extends Model
         return $data;
     }
 
+
+    function calculationMemberDiscount($kioskUuid = "", $memberId = ''){
+        $resp = false;
+        if($kioskUuid != "" && $memberId != "" ){
+            $discount  = (float)self::select("discount","cso2_member","id = '$memberId' ");
+            $q = "SELECT id, originPrice, price, memberDiscountPercent 
+            from cso1_kiosk_cart 
+            where kioskUuid = '$kioskUuid' and presence = 1  and price > 1
+            AND discount = 0 ";
+     
+            $items = $this->db->query($q)->getResultArray();
+
+            foreach($items as $rec){
+            //    if(($rec['originPrice'] == $rec['price']) && $rec['memberDiscount'] <= 0 ){
+
+                    $newPrice = $rec['originPrice'] - ($rec['originPrice']* ($discount/100));
+ 
+                    $this->db->table("cso1_kiosk_cart")->update([
+                        "price" => $newPrice,
+                        "memberDiscountPercent" =>  $discount,
+                        "memberDiscountAmount" =>  ($rec['originPrice']* ($discount/100)),
+                        
+                    ]," id = '".$rec['id']."'");
+               // }
+            }
+
+
+            
+            $items = $this->db->query($q)->getResultArray();
+            $resp =  $items;
+        } 
+        return $resp;
+        
+        
+    }
 }

@@ -8,15 +8,17 @@ class Cart extends BaseController
     function index()
     {
         $kioskUuid = $this->request->getVar()['kioskUuid'];
+        $memberId = model("Core")->select("memberId", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid'  ");
+        $memberDiscount = model("Promo")->calculationMemberDiscount($kioskUuid, $memberId);
 
-        $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice,
+        $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice, c.memberDiscountAmount,
         i.shortDesc, i.description, c.price, '' as promotionFreeId
         FROM (
-            SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId, 
+            SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId,  k.memberDiscountAmount,
             sum(k.price) AS 'total', sum(k.discount) AS 'discount', k.price, k.originPrice
             FROM cso1_kiosk_cart AS k 
             WHERE k.kioskUuid = '$kioskUuid'  AND k.void = 0 and k.presence = 1
-            GROUP BY k.barcode, k.itemId, k.promotionId, k.price, k.originPrice, k.discount
+            GROUP BY k.barcode, k.itemId, k.promotionId, k.price, k.originPrice, k.discount,  k.memberDiscountAmount
         ) AS c
         LEFT JOIN cso1_item AS i ON  i.id = c.itemId";
         $items = $this->db->query($q1)->getResultArray();
@@ -57,8 +59,9 @@ class Cart extends BaseController
         $kioskUuid = model("Core")->select("kioskUuid", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid' and presence = 1  ");
 
         $totalTebusMurah = model("Core")->select("count(id)", "cso1_kiosk_cart", "promotionId = 'tebusMurah' and kioskUuid = '$kioskUuid' and presence = 1  ");
-        $memberId = model("Core")->select("memberId", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid'  ");
+       
         $data = array(
+            "memberDiscount" => $memberDiscount,
             "member" => model("Core")->select("name", "cso2_member", "id = '$memberId'  "),
             "kioskUuid" => $kioskUuid,
             "error" => $kioskUuid ? false : true,
