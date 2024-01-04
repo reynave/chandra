@@ -171,6 +171,7 @@ class Payment extends BaseController
 
                     "memberDiscountPercent" => $row['memberDiscountPercent'],
                     "memberDiscountAmount" => $row['memberDiscountAmount'],
+                    "validationNota" => $row['validationNota'],
 
                     "note" => $row['note'],
                     "void" => $row['void'],

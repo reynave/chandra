@@ -11,10 +11,10 @@ class Cart extends BaseController
         $memberId = model("Core")->select("memberId", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid'  ");
         $memberDiscount = model("Promo")->calculationMemberDiscount($kioskUuid, $memberId);
 
-        $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice, c.memberDiscountAmount,
+        $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice, c.memberDiscountAmount, c.totalPriceEdit,
         i.shortDesc, i.description, c.price, '' as promotionFreeId, c.validationNota
         FROM (
-            SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId,  k.memberDiscountAmount,
+            SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId,  k.memberDiscountAmount, sum(k.isPriceEdit) AS 'totalPriceEdit', 
             sum(k.price) AS 'total', sum(k.discount) AS 'discount', k.price, k.originPrice, k.validationNota
             FROM cso1_kiosk_cart AS k 
             WHERE k.kioskUuid = '$kioskUuid'  AND k.void = 0 and k.presence = 1
@@ -98,7 +98,7 @@ class Cart extends BaseController
         if ($post) {
 
             $this->db->table("cso1_kiosk_cart")->update([
-                "validationNota" => 1,  
+                "validationNota" => $post['item']['validationNota'] == '1' ? 0 : 1,  
             ]," kioskUuid = '".$post['kioskUuid']."' AND 
             price = '".$post['item']['price']."'  AND 
             itemId = '".$post['item']['itemId']."'  AND
@@ -408,7 +408,11 @@ class Cart extends BaseController
                     
                     "promotionId" => $post['activeCart']['promotionId'],
                     "originPrice" => model("Core")->select("price$i", "cso1_item", "id = '$itemid' "),
-                    "input_date" => date("Y-m-d H:i:s")
+                    "input_date" => date("Y-m-d H:i:s"),
+                    "update_date" => date("Y-m-d H:i:s"),
+                    "inputDate" => time(),
+                    "updateDate" => time(),
+                    
                 ]);
             }
             $data = array(
@@ -612,6 +616,57 @@ class Cart extends BaseController
                 "updateBy" => "",
 
             ], "barcode = " . $post['activeCart']['barcode'] . " AND price < 2 AND kioskUuid =  '" . $post['kioskUuid'] . "' ");
+
+
+            $data = array(
+                "error" => false,
+                "post" => $post,
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+    function changePrice()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+            $this->db->table("cso1_kiosk_cart")->update([
+                "price" => $post['newPrice'],
+                "discount" => 0,
+                "isPriceEdit" => 1,
+                "updateDate" => time(),
+                "update_date" => date("Y-m-d H:i:s"),
+                "updateBy" => "",
+
+            ], "barcode = " . $post['activeCart']['barcode'] . " AND price = ".$post['activeCart']['price']." AND kioskUuid =  '" . $post['kioskUuid'] . "' ");
+
+
+            $data = array(
+                "error" => false,
+                "post" => $post,
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+    
+    function discountManual()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+            $this->db->table("cso1_kiosk_cart")->update([
+                "price" => $post['newPrice'],
+                "discount" => $post['discountAmount'],   
+                "updateDate" => time(),
+                "update_date" => date("Y-m-d H:i:s"), 
+
+            ], "barcode = " . $post['activeCart']['barcode'] . " AND price = ".$post['activeCart']['price']." AND kioskUuid =  '" . $post['kioskUuid'] . "' ");
 
 
             $data = array(

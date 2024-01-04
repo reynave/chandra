@@ -33,22 +33,22 @@ class Printing extends BaseController
             "post" => $post,
         );
         if ($post) {
- 
+
             $printer = $post['printerName'];
 
-           
-            if ($printer != "") { 
+
+            if ($printer != "") {
                 $profile = CapabilityProfile::load("simple");
                 $connector = new WindowsPrintConnector($printer);
-                $printer = new Printer($connector, $profile); 
-                $printer->text("\n\n\n".$post['outputPrint']."\n\n\n"); 
-                $printer->cut(); 
+                $printer = new Printer($connector, $profile);
+                $printer->text("\n\n\n" . $post['outputPrint'] . "\n\n\n");
+                $printer->cut();
                 $printer->close();
             }
-             
-            $data = array( 
+
+            $data = array(
                 "printer" => $printer,
-                "post" => $post, 
+                "post" => $post,
             );
         }
         return $this->response->setJSON($data);
@@ -63,16 +63,16 @@ class Printing extends BaseController
             "post" => $post,
         );
         if ($post) {
- 
+
             $printer = $post['printerName'];
-            
+
             $this->db->table("cso1_account")->update([
-                "value" =>  $printer,
-            ]," id = 400");
-               
-            $data = array( 
+                "value" => $printer,
+            ], " id = 400");
+
+            $data = array(
                 "printer" => $printer,
-                "post" => $post, 
+                "post" => $post,
             );
         }
         return $this->response->setJSON($data);
@@ -93,12 +93,12 @@ class Printing extends BaseController
 
             $items = model("Core")->sql("SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
                 FROM (
-                    SELECT count(td.itemId) as qty, td.itemId, sum(td.price - td.discount) as 'totalPrice', td.originPrice,
-                    td.price, td.barcode, td.memberDiscountAmount,
+                    SELECT count(td.itemId) as qty, td.itemId, sum(td.price - td.discount) as 'totalPrice', td.originPrice, sum(td.isPriceEdit) as 'totalPriceEdit',
+                    td.price, td.barcode, td.memberDiscountAmount, td.validationNota,
                     sum(td.isSpecialPrice) as 'isSpecialPrice', sum(td.discount) as 'totalDiscount', td.note, td.promotionId
                     from cso1_transaction_detail as td
                     where td.presence = 1 and td.void = 0 and td.transactionId = '$id' and td.isFreeItem = 0
-                    group by td.itemId, td.price, td.originPrice, td.note , td.barcode, td.promotionId, td.memberDiscountAmount
+                    group by td.itemId, td.price, td.originPrice, td.note , td.barcode, td.promotionId, td.memberDiscountAmount, td.validationNota
                 ) as t1
                 JOIN cso1_item as i on i.id = t1.itemId
                 ORDER BY i.description ASC
@@ -112,6 +112,7 @@ class Printing extends BaseController
             }
             model("Promo")->orderByID($items);
 
+ 
 
             $data = array(
                 "get" => $this->request->getVar(),
@@ -172,11 +173,11 @@ class Printing extends BaseController
                     "companyPhone" => 'Telp : ' . model("Core")->select("value", "cso1_account", "name='companyPhone'"),
                     "footer" => model("Core")->select("value", "cso1_account", "id='1007'"),
                     "brandId" => model("Core")->select("value", "cso1_account", "id='22'"),
-                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"), 
+                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"),
                 ),
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
                 "isCash" => (int) model("Core")->sql(" SELECT count(id) as 'cash' from cso1_transaction_payment WHERE paymentTypeId = 'CASH' and  transactionId ='$id'"),
-
+               
             );
 
 
@@ -188,7 +189,8 @@ class Printing extends BaseController
                 }
                 $i++;
             }
-            $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '".$data['detail']['memberId']."' "));
+            $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '" . $data['detail']['memberId'] . "' "));
+            
             $data['promo_fixed'] = model("Promo")->promo_fixed($data['summary']['total']);
         }
         return $this->response->setJSON($data);
@@ -208,16 +210,16 @@ class Printing extends BaseController
             ], " id = '" . $post['id'] . "'");
             $printer = model("Core")->printer();
             if ($printer != "") {
- 
+
                 $profile = CapabilityProfile::load("simple");
                 $connector = new WindowsPrintConnector($printer);
-                $printer = new Printer($connector, $profile); 
+                $printer = new Printer($connector, $profile);
                 if ($post['cashDrawer'] == 0) {
                     $printer->pulse();
                 }
                 $printer->close();
             }
-          
+
 
 
 
@@ -238,25 +240,25 @@ class Printing extends BaseController
             "post" => $post,
         );
         if ($post) {
- 
+
             $printer = model("Core")->printer();
 
             $this->db->table("cso1_transaction")->update([
-                "printing" => 1, 
-            ]," id = '".$post['id']."'");
+                "printing" => 1,
+            ], " id = '" . $post['id'] . "'");
 
 
             if ($printer != "") {
- 
+
                 $profile = CapabilityProfile::load("simple");
                 $connector = new WindowsPrintConnector($printer);
                 $printer = new Printer($connector, $profile);
 
-                $printer->text($post['outputPrint']); 
-                $printer->cut(); 
+                $printer->text($post['outputPrint']);
+                $printer->cut();
                 $printer->close();
             }
-             
+
             $data = array(
                 "note" => 'success',
                 "printer" => $printer,
@@ -266,6 +268,41 @@ class Printing extends BaseController
         }
         return $this->response->setJSON($data);
     }
+
+
+    function fnPrintingNota()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+
+            $printer = model("Core")->printer();
+ 
+
+            if ($printer != "") {
+
+                $profile = CapabilityProfile::load("simple");
+                $connector = new WindowsPrintConnector($printer);
+                $printer = new Printer($connector, $profile);
+
+                $printer->text($post['outputPrint']);
+                $printer->cut();
+                $printer->close();
+            }
+
+            $data = array(
+                "note" => 'success',
+                "printer" => $printer,
+                "post" => $post,
+                "action" => "Print and Cut"
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+
 
     function copyPrinting()
     {
@@ -279,11 +316,11 @@ class Printing extends BaseController
                     "inputDate" => time(),
                     "input_date" => date("Y-m-d H:i:s"),
                 ]);
-                
+
             }
             $data = array(
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
-            
+
             );
         }
 
