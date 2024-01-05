@@ -93,7 +93,7 @@ class Printing extends BaseController
 
             $items = model("Core")->sql("SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
                 FROM (
-                    SELECT count(td.itemId) as qty, td.itemId, sum(td.price - td.discount) as 'totalPrice', td.originPrice, sum(td.isPriceEdit) as 'totalPriceEdit',
+                    SELECT count(td.itemId) as qty, td.itemId, sum(td.price ) as 'totalPrice', td.originPrice, sum(td.isPriceEdit) as 'totalPriceEdit',
                     td.price, td.barcode, td.memberDiscountAmount, td.validationNota,
                     sum(td.isSpecialPrice) as 'isSpecialPrice', sum(td.discount) as 'totalDiscount', td.note, td.promotionId
                     from cso1_transaction_detail as td
