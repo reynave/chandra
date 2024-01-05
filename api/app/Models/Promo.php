@@ -187,6 +187,22 @@ class Promo extends Model
         return $resh;
 
     }
+    function promotion_discount($itemId = "" ){
+        $today = date('D', time()); 
+
+        $q = "SELECT *
+        FROM  
+            cso1_promotion_discount 
+        WHERE 
+            STATUS = 1 AND presence = 1 AND 
+            itemId = '$itemId'
+        ";
+        $resh = false; 
+        if (count($this->db->query($q)->getResultArray()) > 0) {   
+            $resh = $this->db->query($q)->getResultArray()[0];
+        } 
+        return $resh;
+    }
 
 
     function orderByID(&$array)

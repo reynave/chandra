@@ -47,7 +47,7 @@ class Login extends BaseController
                 'exp' => strtotime('+8 hours'),
                 "account" => array(
                     "id" => $id,
-                    'name' => model("Core")->select("name", "cso1_user", "id = '$id' "),
+                    'name' => model("Core")->select("name", "cso1_user", "id = '$id' "),  
                 ),
             ];
             $jwt = JWT::encode($payload, $key, 'HS256');
