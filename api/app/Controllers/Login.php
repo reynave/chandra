@@ -78,4 +78,40 @@ class Login extends BaseController
         }
         return $this->response->setJSON($data);
     }
+
+    function authorization()
+    {
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+        $data = [
+            "error" => true,
+            "post" => $post,
+        ];
+
+
+        $id = model("Core")->select("id", "cso1_user", "id = '" . $post['id'] . "' AND password =  '" . $post['password'] . "'  ");
+        if ($post && $id) {
+            $id = uniqid();
+            $this->db->table("cso1_user_auth")->insert([
+                "id" =>$id,
+                "terminalId" => $post['terminalId'],
+                "userId" => $id, 
+                "input_date" => date("Y-m-d H:i:s"),
+            ]);
+            $data = [
+                "error" => true,
+                "post" => $post,
+                "id" => $id,
+                "note" => "Auth 200",
+            ];
+        } else {
+            $data = [
+                "id" => "",
+                "error" => true,
+                "post" => $post,
+                "note" => "ID not found!",
+            ];
+        }
+        return $this->response->setJSON($data);
+    }
 }

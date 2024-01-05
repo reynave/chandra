@@ -12,7 +12,9 @@ class Payment extends BaseController
 {
     function method()
     {
-        $q1 = "SELECT *, id as 'paymentTypeId' FROM cso1_payment_type  
+        $q1 = "SELECT *, id as 'paymentTypeId' 
+        FROM cso1_payment_type 
+        WHERE status = 1 
         ORDER BY label ASC";
         $items = $this->db->query($q1)->getResultArray();
 
@@ -97,7 +99,33 @@ class Payment extends BaseController
         }
         return $this->response->setJSON($data);
     }
+ 
+    function onSubmitDiscountBill()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+            $paid = $post['amount'];
+            $this->db->table("cso1_kiosk_paid_pos")->insert([
+                "kioskUuid" => $post['kioskUuid'],
+                "paid" => $paid,
+                "paymentTypeId" => 'DISC.BILL', 
+                "input_date" => date("Y-m-d H:i:s"),
+                "update_date" => date("Y-m-d H:i:s"), 
+            ]);
+  
 
+            $data = array(
+                "error" => false,
+                "post" => $post,
+            );
+        }
+        return $this->response->setJSON($data);
+    }
+ 
 
     function isCloseTransaction()
     {
@@ -279,6 +307,74 @@ class Payment extends BaseController
             );
         }
 
+        return $this->response->setJSON($data);
+    }
+ 
+
+    function addBarcode(){
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+            "note" => "Not Found",
+        );
+        if ($post) {
+            $barcode = $post['barcode'];
+            $kioskUuid =  $post['kioskUuid'];
+            $id = model("Core")->select('id', "voucher", "number = '$barcode' and status = 0 ");
+            $userId = model("Core")->select('id', "cso1_user", "id = '$barcode' and status = 1 and presence = 1 and userAccessId < 9");
+            if ($id) {
+ 
+                $bill = (int) model("Core")->select("sum(price)", "cso1_kiosk_cart", "kioskUuid = '$kioskUuid'") ;
+                $bill =   $bill < 0  ? 1 :   $bill;
+                $paid = (int) model("Core")->select("sum(paid)", "cso1_kiosk_paid_pos", "kioskUuid = '$kioskUuid'");
+                $remaining = $bill - $paid;
+ 
+                $amount = model("Core")->select('amount', "voucher", "id = '$id' ");
+ 
+                $this->db->table("cso1_kiosk_paid_pos")->insert([
+                    "kioskUuid" => $post['kioskUuid'],
+                    "paid" =>  ($remaining -  $amount) < 0 ? $remaining : $amount,
+                    "paymentTypeId" => 'VOUCHER',
+                    "voucherNumber" => $barcode,
+                    "input_date" => date("Y-m-d H:i:s")
+                ]);
+
+                $this->db->table("voucher")->update([
+                    "kioskUuid" => $post['kioskUuid'],
+                    "status" => 1,
+                    "update_date" => date("Y-m-d H:i:s")
+                ], " id = '$id' ");
+
+                $data = array(
+                    "error" => false,
+                    "post" => $post,
+                    "action" => "",
+                    "note" => "",
+                    "reload" => true,
+                );
+            }
+            else if($userId){
+                $data = array(
+                    "error" => true,
+                    "post" => $post,
+                    "action" => "openPassword",
+                    "note" => "user login",
+                    "reload" => false,
+                );
+            }
+            
+            else if( model("Core")->select('id', "voucher", "number = '$barcode' and status = 1 ") ){
+                $data = array(
+                    "error" => true,
+                    "post" => $post,
+                    "action" => "",
+                    "note" => "not found",
+                    "reload" => false,
+                );
+            }
+            
+        }
         return $this->response->setJSON($data);
     }
 }

@@ -54,28 +54,29 @@ class Promo extends Model
         return $data;
     }
 
+    // ver 1 DELETE
     function getPromo($itemId, $qty = 0)
     {
-        $promo = model("promo")->getId($itemId, $qty);
+        $promo = self::getId($itemId, $qty);
         $i = 1;
         if ($promo['error'] == false) {
 
             $promotionItemId = $promo['promo'][0]['promotionItemId'];
             $typeOfPromotion = $promo['promo'][0]['typeOfPromotion'];
 
-            $isSpecialPrice = (int) model("Promo")->select("specialPrice", "cso1_promotion_item", "id=$promotionItemId") > 0 ? 1 : 0;
+            $isSpecialPrice = (int) self::select("specialPrice", "cso1_promotion_item", "id=$promotionItemId") > 0 ? 1 : 0;
             if ($isSpecialPrice == 1) {
-                $newPrice = (int) model("Promo")->select("specialPrice", "cso1_promotion_item", "id=$promotionItemId");
+                $newPrice = (int) self::select("specialPrice", "cso1_promotion_item", "id=$promotionItemId");
             } else {
-                $discountPrice = model("Promo")->select("discountPrice", "cso1_promotion_item", "id=$promotionItemId");
+                $discountPrice = self::select("discountPrice", "cso1_promotion_item", "id=$promotionItemId");
 
                 $discx = [
-                    "disc1" => model("Promo")->select("disc1", "cso1_promotion_item", "id=$promotionItemId"),
-                    "disc2" => model("Promo")->select("disc2", "cso1_promotion_item", "id=$promotionItemId"),
-                    "disc3" => model("Promo")->select("disc3", "cso1_promotion_item", "id=$promotionItemId"),
+                    "disc1" => self::select("disc1", "cso1_promotion_item", "id=$promotionItemId"),
+                    "disc2" => self::select("disc2", "cso1_promotion_item", "id=$promotionItemId"),
+                    "disc3" => self::select("disc3", "cso1_promotion_item", "id=$promotionItemId"),
                 ];
 
-                $price = model("Promo")->select("price$i", "cso1_item", "id=$itemId");
+                $price = self::select("price$i", "cso1_item", "id=$itemId");
 
 
                 $disc1 = $discx['disc1'] / 100;
@@ -118,6 +119,74 @@ class Promo extends Model
         return $data;
     }
 
+    // ver 2
+    function promotion_item($itemId, $qty = 0)
+    {
+        $today = date('D', time());
+        $q2 = "SELECT * FROM cso1_promotion_item 
+        WHERE 
+            itemId= '$itemId' AND 
+            qtyFrom <= $qty AND qtyTo >= $qty
+        "; 
+
+
+        $q = "SELECT i.* , p.startDate, p.endDate, p.$today, unix_timestamp(now()) AS 'time'
+        FROM cso1_promotion_item  AS i
+        LEFT JOIN cso1_promotion AS p ON p.id = i.promotionId
+        WHERE 
+            i.itemId= '$itemId' AND 
+            i.qtyFrom <=  $qty AND i.qtyTo >= $qty AND 
+            p.startDate <= unix_timestamp(NOW()) AND p.endDate >= unix_timestamp(NOW()) AND 
+            p.$today = 1 
+        ";
+        $promotionItemId  = 0;
+        $promotionId = 0;
+        $isSpecialPrice = 0;
+        $newPrice = model("Core")->select("price1", "cso1_item", "id = '$itemId' ");
+        if (count($this->db->query($q)->getResultArray()) > 0) {  
+            $promo = $this->db->query($q)->getResultArray()[0];  
+            $promotionItemId = $promo['id'];
+            $promotionId = $promo['promotionId'];
+            $isSpecialPrice = (int) self::select("specialPrice", "cso1_promotion_item", "id=$promotionItemId") > 0 ? 1 : 0;
+            if ($isSpecialPrice == 1) {
+                $newPrice = (int) self::select("specialPrice", "cso1_promotion_item", "id=$promotionItemId");
+            } else {
+                $discountPrice = self::select("discountPrice", "cso1_promotion_item", "id=$promotionItemId");
+
+                $discx = [
+                    "disc1" => self::select("disc1", "cso1_promotion_item", "id=$promotionItemId"),
+                    "disc2" => self::select("disc2", "cso1_promotion_item", "id=$promotionItemId"),
+                    "disc3" => self::select("disc3", "cso1_promotion_item", "id=$promotionItemId"),
+                ];
+
+                $price = self::select("price1", "cso1_item", "id=$itemId");
+
+
+                $disc1 = $discx['disc1'] / 100;
+                $disc2 = $discx['disc2'] / 100;
+                $disc3 = $discx['disc3'] / 100;
+
+                $discLevel1 = $price * $disc1;
+                $discLevel2 = ($price - $discLevel1) * $disc2;
+                $discLevel3 = ($price - $discLevel1 - $discLevel2) * $disc3;
+
+                $discLevel = $discLevel1 + $discLevel2 + $discLevel3;
+ 
+                $newPrice = $price - ($discountPrice + $discLevel);
+
+            }
+        }
+
+        $resh = array(
+            "price" => $newPrice,
+            "isSpecialPrice" => $isSpecialPrice,
+            "promotionItemId" => $promotionItemId,
+            "promotionId" => $promotionId,
+            
+        );
+        return $resh;
+
+    }
 
 
     function orderByID(&$array)
@@ -138,42 +207,42 @@ class Promo extends Model
 
     function promo_fixed($total = 0, $step = "")
     {
-        
 
-            $data = array();
-            $id = 1;
+
+        $data = array();
+        $id = 1;
+        $data[] = [
+            "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
+            "detail" => self::freeParking($total),
+        ];
+
+        $id = 10;
+        $data[] = [
+            "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
+            "detail" => self::luckyDip($total),
+        ];
+
+        $id = 20;
+        $data[] = [
+            "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
+            "detail" => self::voucher($total),
+        ];
+
+        $id = 21;
+        $data[] = [
+            "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
+            "detail" => self::voucherDiscount($total),
+        ];
+
+        for ($i = 100; $i <= 103; $i++) {
+            $id = $i;
             $data[] = [
                 "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
-                "detail" => self::freeParking($total),
+                "detail" => self::promoFixed($total, $id),
             ];
+        }
 
-            $id = 10;
-            $data[] = [
-                "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
-                "detail" => self::luckyDip($total),
-            ];
 
-            $id = 20;
-            $data[] = [
-                "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
-                "detail" => self::voucher($total),
-            ];
-
-            $id = 21;
-            $data[] = [
-                "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
-                "detail" => self::voucherDiscount($total),
-            ];
-
-            for ($i = 100; $i <= 103; $i++) {
-                $id = $i;
-                $data[] = [
-                    "name" => self::select("name", "cso1_promo_fixed", " id = $id"),
-                    "detail" => self::promoFixed($total, $id),
-                ];
-            }
-
-        
         return $data;
     }
 
@@ -389,36 +458,37 @@ class Promo extends Model
     }
 
 
-    function calculationMemberDiscount($kioskUuid = "", $memberId = ''){
+    function calculationMemberDiscount($kioskUuid = "", $memberId = '')
+    {
         $resp = false;
-        if($kioskUuid != "" && $memberId != "" ){
-            $discount  = (float)self::select("discount","cso2_member","id = '$memberId' ");
+        if ($kioskUuid != "" && $memberId != "") {
+            $discount = (float) self::select("discount", "cso2_member", "id = '$memberId' ");
             $q = "SELECT id, originPrice, price, memberDiscountPercent 
             from cso1_kiosk_cart 
             where kioskUuid = '$kioskUuid' and presence = 1  and price > 1
             AND discount = 0 and isPriceEdit = 0 and isSpecialPrice = 0  ";
-     
+
             $items = $this->db->query($q)->getResultArray();
 
-            foreach($items as $rec){ 
+            foreach ($items as $rec) {
 
-                    $newPrice = $rec['originPrice'] - ($rec['originPrice']* ($discount/100));
- 
-                    $this->db->table("cso1_kiosk_cart")->update([
-                        "price" => $newPrice,
-                        "memberDiscountPercent" =>  $discount,
-                        "memberDiscountAmount" =>  ($rec['originPrice']* ($discount/100)),
-                        
-                    ]," id = '".$rec['id']."'"); 
+                $newPrice = $rec['originPrice'] - ($rec['originPrice'] * ($discount / 100));
+
+                $this->db->table("cso1_kiosk_cart")->update([
+                    "price" => $newPrice,
+                    "memberDiscountPercent" => $discount,
+                    "memberDiscountAmount" => ($rec['originPrice'] * ($discount / 100)),
+
+                ], " id = '" . $rec['id'] . "'");
             }
 
 
-            
+
             $items = $this->db->query($q)->getResultArray();
-            $resp =  $items;
-        } 
+            $resp = $items;
+        }
         return $resp;
-        
-        
+
+
     }
 }

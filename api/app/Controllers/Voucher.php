@@ -28,8 +28,7 @@ class Voucher extends BaseController
 
         $data = array(
             "error" => false,
-            "items" => $items,
-
+            "items" => $items, 
         );
 
         return $this->response->setJSON($data);
