@@ -478,7 +478,7 @@ class Promo extends Model
     {
         $resp = false;
         if ($kioskUuid != "" && $memberId != "") {
-            $discount = (float) self::select("discount", "cso2_member", "id = '$memberId' ");
+            $discount = (float) self::select("discount", "cso1_account", "id = 99 ");
             $q = "SELECT id, originPrice, price, memberDiscountPercent 
             from cso1_kiosk_cart 
             where kioskUuid = '$kioskUuid' and presence = 1  and price > 1
