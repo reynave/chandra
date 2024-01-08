@@ -57,10 +57,11 @@ class Settlement extends BaseController
             $q2 = "SELECT COUNT(id) AS 'total', 
             SUM(total)  AS 'amount', 
             SUM(finalPrice)  AS 'finalPrice',
-            SUM(discount)  AS 'discount'
+            SUM(discount)  AS 'discount',
+            count(discount)  AS 'totalDiscount'
             
             FROM cso1_transaction WHERE settlementId = '" . $post['id'] . "'  ";
-            $transaction = $this->db->query($q2)->getResultArray();
+            $transaction = $this->db->query($q2)->getResultArray()[0];
 
         
             $q3= "SELECT t1.* , n.name
