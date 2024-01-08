@@ -259,7 +259,7 @@ class Cart extends BaseController
 
                         // check item pertama activeCart
                         
-                        if( count($post['activeCart']) > 0  ) {
+                        if( $post['activeCart'] != false  ) {
                             $oldId = model("Core")->select("id", "cso1_promotion_discount", "itemId = '" . $post['activeCart']['itemId'] . "' ");
                             if( $oldId ){
 
@@ -743,17 +743,11 @@ class Cart extends BaseController
             "post" => $post,
         );
         if ($post) {
-            $this->db->table("cso1_kiosk_uuid")->update([
-                "presence" => 0,
-                "update_date" => date("Y-m-d H:i:s"),
-            ], "  kioskUuid =  '" . $post['kioskUuid'] . "' ");
+            $this->db->table("cso1_kiosk_uuid")->delete("  kioskUuid =  '" . $post['kioskUuid'] . "' ");
 
-            $this->db->table("cso1_kiosk_cart")->update([
-                "void" => 0,
-                "presence" => 0,
-                "updateDate" => time(),
-                "update_date" => date("Y-m-d H:i:s"),
-            ], "  kioskUuid =  '" . $post['kioskUuid'] . "' ");
+            $this->db->table("cso1_kiosk_cart")->delete("  kioskUuid =  '" . $post['kioskUuid'] . "' ");
+            $this->db->table("cso1_kiosk_cart_free_item")->delete("  kioskUuid =  '" . $post['kioskUuid'] . "' ");
+            $this->db->table("cso1_kiosk_paid_pos")->delete("  kioskUuid =  '" . $post['kioskUuid'] . "' ");
 
             $data = array(
                 "error" => false,

@@ -18,9 +18,18 @@ class Payment extends BaseController
         ORDER BY label ASC";
         $items = $this->db->query($q1)->getResultArray();
 
+
+        $q2 = "SELECT * 
+        FROM cso1_payment_name 
+        WHERE status = 1 
+        ORDER BY id ASC";
+        $paymentName = $this->db->query($q2)->getResultArray();
+
+
         $data = array(
             "error" => false,
             "items" => $items,
+            "paymentName" => $paymentName,
         );
 
         return $this->response->setJSON($data);
@@ -35,6 +44,12 @@ class Payment extends BaseController
         LEFT JOIN cso1_payment_type AS p ON p.id = a.paymentTypeId
         WHERE a.kioskUuid = '$kioskUuid' ";
         $kioskPaid = $this->db->query($q1)->getResultArray();
+        $i = 0;
+        foreach( $kioskPaid  as $row ){
+            $kioskPaid[$i]['paymentName'] =  model("Core")->select("name","cso1_payment_name","id = '". $row['paymentNameId']."' ");
+            $i++;
+        }
+
 
         $bill = (int) model("Core")->select("sum(price)", "cso1_kiosk_cart", "kioskUuid = '$kioskUuid' and presence = 1");
         $bill = $bill < 0 ? 1 : $bill;
@@ -73,6 +88,8 @@ class Payment extends BaseController
                 "paid" => $paid,
                 "paymentTypeId" => $post['paymentMethodDetail']['paymentTypeId'],
                 "cardId" => $post['payment']['cardId'],
+                "approvedCode" => $post['approvedCode'],
+                "paymentNameId" => isset($post['paymentNameId']) ? $post['paymentNameId'] : '',
                 "input_date" => date("Y-m-d H:i:s")
             ]);
 
@@ -83,7 +100,7 @@ class Payment extends BaseController
                     "kioskUuid" => $post['kioskUuid'],
                     "terminalId" => $post['terminalId'],
                     "cashierId" => model("Core")->accountId(),
-                    "input_date" => date("Y-m-d H:i:s")
+                    "input_date" => date("Y-m-d H:i:s"), 
                 ]);
             }
             $this->db->table("cso1_kiosk_uuid")->update([
@@ -240,9 +257,13 @@ class Payment extends BaseController
                 $insertDetail = array(
                     "transactionId" => $id,
                     "paymentTypeId" => $row['paymentTypeId'],
+                    "paymentNameId" => $row['paymentNameId'],
+                    "approvedCode" => $row['approvedCode'],
+                    
                     "amount" => $row['paid'],
                     "voucherNumber" => $row['voucherNumber'],
                     "presence" => 1,
+
                     "inputDate" => time(),
                     "updateDate" => time(),
                     "input_date" => date("Y-m-d H:i:s"),
@@ -362,8 +383,7 @@ class Payment extends BaseController
                     "note" => "user login",
                     "reload" => false,
                 );
-            }
-            
+            } 
             else if( model("Core")->select('id', "voucher", "number = '$barcode' and status = 1 ") ){
                 $data = array(
                     "error" => true,

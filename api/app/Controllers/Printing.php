@@ -156,10 +156,11 @@ class Printing extends BaseController
                     "voucher" => (int) model("Core")->select("voucher", "cso1_transaction", "id='$id'"),
                     "final" => (int) model("Core")->select("finalPrice", "cso1_transaction", "id='$id'"),
                 ),
-                "paymentMethod" => model("Core")->sql("SELECT tp.id, tp.amount, tp.paymentTypeId, p.label, tp.input_date, tp.voucherNumber
-                FROM cso1_transaction_payment AS tp 
-                LEFT JOIN cso1_payment_type AS p ON p.id = tp.paymentTypeId
-                WHERE tp.transactionId = '$id' AND tp.presence = 1"),
+                "paymentMethod" => model("Core")->sql("SELECT 
+                    tp.id, tp.amount, tp.paymentTypeId, p.label, tp.input_date, tp.voucherNumber, tp.paymentNameId
+                    FROM cso1_transaction_payment AS tp 
+                    LEFT JOIN cso1_payment_type AS p ON p.id = tp.paymentTypeId
+                    WHERE tp.transactionId = '$id' AND tp.presence = 1"),
 
                 "balance" => model("Core")->sql("SELECT SUM(cashIn) AS 'caseIn', SUM(cashOut)*-1 AS 'caseOut'
                     FROM cso2_balance 
@@ -182,14 +183,20 @@ class Printing extends BaseController
 
 
             $i = 0;
+            
             foreach ($data['paymentMethod'] as $rec) {
                 if ($rec['paymentTypeId'] == 'VOUCHER') {
                     $voucherNumber = $rec['voucherNumber'];
-                    $data['paymentMethod'][$i]['label'] = $rec['label'] . " " . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
+                    $data['paymentMethod'][$i]['label'] = $rec['label'].' ' . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
+                }else{
+                    $data['paymentMethod'][$i]['label'] = $rec['label'].' ' .model("Core")->select("name","cso1_payment_name","id = '". $rec['paymentNameId']."' ");
                 }
                 $i++;
             }
-            $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '" . $data['detail']['memberId'] . "' "));
+            if( isset($data['detail']['memberId']) ){
+                $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '" . $data['detail']['memberId'] . "' "));
+         
+            }
             
             $data['promo_fixed'] = model("Promo")->promo_fixed($data['summary']['total']);
         }

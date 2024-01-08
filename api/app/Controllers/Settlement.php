@@ -22,7 +22,7 @@ class Settlement extends BaseController
         $items = $this->db->query($q1)->getResultArray();
 
         $data = array(
-            "error" => false,
+            "error" => false, 
             "items" => $items,
             "printerName" => model("Core")->printer(),
             "total" => (int) model("Core")->select("count(id)", "cso1_transaction", "presence  = 1 and locked = 1 and settlementId = ''"),
@@ -54,21 +54,26 @@ class Settlement extends BaseController
             $cso2_balance = $this->db->query($q2)->getResultArray();
 
 
-            $q2 = "SELECT *  FROM cso1_transaction  
-            where settlementId = '" . $post['id'] . "' order by input_date ASC";
-            $cso1_transaction = $this->db->query($q2)->getResultArray();
+            $q2 = "SELECT COUNT(id) AS 'total', 
+            SUM(total)  AS 'amount', 
+            SUM(finalPrice)  AS 'finalPrice',
+            SUM(discount)  AS 'discount'
+            
+            FROM cso1_transaction WHERE settlementId = '" . $post['id'] . "'  ";
+            $transaction = $this->db->query($q2)->getResultArray();
 
-            $q2 = "SELECT t.settlementId, d.* FROM cso1_transaction_detail AS d
-            LEFT JOIN cso1_transaction AS t ON t.id = d.transactionId
-            WHERE t.settlementId =  '" . $post['id'] . "'  ORDER BY t.inputDate ASC";
-            $cso1_transaction_detail = $this->db->query($q2)->getResultArray();
-
-            $q2 = "SELECT a.* , t.id
-            FROM cso1_transaction_payment AS a
-            LEFT JOIN cso1_transaction AS t ON t.id = a.transactionId
-            WHERE t.settlementId = '" . $post['id'] . "';
+        
+            $q3= "SELECT t1.* , n.name
+            FROM (
+            SELECT p.paymentTypeId, p.paymentNameId, COUNT(p.paymentNameId) AS 'total', SUM(p.amount) AS 'amount'
+            FROM cso1_transaction as t 
+            LEFT JOIN cso1_transaction_payment AS p ON p.transactionId = t.id
+            WHERE t.settlementId = '" . $post['id'] . "'
+            GROUP BY p.paymentTypeId, p.paymentNameId
+            ) AS t1 
+            LEFT JOIN cso1_payment_name AS n ON n.id = t1.paymentNameId
             ";
-            $cso1_transaction_payment = $this->db->query($q2)->getResultArray();
+            $cso1_payment = $this->db->query($q3)->getResultArray();
 
             $settlementId = $post['id'];
 
@@ -78,10 +83,18 @@ class Settlement extends BaseController
             $data = array(
                 "error" => false,
                 "post" => $post,
-                "cso1_transaction" => $cso1_transaction,
-                "cso2_settlement" => $cso2_settlement,
-                "cso2_balance" => $cso2_balance,
-
+                "transaction" => $transaction,
+                "settlement" => $cso2_settlement[0],
+                "balance" => $cso2_balance,
+                "payment" =>  $cso1_payment,
+                "template" => array(
+                    "companyName" => model("Core")->select("value", "cso1_account", "name='companyName'"),
+                    "companyAddress" => model("Core")->select("value", "cso1_account", "name='companyAddress'"),
+                    "companyPhone" => 'Telp : ' . model("Core")->select("value", "cso1_account", "name='companyPhone'"),
+                    "footer" => model("Core")->select("value", "cso1_account", "id='1007'"),
+                    "brandId" => model("Core")->select("value", "cso1_account", "id='22'"),
+                    "outletId" => model("Core")->select("value", "cso1_account", "id='21'"),
+                ),
             );
         }
         return $this->response->setJSON($data);
