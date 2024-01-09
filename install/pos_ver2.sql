@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `auto_number` (
 ) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.auto_number: ~18 rows (approximately)
+DELETE FROM `auto_number`;
 INSERT INTO `auto_number` (`id`, `name`, `prefix`, `digit`, `runningNumber`, `updateDate`) VALUES
 	(1, 'brand', 'BND', 4, 26, 1657258458),
 	(2, 'terminal', 'T', 4, 19, 1668759062),
@@ -37,12 +38,12 @@ INSERT INTO `auto_number` (`id`, `name`, `prefix`, `digit`, `runningNumber`, `up
 	(10, 'item', 'TM', 9, 3, 1657781787),
 	(11, 'user', 'S', 6, 1, 1657258458),
 	(100, 'promotion', 'PR', 6, 11, 1658813889),
-	(200, 'transaction', '', 4, 89, 1701681316),
+	(200, 'transaction', '', 4, 111, 1704707062),
 	(201, 'kiosk', NULL, 9, 48869, 1701431691),
 	(220, 'reset', 'RST', 6, 248, 1691133733),
 	(300, 'kioskUuid', 'BILL', 9, 11902, 1692178227),
-	(301, 'settlement', 'SET', 6, 32, 1701425134),
-	(302, 'pos', NULL, 4, 167, 1701681333),
+	(301, 'settlement', 'SET', 6, 36, 1704707568),
+	(302, 'pos', NULL, 4, 199, 1704734101),
 	(303, 'refund', 'REF', 6, 49, 1701431691),
 	(304, 'exchange', 'EXC', 6, 34, 1697626014);
 
@@ -56,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `cso1_account` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_account: ~31 rows (approximately)
+-- Dumping data for table pos2.cso1_account: ~32 rows (approximately)
+DELETE FROM `cso1_account`;
 INSERT INTO `cso1_account` (`id`, `name`, `value`, `updateDate`, `updateBy`) VALUES
 	(1, 'companyId', '01', 1654258394, 1),
 	(2, 'keyLisence', 'Update 2022-11-07 10:32:55', 1667813575, 1),
@@ -72,6 +74,7 @@ INSERT INTO `cso1_account` (`id`, `name`, `value`, `updateDate`, `updateBy`) VAL
 	(52, 'Digit Item', '6', 1701337374, 1),
 	(53, 'Digit Weight', '5', 1701337374, 1),
 	(54, 'Digit Float', '3', 1701337374, 1),
+	(99, 'Member Discount', '10', NULL, NULL),
 	(100, 'Round Method', '10', 1701337374, 1),
 	(101, 'Tax Id', 'NPWP', 1701337374, 1),
 	(201, 'Customer Photo', '1', 1701337374, NULL),
@@ -79,7 +82,7 @@ INSERT INTO `cso1_account` (`id`, `name`, `value`, `updateDate`, `updateBy`) VAL
 	(301, 'getItem', NULL, 1701337374, NULL),
 	(302, 'getPromotion', NULL, 1701337374, NULL),
 	(350, 'sendTransaction', NULL, 1701337374, NULL),
-	(400, 'Printer Name', 'wintech', 1701337374, NULL),
+	(400, 'Printer Name', 'wintec', 1701337374, NULL),
 	(1001, 'Welcome Screen', 'Selamat Datang di Chandra Superstore.<br>Semoga anda nyaman dengan pengalaman baru berbelanja di Chandra Superstore.', 1701337374, 1),
 	(1003, 'Customer Statement Display', 'Saya bersedia untuk scan dengan apa yang telah saya beli. ', 1701337374, 1),
 	(1004, 'Thank You Display', 'Thank You for shopping on our store, and we hope you have enjoyable shopping experience. <br><br><br><br><br>Please Come Again', 1701337374, 1),
@@ -105,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `cso1_greeting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_greeting: ~0 rows (approximately)
+DELETE FROM `cso1_greeting`;
 
 -- Dumping structure for table pos2.cso1_item
 CREATE TABLE IF NOT EXISTS `cso1_item` (
@@ -138,6 +142,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item: ~0 rows (approximately)
+DELETE FROM `cso1_item`;
 
 -- Dumping structure for table pos2.cso1_item_barcode
 CREATE TABLE IF NOT EXISTS `cso1_item_barcode` (
@@ -154,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_barcode` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item_barcode: ~0 rows (approximately)
+DELETE FROM `cso1_item_barcode`;
 
 -- Dumping structure for table pos2.cso1_item_category
 CREATE TABLE IF NOT EXISTS `cso1_item_category` (
@@ -170,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item_category: ~46 rows (approximately)
+DELETE FROM `cso1_item_category`;
 INSERT INTO `cso1_item_category` (`id`, `id_parent`, `name`, `status`, `presence`, `inputBy`, `inputDate`, `updateBy`, `updateDate`) VALUES
 	(1, 0, 'Food', 1, 1, 1, 1653024459, 1, 1654232884),
 	(2, 1, 'Fish Market', 1, 1, 1, 1653024459, 1, 1654664752),
@@ -233,6 +240,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_discount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item_discount: ~0 rows (approximately)
+DELETE FROM `cso1_item_discount`;
 
 -- Dumping structure for table pos2.cso1_item_tax
 CREATE TABLE IF NOT EXISTS `cso1_item_tax` (
@@ -248,6 +256,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_tax` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item_tax: ~2 rows (approximately)
+DELETE FROM `cso1_item_tax`;
 INSERT INTO `cso1_item_tax` (`id`, `description`, `status`, `presence`, `inputBy`, `inputDate`, `updateBy`, `updateDate`) VALUES
 	(2, 'Enable', 1, 1, NULL, NULL, NULL, NULL),
 	(3, 'Disable', 1, 1, NULL, NULL, NULL, NULL);
@@ -267,6 +276,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_uom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_item_uom: ~4 rows (approximately)
+DELETE FROM `cso1_item_uom`;
 INSERT INTO `cso1_item_uom` (`id`, `name`, `description`, `status`, `presence`, `inputBy`, `inputDate`, `updateBy`, `updateDate`) VALUES
 	('UOM0001', 'Bag', 'Kilogram ', 1, 1, 1, 1652960737, 1, 1656501138),
 	('UOM0002', 'Pcs', 'Piece', 1, 1, 1, 1653024577, 1, 1654567712),
@@ -280,11 +290,15 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart` (
   `promotionId` varchar(50) DEFAULT NULL,
   `promotionItemId` int(11) DEFAULT NULL,
   `promotionFreeId` int(11) DEFAULT NULL,
+  `promotionDiscountId` varchar(50) DEFAULT NULL,
   `itemId` varchar(50) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `originPrice` double DEFAULT 0,
   `price` double DEFAULT 0,
   `discount` double DEFAULT 0,
+  `memberDiscountPercent` double DEFAULT 0,
+  `memberDiscountAmount` double DEFAULT 0,
+  `validationNota` int(1) DEFAULT 0,
   `isPriceEdit` int(1) DEFAULT 0,
   `isFreeItem` int(1) NOT NULL DEFAULT 0,
   `isSpecialPrice` int(1) NOT NULL DEFAULT 0,
@@ -299,9 +313,10 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart` (
   `input_date` datetime NOT NULL DEFAULT '2023-01-01 00:00:00',
   `update_date` datetime NOT NULL DEFAULT '2023-01-01 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_kiosk_cart: ~0 rows (approximately)
+DELETE FROM `cso1_kiosk_cart`;
 
 -- Dumping structure for table pos2.cso1_kiosk_cart_free_item
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart_free_item` (
@@ -325,12 +340,15 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart_free_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_kiosk_cart_free_item: ~0 rows (approximately)
+DELETE FROM `cso1_kiosk_cart_free_item`;
 
 -- Dumping structure for table pos2.cso1_kiosk_paid_pos
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_paid_pos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) NOT NULL,
   `paymentTypeId` varchar(50) DEFAULT NULL,
+  `paymentNameId` varchar(50) DEFAULT NULL,
+  `approvedCode` varchar(50) DEFAULT NULL,
   `paid` int(11) DEFAULT 0,
   `deviceId` varchar(50) DEFAULT NULL,
   `cardId` varchar(50) DEFAULT NULL,
@@ -341,9 +359,10 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_paid_pos` (
   `input_date` datetime DEFAULT '2023-01-01 00:00:00',
   `update_date` datetime DEFAULT '2023-01-01 00:00:00',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_kiosk_paid_pos: ~0 rows (approximately)
+DELETE FROM `cso1_kiosk_paid_pos`;
 
 -- Dumping structure for table pos2.cso1_kiosk_uuid
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_uuid` (
@@ -365,6 +384,7 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_uuid` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_kiosk_uuid: ~0 rows (approximately)
+DELETE FROM `cso1_kiosk_uuid`;
 
 -- Dumping structure for table pos2.cso1_payment_bca_ecr
 CREATE TABLE IF NOT EXISTS `cso1_payment_bca_ecr` (
@@ -390,6 +410,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_bca_ecr` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_payment_bca_ecr: ~0 rows (approximately)
+DELETE FROM `cso1_payment_bca_ecr`;
 
 -- Dumping structure for table pos2.cso1_payment_bca_qris
 CREATE TABLE IF NOT EXISTS `cso1_payment_bca_qris` (
@@ -408,6 +429,33 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_bca_qris` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_payment_bca_qris: ~0 rows (approximately)
+DELETE FROM `cso1_payment_bca_qris`;
+
+-- Dumping structure for table pos2.cso1_payment_name
+CREATE TABLE IF NOT EXISTS `cso1_payment_name` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `status` int(2) NOT NULL DEFAULT 1,
+  `img` varchar(250) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table pos2.cso1_payment_name: ~13 rows (approximately)
+DELETE FROM `cso1_payment_name`;
+INSERT INTO `cso1_payment_name` (`id`, `name`, `status`, `img`) VALUES
+	(10, 'BCA DEBIT', 1, ''),
+	(11, 'BCA VISA', 1, ''),
+	(12, 'BCA MASTERCARD', 1, ''),
+	(20, 'MANDIRI DEBIT', 1, ''),
+	(21, 'MANDIRI VISA', 1, ''),
+	(22, 'MANDIRI MASTERCARD', 1, ''),
+	(30, 'BRI DEBIT', 1, ''),
+	(31, 'BRI VISA', 1, ''),
+	(32, 'BRI MASTERCARD', 1, ''),
+	(40, 'BNI DEBIT', 1, ''),
+	(41, 'BNI VISA', 1, ''),
+	(42, 'BNI MASTERCARD', 1, ''),
+	(101, 'DIGITAL MONEY', 1, '');
 
 -- Dumping structure for table pos2.cso1_payment_qris_telkom
 CREATE TABLE IF NOT EXISTS `cso1_payment_qris_telkom` (
@@ -431,6 +479,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_qris_telkom` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_payment_qris_telkom: ~0 rows (approximately)
+DELETE FROM `cso1_payment_qris_telkom`;
 
 -- Dumping structure for table pos2.cso1_payment_type
 CREATE TABLE IF NOT EXISTS `cso1_payment_type` (
@@ -456,12 +505,15 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_payment_type: ~5 rows (approximately)
+DELETE FROM `cso1_payment_type`;
 INSERT INTO `cso1_payment_type` (`id`, `label`, `name`, `apikey`, `mId`, `nmId`, `merchant`, `timeout`, `image`, `apiUrl`, `apiUrlStatus`, `isLock`, `status`, `presence`, `inputBy`, `inputDate`, `updateBy`, `updateDate`) VALUES
-	('BCA01', 'DEBIT BCA / CREDIT CARD', 'BCA Debit', NULL, NULL, NULL, NULL, 0, 'http://192.168.202.72/imgs/debit-card.jpg', NULL, NULL, 1, 1, 1, NULL, NULL, 1, 1683006321),
-	('BCA31', 'QRIS PRINT', 'BCA QRIS', NULL, NULL, NULL, NULL, 0, 'http://192.168.202.72/imgs/QRIS-BCA.jpg', NULL, NULL, 1, 0, 1, NULL, NULL, 1, 1681275934),
+	('BCA01', 'BCA CARD ERC', 'BCA Debit', NULL, NULL, NULL, NULL, 0, 'http://192.168.202.72/imgs/debit-card.jpg', NULL, NULL, 1, 1, 1, NULL, NULL, 1, 1683006321),
+	('BCA31', 'BCA QRIS', 'BCA QRIS', NULL, NULL, NULL, NULL, 0, 'http://192.168.202.72/imgs/QRIS-BCA.jpg', NULL, NULL, 1, 1, 1, NULL, NULL, 1, 1681275934),
 	('CASH', 'CASH', 'CASH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL),
+	('DEBITCC', 'DEBIT CARD', 'DEBIT, VISA, MASTERCARD', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL),
+	('DISC.BILL', 'DISCOUNT BILL', 'DISCOUNT BILL', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL),
 	('QRT001', 'QRIS TELKOM', 'CHANDRA SUPERSTORE', '139139211206273', '195268799679', 'ID2022218237529', 'MITRALINK SOLUSI', 30, 'http://192.168.202.72/imgs/cashless.png', 'https://qris.id/restapi/qris/show_qris.php', 'https://qris.id/restapi/qris/checkpaid_qris.php', 1, 1, 1, 1, 1657780329, 1, 1681277052),
-	('VOUCHER', 'VOUCHER', 'VOUCHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL);
+	('VOUCHER', 'VOUCHER', 'VOUCHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL);
 
 -- Dumping structure for table pos2.cso1_promotion
 CREATE TABLE IF NOT EXISTS `cso1_promotion` (
@@ -491,6 +543,26 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_promotion: ~0 rows (approximately)
+DELETE FROM `cso1_promotion`;
+
+-- Dumping structure for table pos2.cso1_promotion_discount
+CREATE TABLE IF NOT EXISTS `cso1_promotion_discount` (
+  `id` varchar(50) NOT NULL DEFAULT '',
+  `promotionId` varchar(50) DEFAULT NULL,
+  `itemId` varchar(50) DEFAULT NULL,
+  `disc1` double DEFAULT NULL,
+  `disc2` double DEFAULT NULL,
+  `status` int(1) NOT NULL DEFAULT 1,
+  `presence` int(1) NOT NULL DEFAULT 1,
+  `inputDate` int(11) DEFAULT NULL,
+  `inputBy` int(11) DEFAULT NULL,
+  `updateDate` int(11) DEFAULT NULL,
+  `updateBy` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table pos2.cso1_promotion_discount: ~0 rows (approximately)
+DELETE FROM `cso1_promotion_discount`;
 
 -- Dumping structure for table pos2.cso1_promotion_free
 CREATE TABLE IF NOT EXISTS `cso1_promotion_free` (
@@ -513,6 +585,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_free` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_promotion_free: ~0 rows (approximately)
+DELETE FROM `cso1_promotion_free`;
 
 -- Dumping structure for table pos2.cso1_promotion_item
 CREATE TABLE IF NOT EXISTS `cso1_promotion_item` (
@@ -536,6 +609,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_promotion_item: ~0 rows (approximately)
+DELETE FROM `cso1_promotion_item`;
 
 -- Dumping structure for table pos2.cso1_promo_fixed
 CREATE TABLE IF NOT EXISTS `cso1_promo_fixed` (
@@ -554,15 +628,16 @@ CREATE TABLE IF NOT EXISTS `cso1_promo_fixed` (
 ) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_promo_fixed: ~8 rows (approximately)
+DELETE FROM `cso1_promo_fixed`;
 INSERT INTO `cso1_promo_fixed` (`id`, `name`, `icon`, `description`, `shortDesc`, `targetAmount`, `isMultiple`, `voucherAmount`, `ifAmountNearTarget`, `status`, `expDate`) VALUES
 	(1, 'Free Packing', '<i class="bi bi-check"></i>', 'Belanja di atas Rp 100.000, Anda dapat parkir gratis', 'Gratis Parkir', 100000, 0, NULL, 50.00, 1, '2025-01-01'),
-	(10, 'Lucky dip', '<i class="bi bi-check"></i>', 'Anda berhak mendapatkan  nomor lucky dip', 'Lucky dip', 100000, 1, NULL, 70.00, 1, '2025-09-25'),
+	(10, 'Lucky dip', '<i class="bi bi-check"></i>', 'Anda berhak mendapatkan  nomor lucky dip', 'Lucky dip', 100000, 1, NULL, 70.00, 0, '2025-09-25'),
 	(20, 'voucher', '<i class="bi bi-check"></i>', 'Anda mendapakan Voucher kelipatan Rp 100.000, sebesar', 'Get Voucher', 100000, 1, 100000.00, 70.00, 1, '2023-11-01'),
 	(21, 'voucher Discount', '<i class="bi bi-check"></i>', 'Anda mendapakan Discount', 'Get Voucher Discount', 100000, 0, 0.05, 70.00, 1, '2023-11-01'),
 	(100, 'extra point', '<i class="bi bi-check"></i>', 'Dapat extra point yang bisa di redeem di customer service untuk masuk ke membership', 'Extra Point', 100000, 0, NULL, 70.00, 1, '2024-01-01'),
 	(101, 'Free Gift', '<i class="bi bi-check"></i>', 'Promo gratis barang tertentu untuk pembelian sejumlah barang', 'Free Gift', 100000, 0, NULL, 70.00, 1, '2024-01-01'),
-	(102, 'Get Voucher', '<i class="bi bi-check"></i>', 'Setting nilai maximum voucher', 'Get Voucher 2', 100000, 0, NULL, 70.00, 1, '2024-01-01'),
-	(103, 'Cashback Brands', '<i class="bi bi-check"></i>', 'Belanja dengan nilai tertentu dapat discount untuk brand tertentu untuk pembelanjaan berikutnya', 'Cashback Brands', 100000, 0, NULL, 70.00, 1, '2024-01-01');
+	(102, 'Get Voucher', '<i class="bi bi-check"></i>', 'Setting nilai maximum voucher', 'Get Voucher', 100000, 0, 1.00, 80.00, 1, '2024-01-01'),
+	(103, 'Cashback Brands', '<i class="bi bi-check"></i>', 'Belanja dengan nilai tertentu dapat discount untuk brand tertentu untuk pembelanjaan berikutnya', 'Cashback Brands', 100000, 0, 4.00, 42.00, 1, '2024-01-01');
 
 -- Dumping structure for table pos2.cso1_reset
 CREATE TABLE IF NOT EXISTS `cso1_reset` (
@@ -587,6 +662,7 @@ CREATE TABLE IF NOT EXISTS `cso1_reset` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_reset: ~0 rows (approximately)
+DELETE FROM `cso1_reset`;
 
 -- Dumping structure for table pos2.cso1_reset_payment
 CREATE TABLE IF NOT EXISTS `cso1_reset_payment` (
@@ -601,6 +677,7 @@ CREATE TABLE IF NOT EXISTS `cso1_reset_payment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_reset_payment: ~0 rows (approximately)
+DELETE FROM `cso1_reset_payment`;
 
 -- Dumping structure for table pos2.cso1_sync
 CREATE TABLE IF NOT EXISTS `cso1_sync` (
@@ -612,9 +689,10 @@ CREATE TABLE IF NOT EXISTS `cso1_sync` (
   `lastSycn` datetime(3) DEFAULT NULL,
   `inputDate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_sync: ~0 rows (approximately)
+DELETE FROM `cso1_sync`;
 
 -- Dumping structure for table pos2.cso1_sync_log
 CREATE TABLE IF NOT EXISTS `cso1_sync_log` (
@@ -631,6 +709,7 @@ CREATE TABLE IF NOT EXISTS `cso1_sync_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_sync_log: ~0 rows (approximately)
+DELETE FROM `cso1_sync_log`;
 
 -- Dumping structure for table pos2.cso1_taxcode
 CREATE TABLE IF NOT EXISTS `cso1_taxcode` (
@@ -648,6 +727,7 @@ CREATE TABLE IF NOT EXISTS `cso1_taxcode` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_taxcode: ~3 rows (approximately)
+DELETE FROM `cso1_taxcode`;
 INSERT INTO `cso1_taxcode` (`id`, `name`, `taxType`, `percentage`, `status`, `presence`, `inputDate`, `inputBy`, `updateDate`, `updateBy`) VALUES
 	('0', 'Non PPN', 0, 0, 1, 1, 1654663251, 1, 1659435264, 1),
 	('1', 'PPN 11% Inc', 1, 11, 1, 1, 1654490568, 1, 1661746470, 1),
@@ -669,6 +749,7 @@ CREATE TABLE IF NOT EXISTS `cso1_tebus_murah` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_tebus_murah: ~0 rows (approximately)
+DELETE FROM `cso1_tebus_murah`;
 
 -- Dumping structure for table pos2.cso1_tebus_murah_items
 CREATE TABLE IF NOT EXISTS `cso1_tebus_murah_items` (
@@ -682,6 +763,7 @@ CREATE TABLE IF NOT EXISTS `cso1_tebus_murah_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_tebus_murah_items: ~0 rows (approximately)
+DELETE FROM `cso1_tebus_murah_items`;
 
 -- Dumping structure for table pos2.cso1_transaction
 CREATE TABLE IF NOT EXISTS `cso1_transaction` (
@@ -724,6 +806,7 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_transaction: ~0 rows (approximately)
+DELETE FROM `cso1_transaction`;
 
 -- Dumping structure for table pos2.cso1_transaction_detail
 CREATE TABLE IF NOT EXISTS `cso1_transaction_detail` (
@@ -737,6 +820,9 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_detail` (
   `originPrice` double DEFAULT 0,
   `price` double DEFAULT 0,
   `discount` double DEFAULT 0,
+  `memberDiscountAmount` double DEFAULT 0,
+  `memberDiscountPercent` double DEFAULT 0,
+  `validationNota` int(1) DEFAULT 0,
   `isPriceEdit` int(11) DEFAULT 0,
   `isFreeItem` int(11) NOT NULL DEFAULT 0,
   `isSpecialPrice` int(11) NOT NULL DEFAULT 0,
@@ -750,27 +836,31 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_detail` (
   `updateDate` int(11) DEFAULT NULL,
   `updateBy` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_transaction_detail: ~0 rows (approximately)
+DELETE FROM `cso1_transaction_detail`;
 
 -- Dumping structure for table pos2.cso1_transaction_payment
 CREATE TABLE IF NOT EXISTS `cso1_transaction_payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `transactionId` varchar(50) NOT NULL DEFAULT '',
   `paymentTypeId` varchar(50) NOT NULL DEFAULT '',
+  `paymentNameId` varchar(50) NOT NULL DEFAULT '',
   `amount` double DEFAULT NULL,
   `rounding` double DEFAULT NULL,
-  `voucherNumber` varchar(50) DEFAULT NULL,
+  `voucherNumber` varchar(50) DEFAULT '',
+  `approvedCode` varchar(50) DEFAULT '',
   `presence` int(11) NOT NULL DEFAULT 0,
   `inputDate` int(11) DEFAULT NULL,
   `updateDate` int(11) DEFAULT NULL,
   `input_date` datetime DEFAULT '2023-01-01 00:00:00',
   `update_date` datetime DEFAULT '2023-01-01 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_transaction_payment: ~0 rows (approximately)
+DELETE FROM `cso1_transaction_payment`;
 
 -- Dumping structure for table pos2.cso1_transaction_printlog
 CREATE TABLE IF NOT EXISTS `cso1_transaction_printlog` (
@@ -780,35 +870,35 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_printlog` (
   `input_date` datetime DEFAULT '2023-01-01 00:00:00',
   `inputBy` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_transaction_printlog: ~0 rows (approximately)
+DELETE FROM `cso1_transaction_printlog`;
 
 -- Dumping structure for table pos2.cso1_user
 CREATE TABLE IF NOT EXISTS `cso1_user` (
   `id` varchar(50) NOT NULL,
-  `storeOutlesId` varchar(50) DEFAULT NULL,
   `name` varchar(250) DEFAULT NULL,
   `userAccessId` int(11) DEFAULT NULL,
-  `email` varchar(250) DEFAULT NULL,
+  `storeOutlesId` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `presence` int(11) NOT NULL DEFAULT 1,
   `saveFunc` varchar(250) DEFAULT NULL,
   `saveShortCut` varchar(250) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `presence` int(11) NOT NULL DEFAULT 1,
-  `status` int(11) NOT NULL DEFAULT 1,
   `inputBy` int(11) DEFAULT NULL,
   `inputDate` int(11) DEFAULT NULL,
   `updateBy` int(11) DEFAULT NULL,
   `updateDate` int(11) DEFAULT NULL,
   `update_date` datetime DEFAULT '2023-01-01 00:00:00',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UQ__cso1_use__72E12F1BABD533C3` (`email`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_user: ~2 rows (approximately)
-INSERT INTO `cso1_user` (`id`, `storeOutlesId`, `name`, `userAccessId`, `email`, `saveFunc`, `saveShortCut`, `password`, `presence`, `status`, `inputBy`, `inputDate`, `updateBy`, `updateDate`, `update_date`) VALUES
-	('123123', NULL, 'Cashier', 10, NULL, '[1,2,3,4,5,6,7,12,0,0,0,0]', NULL, NULL, 1, 1, NULL, NULL, NULL, 1698052381, '2023-10-23 09:13:01'),
-	('123456789', NULL, 'Supervisor', 1, NULL, NULL, NULL, '4297f44b13955235245b2497399d7a93', 1, 1, NULL, NULL, NULL, NULL, '2023-01-01 00:00:00');
+DELETE FROM `cso1_user`;
+INSERT INTO `cso1_user` (`id`, `name`, `userAccessId`, `storeOutlesId`, `password`, `status`, `presence`, `saveFunc`, `saveShortCut`, `inputBy`, `inputDate`, `updateBy`, `updateDate`, `update_date`) VALUES
+	('123123', 'Cashier', 10, NULL, NULL, 1, 1, '[1,2,3,4,5,6,7,12,0,0,0,0]', NULL, NULL, NULL, NULL, 1698052381, '2023-10-23 09:13:01'),
+	('123456789', 'Supervisor', 1, NULL, '4297f44b13955235245b2497399d7a93', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2023-01-01 00:00:00');
 
 -- Dumping structure for table pos2.cso1_user_access
 CREATE TABLE IF NOT EXISTS `cso1_user_access` (
@@ -818,11 +908,24 @@ CREATE TABLE IF NOT EXISTS `cso1_user_access` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso1_user_access: ~4 rows (approximately)
+DELETE FROM `cso1_user_access`;
 INSERT INTO `cso1_user_access` (`id`, `name`) VALUES
 	(1, 'Supervisor'),
 	(2, 'IT'),
 	(3, 'Management'),
 	(10, 'Cashier');
+
+-- Dumping structure for table pos2.cso1_user_auth
+CREATE TABLE IF NOT EXISTS `cso1_user_auth` (
+  `id` varchar(50) NOT NULL DEFAULT '',
+  `userId` varchar(50) NOT NULL DEFAULT '',
+  `terminalId` varchar(50) NOT NULL DEFAULT '',
+  `input_date` datetime NOT NULL DEFAULT '2024-01-01 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table pos2.cso1_user_auth: ~0 rows (approximately)
+DELETE FROM `cso1_user_auth`;
 
 -- Dumping structure for table pos2.cso1_user_func
 CREATE TABLE IF NOT EXISTS `cso1_user_func` (
@@ -832,22 +935,10 @@ CREATE TABLE IF NOT EXISTS `cso1_user_func` (
   `color` varchar(50) NOT NULL DEFAULT '',
   `sorting` int(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 
--- Dumping data for table pos2.cso1_user_func: ~12 rows (approximately)
-INSERT INTO `cso1_user_func` (`id`, `userId`, `number`, `color`, `sorting`) VALUES
-	(1, '123123', 1, '', 1),
-	(2, '123123', 2, '', 2),
-	(3, '123123', 3, '', 3),
-	(4, '123123', 4, '', 4),
-	(5, '123123', 4, '', 5),
-	(6, '123123', 5, '', 6),
-	(7, '123123', 6, '', 7),
-	(8, '123123', 7, '', 8),
-	(9, '123123', 0, '', 9),
-	(10, '123123', 0, '', 10),
-	(11, '123123', 0, '', 11),
-	(12, '123123', 12, '', 12);
+-- Dumping data for table pos2.cso1_user_func: ~0 rows (approximately)
+DELETE FROM `cso1_user_func`;
 
 -- Dumping structure for table pos2.cso2_balance
 CREATE TABLE IF NOT EXISTS `cso2_balance` (
@@ -862,9 +953,10 @@ CREATE TABLE IF NOT EXISTS `cso2_balance` (
   `close` int(1) NOT NULL DEFAULT 0,
   `input_date` datetime NOT NULL DEFAULT '2023-01-01 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso2_balance: ~0 rows (approximately)
+DELETE FROM `cso2_balance`;
 
 -- Dumping structure for table pos2.cso2_exchange
 CREATE TABLE IF NOT EXISTS `cso2_exchange` (
@@ -882,6 +974,19 @@ CREATE TABLE IF NOT EXISTS `cso2_exchange` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso2_exchange: ~0 rows (approximately)
+DELETE FROM `cso2_exchange`;
+
+-- Dumping structure for table pos2.cso2_member
+CREATE TABLE IF NOT EXISTS `cso2_member` (
+  `id` varchar(50) NOT NULL DEFAULT '',
+  `name` varchar(250) NOT NULL DEFAULT 'no name',
+  `status` varchar(50) NOT NULL DEFAULT '1',
+  `expDate` varchar(50) NOT NULL DEFAULT '2024-01-01',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Dumping data for table pos2.cso2_member: ~0 rows (approximately)
+DELETE FROM `cso2_member`;
 
 -- Dumping structure for table pos2.cso2_payment_method
 CREATE TABLE IF NOT EXISTS `cso2_payment_method` (
@@ -891,6 +996,7 @@ CREATE TABLE IF NOT EXISTS `cso2_payment_method` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso2_payment_method: ~5 rows (approximately)
+DELETE FROM `cso2_payment_method`;
 INSERT INTO `cso2_payment_method` (`id`, `paymentTypeId`) VALUES
 	(1, 'BCA01'),
 	(2, 'BCA31'),
@@ -911,6 +1017,7 @@ CREATE TABLE IF NOT EXISTS `cso2_refund` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso2_refund: ~0 rows (approximately)
+DELETE FROM `cso2_refund`;
 
 -- Dumping structure for table pos2.cso2_settlement
 CREATE TABLE IF NOT EXISTS `cso2_settlement` (
@@ -924,6 +1031,7 @@ CREATE TABLE IF NOT EXISTS `cso2_settlement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table pos2.cso2_settlement: ~0 rows (approximately)
+DELETE FROM `cso2_settlement`;
 
 -- Dumping structure for table pos2.voucher
 CREATE TABLE IF NOT EXISTS `voucher` (
@@ -941,6 +1049,7 @@ CREATE TABLE IF NOT EXISTS `voucher` (
 ) ENGINE=InnoDB DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 
 -- Dumping data for table pos2.voucher: ~0 rows (approximately)
+DELETE FROM `voucher`;
 
 -- Dumping structure for table pos2.voucher_master
 CREATE TABLE IF NOT EXISTS `voucher_master` (
@@ -955,6 +1064,7 @@ CREATE TABLE IF NOT EXISTS `voucher_master` (
 ) ENGINE=InnoDB DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 
 -- Dumping data for table pos2.voucher_master: ~0 rows (approximately)
+DELETE FROM `voucher_master`;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
