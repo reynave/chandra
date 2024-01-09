@@ -17,16 +17,16 @@ class Items extends BaseController
         WHERE a.barcode  = '$search'";
         $items = $this->db->query($q2)->getResultArray();
 
-        if (count($items) < 1) { 
-            $q1 = "SELECT i.id, i.description, i.price$i , b.barcode
-        FROM cso1_item AS i 
-        LEFT JOIN cso1_item_barcode AS b ON b.itemId = i.id
-        WHERE 
-        description LIKE '%$search%' OR 
-        shortDesc LIKE '%$search%'    
-        ORDER BY description ASC";
-            $items = $this->db->query($q1)->getResultArray();
-        }
+        // if (count($items) < 1) { 
+        //     $q1 = "SELECT i.id, i.description, i.price$i
+        // FROM cso1_item AS i 
+        // LEFT JOIN cso1_item_barcode AS b ON b.itemId = i.id
+        // WHERE 
+        // description LIKE '%$search%' OR 
+        // shortDesc LIKE '%$search%'    
+        // ORDER BY description ASC";
+        //     $items = $this->db->query($q1)->getResultArray();
+        // }
         $data = array(
             "error" => false,
             "items" => $items, 
