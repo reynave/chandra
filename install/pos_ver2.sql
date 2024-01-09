@@ -15,6 +15,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 -- Dumping structure for table pos2.auto_number
+DROP TABLE IF EXISTS `auto_number`;
 CREATE TABLE IF NOT EXISTS `auto_number` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
@@ -48,6 +49,7 @@ INSERT INTO `auto_number` (`id`, `name`, `prefix`, `digit`, `runningNumber`, `up
 	(304, 'exchange', 'EXC', 6, 34, 1697626014);
 
 -- Dumping structure for table pos2.cso1_account
+DROP TABLE IF EXISTS `cso1_account`;
 CREATE TABLE IF NOT EXISTS `cso1_account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` longtext DEFAULT NULL,
@@ -94,6 +96,7 @@ INSERT INTO `cso1_account` (`id`, `name`, `value`, `updateDate`, `updateBy`) VAL
 	(1102, 'tnc2', 'Saya bersedia jika ada kekurangan tepatan untuk menerima pihak toko melakukan penyesuaian', 1701337374, NULL);
 
 -- Dumping structure for table pos2.cso1_greeting
+DROP TABLE IF EXISTS `cso1_greeting`;
 CREATE TABLE IF NOT EXISTS `cso1_greeting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` varchar(250) DEFAULT NULL,
@@ -111,6 +114,7 @@ CREATE TABLE IF NOT EXISTS `cso1_greeting` (
 DELETE FROM `cso1_greeting`;
 
 -- Dumping structure for table pos2.cso1_item
+DROP TABLE IF EXISTS `cso1_item`;
 CREATE TABLE IF NOT EXISTS `cso1_item` (
   `id` varchar(50) NOT NULL,
   `barcode` varchar(50) DEFAULT NULL,
@@ -145,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item` (
 DELETE FROM `cso1_item`;
 
 -- Dumping structure for table pos2.cso1_item_barcode
+DROP TABLE IF EXISTS `cso1_item_barcode`;
 CREATE TABLE IF NOT EXISTS `cso1_item_barcode` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `itemId` varchar(50) DEFAULT NULL,
@@ -162,6 +167,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_barcode` (
 DELETE FROM `cso1_item_barcode`;
 
 -- Dumping structure for table pos2.cso1_item_category
+DROP TABLE IF EXISTS `cso1_item_category`;
 CREATE TABLE IF NOT EXISTS `cso1_item_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_parent` int(11) NOT NULL DEFAULT 0,
@@ -226,6 +232,7 @@ INSERT INTO `cso1_item_category` (`id`, `id_parent`, `name`, `status`, `presence
 	(46, 14, 'Sagu', 1, 1, 1, 1656497534, 1, 1656497534);
 
 -- Dumping structure for table pos2.cso1_item_discount
+DROP TABLE IF EXISTS `cso1_item_discount`;
 CREATE TABLE IF NOT EXISTS `cso1_item_discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -243,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_discount` (
 DELETE FROM `cso1_item_discount`;
 
 -- Dumping structure for table pos2.cso1_item_tax
+DROP TABLE IF EXISTS `cso1_item_tax`;
 CREATE TABLE IF NOT EXISTS `cso1_item_tax` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
@@ -262,6 +270,7 @@ INSERT INTO `cso1_item_tax` (`id`, `description`, `status`, `presence`, `inputBy
 	(3, 'Disable', 1, 1, NULL, NULL, NULL, NULL);
 
 -- Dumping structure for table pos2.cso1_item_uom
+DROP TABLE IF EXISTS `cso1_item_uom`;
 CREATE TABLE IF NOT EXISTS `cso1_item_uom` (
   `id` varchar(50) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -284,6 +293,7 @@ INSERT INTO `cso1_item_uom` (`id`, `name`, `description`, `status`, `presence`, 
 	('UOM0004', 'Btl', 'Bottle', 1, 1, 1, 1654567814, 1, 1656501301);
 
 -- Dumping structure for table pos2.cso1_kiosk_cart
+DROP TABLE IF EXISTS `cso1_kiosk_cart`;
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) DEFAULT NULL,
@@ -319,6 +329,7 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart` (
 DELETE FROM `cso1_kiosk_cart`;
 
 -- Dumping structure for table pos2.cso1_kiosk_cart_free_item
+DROP TABLE IF EXISTS `cso1_kiosk_cart_free_item`;
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart_free_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) DEFAULT NULL,
@@ -343,6 +354,7 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_cart_free_item` (
 DELETE FROM `cso1_kiosk_cart_free_item`;
 
 -- Dumping structure for table pos2.cso1_kiosk_paid_pos
+DROP TABLE IF EXISTS `cso1_kiosk_paid_pos`;
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_paid_pos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) NOT NULL,
@@ -365,6 +377,7 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_paid_pos` (
 DELETE FROM `cso1_kiosk_paid_pos`;
 
 -- Dumping structure for table pos2.cso1_kiosk_uuid
+DROP TABLE IF EXISTS `cso1_kiosk_uuid`;
 CREATE TABLE IF NOT EXISTS `cso1_kiosk_uuid` (
   `kioskUuid` varchar(50) NOT NULL,
   `exchange` varchar(50) NOT NULL,
@@ -387,6 +400,7 @@ CREATE TABLE IF NOT EXISTS `cso1_kiosk_uuid` (
 DELETE FROM `cso1_kiosk_uuid`;
 
 -- Dumping structure for table pos2.cso1_payment_bca_ecr
+DROP TABLE IF EXISTS `cso1_payment_bca_ecr`;
 CREATE TABLE IF NOT EXISTS `cso1_payment_bca_ecr` (
   `transactionId` varchar(50) NOT NULL,
   `kioskUuid` varchar(50) DEFAULT NULL,
@@ -413,6 +427,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_bca_ecr` (
 DELETE FROM `cso1_payment_bca_ecr`;
 
 -- Dumping structure for table pos2.cso1_payment_bca_qris
+DROP TABLE IF EXISTS `cso1_payment_bca_qris`;
 CREATE TABLE IF NOT EXISTS `cso1_payment_bca_qris` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) NOT NULL,
@@ -432,6 +447,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_bca_qris` (
 DELETE FROM `cso1_payment_bca_qris`;
 
 -- Dumping structure for table pos2.cso1_payment_name
+DROP TABLE IF EXISTS `cso1_payment_name`;
 CREATE TABLE IF NOT EXISTS `cso1_payment_name` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
@@ -458,6 +474,7 @@ INSERT INTO `cso1_payment_name` (`id`, `name`, `status`, `img`) VALUES
 	(101, 'DIGITAL MONEY', 1, '');
 
 -- Dumping structure for table pos2.cso1_payment_qris_telkom
+DROP TABLE IF EXISTS `cso1_payment_qris_telkom`;
 CREATE TABLE IF NOT EXISTS `cso1_payment_qris_telkom` (
   `kioskUuid` varchar(50) NOT NULL,
   `cliTrxNumber` varchar(50) DEFAULT NULL,
@@ -482,6 +499,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_qris_telkom` (
 DELETE FROM `cso1_payment_qris_telkom`;
 
 -- Dumping structure for table pos2.cso1_payment_type
+DROP TABLE IF EXISTS `cso1_payment_type`;
 CREATE TABLE IF NOT EXISTS `cso1_payment_type` (
   `id` varchar(50) NOT NULL,
   `label` varchar(50) DEFAULT NULL,
@@ -504,7 +522,7 @@ CREATE TABLE IF NOT EXISTS `cso1_payment_type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_payment_type: ~5 rows (approximately)
+-- Dumping data for table pos2.cso1_payment_type: ~7 rows (approximately)
 DELETE FROM `cso1_payment_type`;
 INSERT INTO `cso1_payment_type` (`id`, `label`, `name`, `apikey`, `mId`, `nmId`, `merchant`, `timeout`, `image`, `apiUrl`, `apiUrlStatus`, `isLock`, `status`, `presence`, `inputBy`, `inputDate`, `updateBy`, `updateDate`) VALUES
 	('BCA01', 'BCA CARD ERC', 'BCA Debit', NULL, NULL, NULL, NULL, 0, 'http://192.168.202.72/imgs/debit-card.jpg', NULL, NULL, 1, 1, 1, NULL, NULL, 1, 1683006321),
@@ -516,6 +534,7 @@ INSERT INTO `cso1_payment_type` (`id`, `label`, `name`, `apikey`, `mId`, `nmId`,
 	('VOUCHER', 'VOUCHER', 'VOUCHER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL);
 
 -- Dumping structure for table pos2.cso1_promotion
+DROP TABLE IF EXISTS `cso1_promotion`;
 CREATE TABLE IF NOT EXISTS `cso1_promotion` (
   `id` varchar(50) NOT NULL,
   `typeOfPromotion` int(11) NOT NULL DEFAULT 0,
@@ -546,6 +565,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion` (
 DELETE FROM `cso1_promotion`;
 
 -- Dumping structure for table pos2.cso1_promotion_discount
+DROP TABLE IF EXISTS `cso1_promotion_discount`;
 CREATE TABLE IF NOT EXISTS `cso1_promotion_discount` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `promotionId` varchar(50) DEFAULT NULL,
@@ -565,6 +585,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_discount` (
 DELETE FROM `cso1_promotion_discount`;
 
 -- Dumping structure for table pos2.cso1_promotion_free
+DROP TABLE IF EXISTS `cso1_promotion_free`;
 CREATE TABLE IF NOT EXISTS `cso1_promotion_free` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `promotionId` varchar(50) DEFAULT NULL,
@@ -588,6 +609,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_free` (
 DELETE FROM `cso1_promotion_free`;
 
 -- Dumping structure for table pos2.cso1_promotion_item
+DROP TABLE IF EXISTS `cso1_promotion_item`;
 CREATE TABLE IF NOT EXISTS `cso1_promotion_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `promotionId` varchar(50) DEFAULT NULL,
@@ -612,6 +634,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_item` (
 DELETE FROM `cso1_promotion_item`;
 
 -- Dumping structure for table pos2.cso1_promo_fixed
+DROP TABLE IF EXISTS `cso1_promo_fixed`;
 CREATE TABLE IF NOT EXISTS `cso1_promo_fixed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
@@ -640,6 +663,7 @@ INSERT INTO `cso1_promo_fixed` (`id`, `name`, `icon`, `description`, `shortDesc`
 	(103, 'Cashback Brands', '<i class="bi bi-check"></i>', 'Belanja dengan nilai tertentu dapat discount untuk brand tertentu untuk pembelanjaan berikutnya', 'Cashback Brands', 100000, 0, 4.00, 42.00, 1, '2024-01-01');
 
 -- Dumping structure for table pos2.cso1_reset
+DROP TABLE IF EXISTS `cso1_reset`;
 CREATE TABLE IF NOT EXISTS `cso1_reset` (
   `id` varchar(50) NOT NULL,
   `storeOutlesId` varchar(50) DEFAULT NULL,
@@ -665,6 +689,7 @@ CREATE TABLE IF NOT EXISTS `cso1_reset` (
 DELETE FROM `cso1_reset`;
 
 -- Dumping structure for table pos2.cso1_reset_payment
+DROP TABLE IF EXISTS `cso1_reset_payment`;
 CREATE TABLE IF NOT EXISTS `cso1_reset_payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `resetId` char(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
@@ -680,6 +705,7 @@ CREATE TABLE IF NOT EXISTS `cso1_reset_payment` (
 DELETE FROM `cso1_reset_payment`;
 
 -- Dumping structure for table pos2.cso1_sync
+DROP TABLE IF EXISTS `cso1_sync`;
 CREATE TABLE IF NOT EXISTS `cso1_sync` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `path` varchar(250) NOT NULL DEFAULT '0',
@@ -695,6 +721,7 @@ CREATE TABLE IF NOT EXISTS `cso1_sync` (
 DELETE FROM `cso1_sync`;
 
 -- Dumping structure for table pos2.cso1_sync_log
+DROP TABLE IF EXISTS `cso1_sync_log`;
 CREATE TABLE IF NOT EXISTS `cso1_sync_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(50) DEFAULT NULL,
@@ -712,6 +739,7 @@ CREATE TABLE IF NOT EXISTS `cso1_sync_log` (
 DELETE FROM `cso1_sync_log`;
 
 -- Dumping structure for table pos2.cso1_taxcode
+DROP TABLE IF EXISTS `cso1_taxcode`;
 CREATE TABLE IF NOT EXISTS `cso1_taxcode` (
   `id` varchar(50) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
@@ -734,6 +762,7 @@ INSERT INTO `cso1_taxcode` (`id`, `name`, `taxType`, `percentage`, `status`, `pr
 	('2', 'PPN 11% Excl', 0, 11, 1, 1, NULL, NULL, 1659435264, 1);
 
 -- Dumping structure for table pos2.cso1_tebus_murah
+DROP TABLE IF EXISTS `cso1_tebus_murah`;
 CREATE TABLE IF NOT EXISTS `cso1_tebus_murah` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(250) DEFAULT NULL,
@@ -752,6 +781,7 @@ CREATE TABLE IF NOT EXISTS `cso1_tebus_murah` (
 DELETE FROM `cso1_tebus_murah`;
 
 -- Dumping structure for table pos2.cso1_tebus_murah_items
+DROP TABLE IF EXISTS `cso1_tebus_murah_items`;
 CREATE TABLE IF NOT EXISTS `cso1_tebus_murah_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tembusMurahId` int(11) NOT NULL DEFAULT 0,
@@ -766,6 +796,7 @@ CREATE TABLE IF NOT EXISTS `cso1_tebus_murah_items` (
 DELETE FROM `cso1_tebus_murah_items`;
 
 -- Dumping structure for table pos2.cso1_transaction
+DROP TABLE IF EXISTS `cso1_transaction`;
 CREATE TABLE IF NOT EXISTS `cso1_transaction` (
   `id` varchar(50) NOT NULL,
   `transactionDate` int(11) DEFAULT NULL,
@@ -809,6 +840,7 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction` (
 DELETE FROM `cso1_transaction`;
 
 -- Dumping structure for table pos2.cso1_transaction_detail
+DROP TABLE IF EXISTS `cso1_transaction_detail`;
 CREATE TABLE IF NOT EXISTS `cso1_transaction_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `transactionId` varchar(50) DEFAULT NULL,
@@ -842,6 +874,7 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_detail` (
 DELETE FROM `cso1_transaction_detail`;
 
 -- Dumping structure for table pos2.cso1_transaction_payment
+DROP TABLE IF EXISTS `cso1_transaction_payment`;
 CREATE TABLE IF NOT EXISTS `cso1_transaction_payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `transactionId` varchar(50) NOT NULL DEFAULT '',
@@ -863,6 +896,7 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_payment` (
 DELETE FROM `cso1_transaction_payment`;
 
 -- Dumping structure for table pos2.cso1_transaction_printlog
+DROP TABLE IF EXISTS `cso1_transaction_printlog`;
 CREATE TABLE IF NOT EXISTS `cso1_transaction_printlog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `transactionId` varchar(50) DEFAULT NULL,
@@ -876,6 +910,7 @@ CREATE TABLE IF NOT EXISTS `cso1_transaction_printlog` (
 DELETE FROM `cso1_transaction_printlog`;
 
 -- Dumping structure for table pos2.cso1_user
+DROP TABLE IF EXISTS `cso1_user`;
 CREATE TABLE IF NOT EXISTS `cso1_user` (
   `id` varchar(50) NOT NULL,
   `name` varchar(250) DEFAULT NULL,
@@ -901,6 +936,7 @@ INSERT INTO `cso1_user` (`id`, `name`, `userAccessId`, `storeOutlesId`, `passwor
 	('123456789', 'Supervisor', 1, NULL, '4297f44b13955235245b2497399d7a93', 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, '2023-01-01 00:00:00');
 
 -- Dumping structure for table pos2.cso1_user_access
+DROP TABLE IF EXISTS `cso1_user_access`;
 CREATE TABLE IF NOT EXISTS `cso1_user_access` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -916,6 +952,7 @@ INSERT INTO `cso1_user_access` (`id`, `name`) VALUES
 	(10, 'Cashier');
 
 -- Dumping structure for table pos2.cso1_user_auth
+DROP TABLE IF EXISTS `cso1_user_auth`;
 CREATE TABLE IF NOT EXISTS `cso1_user_auth` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `userId` varchar(50) NOT NULL DEFAULT '',
@@ -928,6 +965,7 @@ CREATE TABLE IF NOT EXISTS `cso1_user_auth` (
 DELETE FROM `cso1_user_auth`;
 
 -- Dumping structure for table pos2.cso1_user_func
+DROP TABLE IF EXISTS `cso1_user_func`;
 CREATE TABLE IF NOT EXISTS `cso1_user_func` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(50) NOT NULL DEFAULT '',
@@ -941,6 +979,7 @@ CREATE TABLE IF NOT EXISTS `cso1_user_func` (
 DELETE FROM `cso1_user_func`;
 
 -- Dumping structure for table pos2.cso2_balance
+DROP TABLE IF EXISTS `cso2_balance`;
 CREATE TABLE IF NOT EXISTS `cso2_balance` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cashIn` int(11) NOT NULL DEFAULT 0,
@@ -959,6 +998,7 @@ CREATE TABLE IF NOT EXISTS `cso2_balance` (
 DELETE FROM `cso2_balance`;
 
 -- Dumping structure for table pos2.cso2_exchange
+DROP TABLE IF EXISTS `cso2_exchange`;
 CREATE TABLE IF NOT EXISTS `cso2_exchange` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `kioskUuid` varchar(50) NOT NULL DEFAULT '',
@@ -977,6 +1017,7 @@ CREATE TABLE IF NOT EXISTS `cso2_exchange` (
 DELETE FROM `cso2_exchange`;
 
 -- Dumping structure for table pos2.cso2_member
+DROP TABLE IF EXISTS `cso2_member`;
 CREATE TABLE IF NOT EXISTS `cso2_member` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(250) NOT NULL DEFAULT 'no name',
@@ -989,6 +1030,7 @@ CREATE TABLE IF NOT EXISTS `cso2_member` (
 DELETE FROM `cso2_member`;
 
 -- Dumping structure for table pos2.cso2_payment_method
+DROP TABLE IF EXISTS `cso2_payment_method`;
 CREATE TABLE IF NOT EXISTS `cso2_payment_method` (
   `id` int(6) NOT NULL AUTO_INCREMENT,
   `paymentTypeId` varchar(50) DEFAULT NULL,
@@ -1005,6 +1047,7 @@ INSERT INTO `cso2_payment_method` (`id`, `paymentTypeId`) VALUES
 	(5, 'CASH');
 
 -- Dumping structure for table pos2.cso2_refund
+DROP TABLE IF EXISTS `cso2_refund`;
 CREATE TABLE IF NOT EXISTS `cso2_refund` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `transactionId` varchar(50) NOT NULL DEFAULT '',
@@ -1020,6 +1063,7 @@ CREATE TABLE IF NOT EXISTS `cso2_refund` (
 DELETE FROM `cso2_refund`;
 
 -- Dumping structure for table pos2.cso2_settlement
+DROP TABLE IF EXISTS `cso2_settlement`;
 CREATE TABLE IF NOT EXISTS `cso2_settlement` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `total` int(4) NOT NULL DEFAULT 0,
@@ -1034,6 +1078,7 @@ CREATE TABLE IF NOT EXISTS `cso2_settlement` (
 DELETE FROM `cso2_settlement`;
 
 -- Dumping structure for table pos2.voucher
+DROP TABLE IF EXISTS `voucher`;
 CREATE TABLE IF NOT EXISTS `voucher` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `voucherMasterId` varchar(50) CHARACTER SET armscii8 COLLATE armscii8_general_ci NOT NULL DEFAULT '0',
@@ -1052,6 +1097,7 @@ CREATE TABLE IF NOT EXISTS `voucher` (
 DELETE FROM `voucher`;
 
 -- Dumping structure for table pos2.voucher_master
+DROP TABLE IF EXISTS `voucher_master`;
 CREATE TABLE IF NOT EXISTS `voucher_master` (
   `id` varchar(50) NOT NULL DEFAULT '',
   `name` varchar(50) CHARACTER SET armscii8 COLLATE armscii8_general_ci NOT NULL,
