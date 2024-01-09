@@ -249,9 +249,9 @@ function binaryToHex(binary) {
 
     // Konversi bilangan bulat menjadi nilai heksadesimal
     const hexValue = decimalValue.toString(16).toUpperCase();
-    let binaryValue = hexValue.toString(2);
+   // let binaryValue = hexValue.toString(2);
 
     // Menambahkan padding nol hingga mencapai 8 bit
-    let paddedBinary = '0'.repeat(Math.max(2 - binaryValue.length, 0)) + binaryValue;
-    return paddedBinary;
+    //let paddedBinary = '0'.repeat(Math.max(2 - binaryValue.length, 0)) + binaryValue;
+    return hexValue;
 }
