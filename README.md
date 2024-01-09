@@ -35,6 +35,9 @@ pm2 start app.js
 ####  4. Install via browser
 1.  https://localhost/[your_folder]/install
  
+#### 5. Login POS
+1.  https://localhost/[your_folder]/pos
+ 
 
 
 Credit 
