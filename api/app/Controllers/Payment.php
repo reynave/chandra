@@ -25,10 +25,16 @@ class Payment extends BaseController
         ORDER BY id ASC";
         $paymentName = $this->db->query($q2)->getResultArray();
 
+        $q2 = "SELECT * 
+        FROM cso1_payment_type
+        WHERE status = 1 and edc = 1
+        ORDER BY id ASC";
+        $edc = $this->db->query($q2)->getResultArray();
 
         $data = array(
             "error" => false,
             "items" => $items,
+            "edc" => $edc,
             "paymentName" => $paymentName,
         );
 
