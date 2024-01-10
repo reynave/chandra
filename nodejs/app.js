@@ -29,47 +29,55 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
     socket.on('data', (msg) => {
-         console.log('message: ', msg);
-       
-        if(msg.action =='echoTest'){
-            console.log("echoTest");
-            mandiri.echoTest(io,msg);
+        console.log('message: ', msg);
+        if (msg.msg == 'EDC_MANDIRI') {
+ 
+            if (msg.action == 'echoTest') {
+                console.log("echoTest");
+                mandiri.echoTest(io, msg);
+            }
+            else if (msg.action == 'writeECR') {
+                console.log("writeECR");
+
+                let header = "\x02";
+                let version = "\x01";
+                let TypeTrans = "\x31";
+                let TypeTransSub = "\x30";
+
+                let amount = msg['amount'];
+                let tagClose = "\x03";
+                const send = {
+                    version: version,
+                    TypeTrans: TypeTrans,
+                    TypeTransSub: TypeTransSub,
+                    amount: amount,
+                    tagClose: tagClose
+                }
+                let a = hexa.joinDataBinary(send);
+                let CRC = hexa.xorMultipleBinaries(a);
+                let posEDC = header + version + TypeTrans + TypeTransSub + amount + tagClose + CRC;
+
+                console.log('posEDC', CRC, posEDC, hexa.binaryToHex(CRC), hexa.binaryToHex(CRC).toString('hex'));
+
+                mandiri.writeECR(io, msg, posEDC);
+
+            }
+
+            else {
+                io.emit('emiter', msg);
+            }
+        }else{
+            output = {
+                name: "ID NOT REGISTER ",
+                message: "Please contact your administrator",
+            }
+            io.emit('emiter', output);
         }
-        else if(msg.action =='writeECR'){
-            console.log("writeECR");
-  
-            let header = "\x02";
-            let version = "\x01";
-            let TypeTrans = "\x31";
-            let TypeTransSub = "\x30";
-            
-            let amount =  msg['amount'];
-            let tagClose = "\x03";
-            const send = {
-                version: version,
-                TypeTrans: TypeTrans,
-                TypeTransSub: TypeTransSub,
-                amount: amount,
-                tagClose: tagClose
-            } 
-            let a = hexa.joinDataBinary(send); 
-            let CRC = hexa.xorMultipleBinaries(a); 
-            let posEDC = header + version + TypeTrans + TypeTransSub + amount + tagClose + CRC;
-        
-            console.log('posEDC', CRC, posEDC, hexa.binaryToHex(CRC), hexa.binaryToHex(CRC).toString('hex')); 
-      
-            mandiri.writeECR(io,msg,posEDC);
-         
-        }
-        
-        else{
-            io.emit('emiter', msg);
-        }  
     });
 });
 
 
-http.listen(port, () => {  
+http.listen(port, () => {
     console.log(`Socket.IO server running at http://${ip}:${port}/`);
 });
 
@@ -103,8 +111,8 @@ function ecrMandiri() {
         TypeTransSub: TypeTransSub,
         amount: amount,
         tagClose: tagClose
-    } 
-    let a = hexa.joinDataBinary(send); 
+    }
+    let a = hexa.joinDataBinary(send);
     let CRC = hexa.xorMultipleBinaries(a);
 
     //  let dataTest = "000000000125"; 
@@ -114,9 +122,8 @@ function ecrMandiri() {
 
     console.log('posEDC', CRC, posEDC, hexa.binaryToHex(CRC), hexa.binaryToHex(CRC).toString('hex'));
 
-   // mandiri.writeECR(posEDC);
+    // mandiri.writeECR(posEDC);
     //  edc.clearECR();
     //  edc.sendACK();
 
 }
- 

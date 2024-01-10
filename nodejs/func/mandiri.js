@@ -7,7 +7,7 @@
 
 const { SerialPort } = require('serialport');
 var hexa = require('./hexa');
-
+let timeout = 60;
 
 // const com = 'COM8';
 // const port = new SerialPort({
@@ -131,9 +131,8 @@ function writeECR(io, msg, data) {
                 let paidAmount = strArray[strArray.length - 1];
                 let paidApprovedCode = strArray[strArray.length - 2];
                 let paidrRefCode = strArray[strArray.length - 3];
-
-
-                console.log(i, resp, ' | buffer1:' + buffer1, ' | paidApprovedCode:' + paidApprovedCode, ' | paidAmount:' + paidAmount);
+ 
+              //  console.log(i, resp, ' | buffer1:' + buffer1, ' | paidApprovedCode:' + paidApprovedCode, ' | paidAmount:' + paidAmount);
                 if (resp == '06' && paidApprovedCode === undefined) {
                     output = {
                         name: "resp",
@@ -150,12 +149,7 @@ function writeECR(io, msg, data) {
                     }
                     io.emit('emiter', output);
                     console.log(i, resp);
-
-                    // port.write('\x06', function (err) {
-                    // if (err) throw err;
-                    //   if (err) console.log(err);
-                    //});
-
+ 
                     if (paidApprovedCode.length > 3) {
                         port.write('\x06', function (err) {
                             if (err) throw err;
@@ -165,7 +159,7 @@ function writeECR(io, msg, data) {
                     i = 10000;
                 }
 
-                if (i > 2 * 60) {
+                if (i > 2 * timeout) {
                     clearInterval(refreshIntervalId);
                     port.close();
                 }
