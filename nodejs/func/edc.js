@@ -1,4 +1,4 @@
-const { SerialPort } = require('serialport'); 
+const { SerialPort } = require('serialport');
 const com = 'COM8';
 const port = new SerialPort({
     path: com,
@@ -15,55 +15,68 @@ let dataSend = "";
 let tagClose = "\x03";
 let CRC;
 
-function echoTest() {
+function echoTest(io) {
+    let output  = {}
+
     port.open(function (res) {
+     
         if (res) {
             console.log(res.name, res.message);
+            output = {
+                name : res.name,
+                message : res.message,
+            }
         } else {
             console.log('com8 Open');
+
+            TypeTrans = "\x3B";
+            SubTypeTrans = "\x30";
+            CRC = "\x09";
+            echoTestMandiri = header + version + TypeTrans + SubTypeTrans + dataSend + tagClose + CRC;
+            port.write(echoTestMandiri, function (err) {
+                if (err) throw err;
+            });
+
+            let i = 0;
+            let read = "";
+            refreshIntervalId = setInterval(function () {
+                i++;
+                let resp = port.read()?.toString('hex') || '';
+
+                console.log(i, resp, Buffer.from(resp, 'hex').toString('ascii'));
+                if (resp) {
+                    output = {
+                        name : 'Success',
+                        message :  Buffer.from(resp, 'hex').toString('ascii'),
+                    }
+                    port.write('\x06', function (err) {
+                        if (err) throw err;
+                    });
+                    i = 100;
+                    console.log(i, "POS kirim ACK (06).");
+                }
+
+                if (i > 10) {
+                    clearInterval(refreshIntervalId);
+                    port.close();
+                }
+
+            }, 250);
         }
-        TypeTrans = "\x3B";
-        SubTypeTrans = "\x30";
-        CRC = "\x09";
-        echoTestMandiri = header+version + TypeTrans + SubTypeTrans + dataSend + tagClose + CRC;
-        port.write(echoTestMandiri, function (err) {
-            if (err) throw err;
-        });
 
-        let i = 0;
-        let read = "";
-        refreshIntervalId = setInterval(function () {
-            i++;
-            let resp = port.read()?.toString('hex') || '';
-
-            console.log(i, resp, Buffer.from(resp, 'hex').toString('ascii'));
-            if (resp) {
-                port.write('\x06', function (err) {
-                    if (err) throw err;
-                });
-                i = 100;
-                console.log(i, "POS kirim ACK (06).");
-            }
-
-            if (i > 10) {
-                clearInterval(refreshIntervalId);
-                port.close();
-            }
-
-        }, 250);
-
-    });
-} 
+        io.emit('emiter', output);
+    }); 
+}
 
 function writeECR(data) {
-    
+
     port.open(function (res) {
         if (res) {
             console.log(res.name, res.message);
         } else {
             console.log('com8 Open');
         }
-       
+
         port.write(data, function (err) {
             if (err) throw err;
         });
@@ -76,19 +89,19 @@ function writeECR(data) {
 
             console.log(i, resp, Buffer.from(resp, 'hex').toString('ascii'));
             if (resp == '06') {
-                port.write('\x06', function (err) {
-                    if (err) throw err;
-                });
-                i = 100;
-                console.log(i, "POS kirim ACK (06).");
+                // port.write('\x06', function (err) {
+                //     if (err) throw err;
+                // });
+                // i = 100;
+                console.log(i, "SUCCESS ACK (06)");
             }
 
-            if (i > 10) {
+            if (i > 2 * 60) {
                 clearInterval(refreshIntervalId);
                 port.close();
             }
 
-        }, 250);
+        }, 500);
 
     });
 }
@@ -164,10 +177,27 @@ function clearECR() {
     });
 
 }
- 
-module.exports = { 
+
+function sendACK(data) {
+
+    port.open(function (res) {
+        if (res) {
+            console.log(res.name, res.message);
+        } else {
+            console.log('com8 Open');
+        }
+
+        port.write('\x06', function (err) {
+            if (err) throw err;
+        });
+        console.log(0, "MANUAL SEND ACK (06)");
+
+    });
+}
+module.exports = {
     echoTest,
     writeECR,
     sendDataECR,
-    clearECR
+    clearECR,
+    sendACK
 };

@@ -39,7 +39,8 @@ function xorMultipleBinaries(binaries){
         result += xorResult;
     }
    // console.log("xor : ",result);
-    return binaryToHex(result);
+    
+    return Buffer.from(binaryToHex(result), 'hex') ;
 }
 
 function binaryToHex(binary){
@@ -47,7 +48,9 @@ function binaryToHex(binary){
     const decimalValue = parseInt(binary, 2);
 
     // Konversi bilangan bulat menjadi nilai heksadesimal
-    const hexValue = decimalValue.toString(16).toUpperCase();
+   // const hexValue = decimalValue.toString(16).toUpperCase();
+    const hexValue = decimalValue.toString(16).toUpperCase().padStart(Math.ceil(binary.length / 4), '0');
+
     //let binaryValue = hexValue.toString(2);
 
     // Menambahkan padding nol hingga mencapai 8 bit
@@ -84,10 +87,21 @@ function stringToHexa(string){
     return data;
 }
 
+function removeSpecialCharactersExcept(inputString, exceptionChar) {
+    // Membuat ekspresi reguler dengan karakter yang tidak ingin dihapus
+    const regexPattern = new RegExp(`[^\\w\\s${exceptionChar}]`, 'gi');
+  
+    // Menggunakan ekspresi reguler untuk menyaring karakter khusus
+    const cleanString = inputString.replace(regexPattern, '');
+  
+    return cleanString;
+}
+
 module.exports = { 
     hexToBinary,
     xorMultipleBinaries,
     binaryToHex,
     joinDataBinary, 
-    stringToHexa
+    stringToHexa,
+    removeSpecialCharactersExcept
 };
