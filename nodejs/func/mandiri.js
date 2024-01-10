@@ -1,6 +1,14 @@
-const { SerialPort } = require('serialport');
+/**
+ * 
+ * MANDIRI EDC POS 
+ * ver 2.240110
+ * 
+ */
 
+const { SerialPort } = require('serialport');
 var hexa = require('./hexa');
+
+
 // const com = 'COM8';
 // const port = new SerialPort({
 //     path: com,
@@ -17,16 +25,16 @@ let dataSend = "";
 let tagClose = "\x03";
 let CRC;
 
-function echoTest(io,msg) {
+function echoTest(io, msg) {
     let output = {}
 
-    const com =  msg['com'];
+    const com = msg['com'];
     const port = new SerialPort({
         path: com,
         baudRate: 9600,
         autoOpen: false,
     }, (err) => console.log(err));
- 
+
     port.open(function (res) {
 
         if (res) {
@@ -58,8 +66,8 @@ function echoTest(io,msg) {
                     let string = Buffer.from(resp, 'hex').toString('ascii');
                     let message = hexa.removeSpecialCharactersExcept(string, '|')
                     output = {
-                        name: 'Success',
-                        message: message,
+                        name: 'Send Done',
+                        message: message == "" ? resp : message,
                     }
                     io.emit('emiter', output);
                     port.write('\x06', function (err) {
@@ -77,45 +85,93 @@ function echoTest(io,msg) {
             }, 250);
         }
 
-        
+
     });
 }
 
-function writeECR(data) {
+function writeECR(io, msg, data) {
+    let output = {}
+
+    const com = msg['com'];
+    const port = new SerialPort({
+        path: com,
+        baudRate: 9600,
+        autoOpen: false,
+    }, (err) => console.log(err));
 
     port.open(function (res) {
         if (res) {
             console.log(res.name, res.message);
+            output = {
+                name: res.name,
+                message: res.message,
+            }
+            io.emit('emiter', output);
         } else {
             console.log('com8 Open');
+            output = {
+                name: 'Write',
+                message: 'SALE ' + data,
+            }
+            io.emit('emiter', output);
+
+            port.write(data, function (err) {
+                if (err) throw err;
+            });
+
+            let i = 0;
+            let read = "";
+            refreshIntervalId = setInterval(function () {
+                i++;
+                let resp = port.read()?.toString('hex') || '';
+                let buffer1 = Buffer.from(resp, 'hex').toString('ascii');
+
+                let string = Buffer.from(resp, 'hex').toString('ascii');
+                let strArray = hexa.removeSpecialCharactersExcept(string, '|').split("|")
+                let paidAmount = strArray[strArray.length - 1];
+                let paidApprovedCode = strArray[strArray.length - 2];
+                let paidrRefCode = strArray[strArray.length - 3];
+
+
+                console.log(i, resp, ' | buffer1:' + buffer1, ' | paidApprovedCode:' + paidApprovedCode, ' | paidAmount:' + paidAmount);
+                if (resp == '06' && paidApprovedCode === undefined) {
+                    output = {
+                        name: "resp",
+                        message: "SUCCESS ACK (06)",
+                    }
+                    io.emit('emiter', output);
+
+                    console.log(i, "SUCCESS ACK (06)");
+                }
+                else if (paidApprovedCode !== undefined) {
+                    output = {
+                        name: "resp",
+                        message: hexa.removeSpecialCharactersExcept(string, '|'),
+                    }
+                    io.emit('emiter', output);
+                    console.log(i, resp);
+
+                    // port.write('\x06', function (err) {
+                    // if (err) throw err;
+                    //   if (err) console.log(err);
+                    //});
+
+                    if (paidApprovedCode.length > 3) {
+                        port.write('\x06', function (err) {
+                            if (err) throw err;
+                        });
+                    }
+
+                    i = 10000;
+                }
+
+                if (i > 2 * 60) {
+                    clearInterval(refreshIntervalId);
+                    port.close();
+                }
+
+            }, 500);
         }
-
-        port.write(data, function (err) {
-            if (err) throw err;
-        });
-
-        let i = 0;
-        let read = "";
-        refreshIntervalId = setInterval(function () {
-            i++;
-            let resp = port.read()?.toString('hex') || '';
-
-            console.log(i, resp, Buffer.from(resp, 'hex').toString('ascii'));
-            if (resp == '06') {
-                // port.write('\x06', function (err) {
-                //     if (err) throw err;
-                // });
-                // i = 100;
-                console.log(i, "SUCCESS ACK (06)");
-            }
-
-            if (i > 2 * 60) {
-                clearInterval(refreshIntervalId);
-                port.close();
-            }
-
-        }, 500);
-
     });
 }
 

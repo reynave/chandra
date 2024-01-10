@@ -10,7 +10,7 @@ const ip = process.env.IP;
 
 
 var hexa = require('./func/hexa');
-var edc = require('./func/edc');
+var mandiri = require('./func/mandiri');
 
 // const com = 'COM8';
 // const port = new SerialPort({
@@ -29,16 +29,42 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
     socket.on('data', (msg) => {
-       // console.log('message: ', msg);
+         console.log('message: ', msg);
        
         if(msg.action =='echoTest'){
             console.log("echoTest");
-            edc.echoTest(io);
-        }else{
-            io.emit('emiter', msg);
+            mandiri.echoTest(io,msg);
         }
- 
+        else if(msg.action =='writeECR'){
+            console.log("writeECR");
+  
+            let header = "\x02";
+            let version = "\x01";
+            let TypeTrans = "\x31";
+            let TypeTransSub = "\x30";
+            
+            let amount =  msg['amount'];
+            let tagClose = "\x03";
+            const send = {
+                version: version,
+                TypeTrans: TypeTrans,
+                TypeTransSub: TypeTransSub,
+                amount: amount,
+                tagClose: tagClose
+            } 
+            let a = hexa.joinDataBinary(send); 
+            let CRC = hexa.xorMultipleBinaries(a); 
+            let posEDC = header + version + TypeTrans + TypeTransSub + amount + tagClose + CRC;
+        
+            console.log('posEDC', CRC, posEDC, hexa.binaryToHex(CRC), hexa.binaryToHex(CRC).toString('hex')); 
       
+            mandiri.writeECR(io,msg,posEDC);
+         
+        }
+        
+        else{
+            io.emit('emiter', msg);
+        }  
     });
 });
 
@@ -88,7 +114,7 @@ function ecrMandiri() {
 
     console.log('posEDC', CRC, posEDC, hexa.binaryToHex(CRC), hexa.binaryToHex(CRC).toString('hex'));
 
-    //  edc.writeECR(posEDC);
+   // mandiri.writeECR(posEDC);
     //  edc.clearECR();
     //  edc.sendACK();
 
