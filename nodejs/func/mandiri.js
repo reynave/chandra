@@ -136,11 +136,11 @@ function writeECR(io, msg, data) {
                 if (resp == '06' && paidApprovedCode === undefined) {
                     output = {
                         name: "resp",
-                        message: "SUCCESS ACK (06)",
+                        message: "EDC SEND ACK (06)",
                     }
                     io.emit('emiter', output);
 
-                    console.log(i, "SUCCESS ACK (06)");
+                    console.log(i, "EDC SEND ACK (06)");
                 }
                 else if (paidApprovedCode !== undefined) {
                     output = {
@@ -151,9 +151,19 @@ function writeECR(io, msg, data) {
                     console.log(i, resp);
  
                     if (paidApprovedCode.length > 3) {
-                        port.write('\x06', function (err) {
-                            if (err) throw err;
-                        });
+                       
+                        setTimeout(()=>{
+                            console.log(i, "POS SEND ACK (06)");
+                            output = {
+                                name: "resp",
+                                message: "POS SEND ACK (06))",
+                            }
+                            io.emit('emiter', output);
+                            port.write('\x06', function (err) {
+                                if (err) throw err;
+                            });
+                        },1000);
+                       
                     }
 
                     i = 10000;

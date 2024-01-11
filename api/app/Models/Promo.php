@@ -180,6 +180,7 @@ class Promo extends Model
         $resh = array(
             "price" => $newPrice,
             "isSpecialPrice" => $isSpecialPrice,
+            "discount" => model("Core")->select("price1", "cso1_item", "id = '$itemId' ") - $newPrice,
             "promotionItemId" => $promotionItemId,
             "promotionId" => $promotionId,
             

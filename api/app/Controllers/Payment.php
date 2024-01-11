@@ -92,14 +92,16 @@ class Payment extends BaseController
             $this->db->table("cso1_kiosk_paid_pos")->insert([
                 "kioskUuid" => $post['kioskUuid'],
                 "paid" => $paid,
-                "paymentTypeId" => $post['paymentMethodDetail']['paymentTypeId'],
+                "paymentTypeId" => $post['paymentMethodDetail']['id'],
                 "cardId" => $post['payment']['cardId'],
-                "approvedCode" => $post['approvedCode'],
+                "approvedCode" => isset($post['approvedCode']) ?  $post['approvedCode'] : "",
+                "refCode" => isset($post['paidrRefCode']) ?  $post['paidrRefCode'] : "",
+                
                 "paymentNameId" => isset($post['paymentNameId']) ? $post['paymentNameId'] : '',
                 "input_date" => date("Y-m-d H:i:s")
             ]);
 
-            if ($post['paymentMethodDetail']['paymentTypeId'] == 'CASH') {
+            if ($post['paymentMethodDetail']['id'] == 'CASH') {
                 $this->db->table("cso2_balance")->insert([
                     "cashIn" => $post['payment']['amount'],
                     "cashOut" => -1 * (int) $post['changes'],
@@ -264,8 +266,8 @@ class Payment extends BaseController
                     "transactionId" => $id,
                     "paymentTypeId" => $row['paymentTypeId'],
                     "paymentNameId" => $row['paymentNameId'],
-                    "approvedCode" => $row['approvedCode'],
-                    
+                    "approvedCode" => $row['approvedCode'], 
+                    "refCode" =>  $row['refCode'], 
                     "amount" => $row['paid'],
                     "voucherNumber" => $row['voucherNumber'],
                     "presence" => 1,

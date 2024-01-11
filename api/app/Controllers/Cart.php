@@ -224,15 +224,18 @@ class Cart extends BaseController
 
 
                     for ($i = 1; $i <= $qty; $i++) {
+                        // CHECK PROMOTION_ITEM
                         $promo = model("Promo")->promotion_item($itemId, $qty);
 
-                        // PROMO ITEM
+                        
                         $insert = [
                             "kioskUuid" => $post['kioskUuid'],
                             "itemId" => $itemId,
                             "barcode" => $post['barcode'],
                             "originPrice" => $originPrice,
                             "price" => $promo['price'],
+                            "discount" => $promo['discount'],
+                            
                             "isSpecialPrice" => $promo['isSpecialPrice'],
                             "promotionItemId" => $promo['promotionItemId'],
                             "promotionId" => $promo['promotionId'],
@@ -244,10 +247,12 @@ class Cart extends BaseController
                         $this->db->table("cso1_kiosk_cart")->insert($insert);
                         $newId = model("Core")->select("id", "cso1_kiosk_cart", "kioskUuid = '" . $post['kioskUuid'] . "' order by inputDate DESC  ");
 
-                        // PROMO DISCOUNT 30% + 50%
 
+
+
+                        // PROMOTION_DISCOUNT  
                         $promotion_discount = model("Promo")->promotion_discount($itemId);
-                        if ($promotion_discount != false ) { 
+                        if ($promotion_discount != false) {
                             $update = [
                                 "price" => $promo['price'] - ((int) $promo['price'] * ((float) $promotion_discount['disc1'] / 100)),
                                 "discount" => ((int) $promo['price'] * ((float) $promotion_discount['disc1'] / 100)),
@@ -257,21 +262,21 @@ class Cart extends BaseController
                             $this->db->table("cso1_kiosk_cart")->update($update, " id =  $newId ");
                         }
 
-                        // check item pertama activeCart
-                        
-                        if( $post['activeCart'] != false  ) {
+                        // check item pertama activeCart  2nd ITEM PROMOTION_DISCOUNT
+                        if ($post['activeCart'] != false) {
                             $oldId = model("Core")->select("id", "cso1_promotion_discount", "itemId = '" . $post['activeCart']['itemId'] . "' ");
-                            if( $oldId ){
-
+                            if ($oldId) { 
                                 $promotion_discount = model("Promo")->promotion_discount($itemId);
-                                if ($promotion_discount != false ) { 
-                                    $update = [
-                                        "price" => $promo['price'] - ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
-                                        "discount" => ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
-                                        "promotionDiscountId" => $promotion_discount['id'],
-                                        "promotionId" => $promotion_discount['promotionId'],
-                                    ];
-                                    $this->db->table("cso1_kiosk_cart")->update($update, " id =  $newId ");
+                                if ($promotion_discount != false) {
+                                    if ($promotion_discount['disc2'] > 0) { 
+                                        $update = [
+                                            "price" => $promo['price'] - ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
+                                            "discount" => ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
+                                            "promotionDiscountId" => $promotion_discount['id'],
+                                            "promotionId" => $promotion_discount['promotionId'],
+                                        ];
+                                        $this->db->table("cso1_kiosk_cart")->update($update, " id =  $newId ");
+                                    }
                                 }
 
                             }
