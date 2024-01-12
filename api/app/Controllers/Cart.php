@@ -224,10 +224,10 @@ class Cart extends BaseController
 
 
                     for ($i = 1; $i <= $qty; $i++) {
-                        // CHECK PROMOTION_ITEM
+                        //  PROMOTION_ITEM :: START
                         $promo = model("Promo")->promotion_item($itemId, $qty);
+                        //  PROMOTION_ITEM :: END
 
-                        
                         $insert = [
                             "kioskUuid" => $post['kioskUuid'],
                             "itemId" => $itemId,
@@ -235,7 +235,7 @@ class Cart extends BaseController
                             "originPrice" => $originPrice,
                             "price" => $promo['price'],
                             "discount" => $promo['discount'],
-                            
+
                             "isSpecialPrice" => $promo['isSpecialPrice'],
                             "promotionItemId" => $promo['promotionItemId'],
                             "promotionId" => $promo['promotionId'],
@@ -248,9 +248,7 @@ class Cart extends BaseController
                         $newId = model("Core")->select("id", "cso1_kiosk_cart", "kioskUuid = '" . $post['kioskUuid'] . "' order by inputDate DESC  ");
 
 
-
-
-                        // PROMOTION_DISCOUNT  
+                        // PROMOTION_DISCOUNT  :: START  
                         $promotion_discount = model("Promo")->promotion_discount($itemId);
                         if ($promotion_discount != false) {
                             $update = [
@@ -261,14 +259,13 @@ class Cart extends BaseController
                             ];
                             $this->db->table("cso1_kiosk_cart")->update($update, " id =  $newId ");
                         }
-
                         // check item pertama activeCart  2nd ITEM PROMOTION_DISCOUNT
                         if ($post['activeCart'] != false) {
                             $oldId = model("Core")->select("id", "cso1_promotion_discount", "itemId = '" . $post['activeCart']['itemId'] . "' ");
-                            if ($oldId) { 
+                            if ($oldId) {
                                 $promotion_discount = model("Promo")->promotion_discount($itemId);
                                 if ($promotion_discount != false) {
-                                    if ($promotion_discount['disc2'] > 0) { 
+                                    if ($promotion_discount['disc2'] > 0) {
                                         $update = [
                                             "price" => $promo['price'] - ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
                                             "discount" => ((int) $promo['price'] * ((float) $promotion_discount['disc2'] / 100)),
@@ -282,14 +279,14 @@ class Cart extends BaseController
                             }
 
                         }
-
+                        // PROMOTION_DISCOUNT :: END  
 
 
                     }
 
+                    // PROMOTION_FREE  :: START  
 
-
-
+                    // PROMOTION_FREE  :: END 
 
                     //$kioskCartId = model("Core")->select("id", "cso1_kiosk_cart", " kioskUuid = '" . $post['kioskUuid'] . "' ORDER BY  id DESC");
 
@@ -450,8 +447,7 @@ class Cart extends BaseController
                     "input_date" => date("Y-m-d H:i:s"),
                     "update_date" => date("Y-m-d H:i:s"),
                     "inputDate" => time(),
-                    "updateDate" => time(),
-
+                    "updateDate" => time(), 
                 ]);
             }
             $data = array(
