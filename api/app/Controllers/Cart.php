@@ -8,6 +8,12 @@ class Cart extends BaseController
     function index()
     {
         $kioskUuid = $this->request->getVar()['kioskUuid'];
+
+        // PROMOTION_START  :: END 
+        //model("Promo")->promotions_free($kioskUuid);
+        // PROMOTION_FREE  :: END 
+ 
+
         $memberId = model("Core")->select("memberId", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid'  ");
         $memberDiscount = model("Promo")->calculationMemberDiscount($kioskUuid, $memberId);
 
@@ -286,6 +292,39 @@ class Cart extends BaseController
 
                     // PROMOTION_FREE  :: START  
 
+                    // $q2 = "SELECT itemId, COUNT(itemId) AS 'qty'
+                    // FROM cso1_kiosk_cart
+                    // WHERE promotionId = 0 AND presence = 1 AND void = 0
+                    // GROUP BY itemId
+                    // ";
+                    // $ip2 = $this->db->query($q2)->getResultArray();
+                    // foreach($ip2 as $row){
+                    //     $freeItem = model("promo")->checkFreeItem($row);
+                    //     if(  $freeItem !== false ){
+                    //         if( $row['qty'] >= $freeItem['qty'] ){
+
+                    //             $loops = (int)($row['qty'] / $freeItem['qty']);
+
+                    //             $q3 = "SELECT * 
+                    //             FROM cso1_kiosk_cart
+                    //             WHERE promotionId = 0 AND presence = 1 AND void = 0 and itemId = '".$row['itemId']."' ";
+                    //             $ip3 = $this->db->query($q3)->getResultArray();
+                    //             foreach($ip3 as $rec3){
+
+                    //                 $this->db->table("cso1_kiosk_cart")->update([
+                    //                     "promotionId" => $row['promotionId'],
+                    //                     "promotionFreeId" =>$row['promotionFreeId'],
+
+                    //                 ]," id = ".$rec3['id']);
+                    //             }
+
+
+                    //         }
+                    //     }
+
+                    // }
+
+
                     // PROMOTION_FREE  :: END 
 
                     //$kioskCartId = model("Core")->select("id", "cso1_kiosk_cart", " kioskUuid = '" . $post['kioskUuid'] . "' ORDER BY  id DESC");
@@ -447,7 +486,7 @@ class Cart extends BaseController
                     "input_date" => date("Y-m-d H:i:s"),
                     "update_date" => date("Y-m-d H:i:s"),
                     "inputDate" => time(),
-                    "updateDate" => time(), 
+                    "updateDate" => time(),
                 ]);
             }
             $data = array(

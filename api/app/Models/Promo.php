@@ -127,7 +127,7 @@ class Promo extends Model
         WHERE 
             itemId= '$itemId' AND 
             qtyFrom <= $qty AND qtyTo >= $qty
-        "; 
+        ";
 
 
         $q = "SELECT i.* , p.startDate, p.endDate, p.$today, unix_timestamp(now()) AS 'time'
@@ -139,12 +139,12 @@ class Promo extends Model
             p.startDate <= unix_timestamp(NOW()) AND p.endDate >= unix_timestamp(NOW()) AND 
             p.$today = 1 
         ";
-        $promotionItemId  = 0;
+        $promotionItemId = 0;
         $promotionId = 0;
         $isSpecialPrice = 0;
         $newPrice = model("Core")->select("price1", "cso1_item", "id = '$itemId' ");
-        if (count($this->db->query($q)->getResultArray()) > 0) {  
-            $promo = $this->db->query($q)->getResultArray()[0];  
+        if (count($this->db->query($q)->getResultArray()) > 0) {
+            $promo = $this->db->query($q)->getResultArray()[0];
             $promotionItemId = $promo['id'];
             $promotionId = $promo['promotionId'];
             $isSpecialPrice = (int) self::select("specialPrice", "cso1_promotion_item", "id=$promotionItemId") > 0 ? 1 : 0;
@@ -171,7 +171,7 @@ class Promo extends Model
                 $discLevel3 = ($price - $discLevel1 - $discLevel2) * $disc3;
 
                 $discLevel = $discLevel1 + $discLevel2 + $discLevel3;
- 
+
                 $newPrice = $price - ($discountPrice + $discLevel);
 
             }
@@ -183,13 +183,14 @@ class Promo extends Model
             "discount" => model("Core")->select("price1", "cso1_item", "id = '$itemId' ") - $newPrice,
             "promotionItemId" => $promotionItemId,
             "promotionId" => $promotionId,
-            
+
         );
         return $resh;
 
     }
-    function promotion_discount($itemId = "" ){
-        $today = date('D', time()); 
+    function promotion_discount($itemId = "")
+    {
+        $today = date('D', time());
 
         $q = "SELECT *
         FROM  
@@ -198,10 +199,10 @@ class Promo extends Model
             STATUS = 1 AND presence = 1 AND 
             itemId = '$itemId'
         ";
-        $resh = false; 
-        if (count($this->db->query($q)->getResultArray()) > 0) {   
+        $resh = false;
+        if (count($this->db->query($q)->getResultArray()) > 0) {
             $resh = $this->db->query($q)->getResultArray()[0];
-        } 
+        }
         return $resh;
     }
 
@@ -505,7 +506,77 @@ class Promo extends Model
             $resp = $items;
         }
         return $resp;
+    }
 
 
+    function checkFreeItem($row)
+    {
+        // AND p.Fri = 1
+        $q = "SELECT f.id as 'promotionFreeId', f.promotionId, f.qty, f.freeItemId, f.freeQty 
+        FROM cso1_promotion_free AS f
+         JOIN cso1_promotion AS p ON p.id = f.promotionId
+         AND  p.typeOfPromotion = 2  AND p.presence = 1  AND f.itemId = '".$row['itemId']."'
+         AND (p.startDate < unix_timestamp(now()) AND unix_timestamp(NOW()) <  p.endDate) 
+         AND p.`status` = 1 AND p.presence = 1  AND ".$row['qty']." >= f.qty
+       ";
+
+        $items = $this->db->query($q)->getResultArray();
+        
+        //log_message('debug', print_r($items) );
+        return count($items ) > 0 ? $items[0] : false;
+    }
+
+
+    function promotions_free($kioskUuid){
+
+        // PROMOTION_FREE  :: START   
+        $q2 = "SELECT itemId, COUNT(itemId) AS 'qty'
+         FROM cso1_kiosk_cart
+         WHERE promotionId = '0' AND presence = 1 AND void = 0 and kioskUuid = '$kioskUuid' 
+         GROUP BY itemId
+         ";
+        $ip2 = $this->db->query($q2)->getResultArray();
+        foreach ($ip2 as $row) {
+            $freeItem = model("promo")->checkFreeItem($row);
+            if ($freeItem !== false) { 
+               
+                if ($row['qty'] >= $freeItem['qty']) {
+                  
+                    
+                    // FREE ITEM INSERT :: START
+                    $loops = (int) ($row['qty'] / $freeItem['qty']); 
+                    $q3 = "SELECT * 
+                    FROM cso1_kiosk_cart
+                    WHERE promotionId = '0' AND promotionFreeId = '0' and presence = 1 AND void = 0 and itemId = '" . $row['itemId'] . "' 
+                    AND kioskUuid = '$kioskUuid' limit $loops;
+                    "; 
+                   // echo  $q3;
+                    $ip3 = $this->db->query($q3)->getResultArray();
+                    foreach ($ip3 as $rec3) { 
+                        $this->db->table("cso1_kiosk_cart")->insert([
+                            "kioskUuid" => $kioskUuid,
+                            "promotionId" => $freeItem['promotionId'],
+                            "promotionFreeId" => $freeItem['promotionFreeId'],
+                            "itemId" => $freeItem['freeItemId'],
+                            "barcode" => $freeItem['freeItemId'],
+                            "price" => 0,
+                            "originPrice" => 0,
+                            "isFreeItem" => $rec3['id'], 
+                            "input_date" => date("Y-m-d H:i:s"), 
+                        ]);
+                    }
+                    // FREE ITEM INSERT :: END
+
+                    for($i = 0 ; $i< $freeItem['qty'] ; $i++){
+                        $this->db->table("cso1_kiosk_cart")->update([
+                            "promotionId" => $freeItem['promotionId'],
+                            "promotionFreeId" => $freeItem['promotionFreeId'],
+                            
+                        ]," promotionId = 0 AND presence = 1 AND void = 0 and kioskUuid = '$kioskUuid'  ");
+                    }
+                }
+            }
+        }
+  
     }
 }
