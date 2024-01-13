@@ -33,9 +33,7 @@ class Parking extends BaseController
             $this->db->table("cso1_kiosk_cart")->delete([
                 "kioskUuid" => $post['kioskUuid'],
             ]);
-            $this->db->table("cso1_kiosk_cart_free_item")->delete([
-                "kioskUuid" => $post['kioskUuid'],
-            ]);
+         
             $this->db->table("cso1_kiosk_paid_pos")->delete([
                 "kioskUuid" => $post['kioskUuid'],
             ]); 

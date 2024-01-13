@@ -10,7 +10,7 @@ class Cart extends BaseController
         $kioskUuid = $this->request->getVar()['kioskUuid'];
 
         // PROMOTION_START  :: END 
-        //model("Promo")->promotions_free($kioskUuid);
+        model("Promo")->promotions_free($kioskUuid);
         // PROMOTION_FREE  :: END 
  
 
@@ -18,7 +18,7 @@ class Cart extends BaseController
         $memberDiscount = model("Promo")->calculationMemberDiscount($kioskUuid, $memberId);
 
         $q1 = "SELECT c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, c.originPrice, c.memberDiscountAmount, c.totalPriceEdit,
-        i.shortDesc, i.description, c.price, '' as promotionFreeId, c.validationNota
+        i.shortDesc, i.description, c.price,   c.validationNota
         FROM (
             SELECT k.barcode, k.itemId , COUNT(k.barcode) AS 'qty', k.promotionId,  k.memberDiscountAmount, sum(k.isPriceEdit) AS 'totalPriceEdit', 
             sum(k.price) AS 'total', sum(k.discount) AS 'discount', k.price, k.originPrice, k.validationNota
@@ -37,29 +37,20 @@ class Cart extends BaseController
             $i++;
         }
 
-        $q2 = "SELECT 
-            c.barcode, c.itemId, c.qty, c.promotionId , c.total, c.discount, i.price1 AS 'originPrice',
-            i.shortDesc, i.description, c.price, '' AS 'note' , c.promotionFreeId
-        FROM (
-            SELECT f.freeItemId AS 'barcode', f.freeItemId AS 'itemId' , count(id) AS 'qty', f.promotionId, 0 AS 'price',
-            0 AS 'total', 0 AS 'discount',0 AS 'originPrice' , f.promotionFreeId
-            FROM cso1_kiosk_cart_free_item AS f 
-            WHERE f.kioskUuid =  '$kioskUuid'
-            group BY f.freeItemId , f.promotionFreeId, f.promotionId
-        ) AS c
-        LEFT JOIN cso1_item AS i ON i.id = c.itemId
+        $q2 = "SELECT  f.freeItemId as 'barcode', f.freeItemId as 'itemId', k.promotionFreeId, COUNT(k.promotionFreeId) AS 'qty',
+        (COUNT(k.promotionFreeId) / f.qty) * f.freeQty AS 'getFreeItem',
+        i.description, i.shortDesc
+         
+        FROM cso1_kiosk_cart AS k 
+        LEFT JOIN cso1_promotion_free AS f ON f.id = k.promotionFreeId
+        LEFT JOIN cso1_item AS i ON i.id = f.freeItemId 
+        WHERE k.kioskUuid = '$kioskUuid'  AND k.void = 0 and k.presence = 1 AND f.freeItemId != ''  
+        GROUP BY k.promotionFreeId
         ";
         $freeItem = $this->db->query($q2)->getResultArray();
+ 
 
-        $i = 0;
-        foreach ($freeItem as $row) {
-            $freeItem[$i]['promotionDescription'] = model("Core")->select("description", "cso1_promotion", "id = '" . $row['promotionId'] . "'  ") . " ORIGIN";
-            $freeItem[$i]['id'] = (int) model("Core")->select("inputDate", "cso1_kiosk_cart_free_item", "kioskUuid = '$kioskUuid'  and freeItemId = '" . $row['itemId'] . "' order by inputDate DESC  ");
-            $i++;
-        }
-
-
-        $items = array_merge($items, $freeItem);
+        //$items = array_merge($items, $freeItem);
 
         model("Promo")->orderByID($items);
         $kioskUuid = model("Core")->select("kioskUuid", "cso1_kiosk_uuid", "kioskUuid = '$kioskUuid' and presence = 1  ");

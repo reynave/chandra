@@ -550,22 +550,22 @@ class Promo extends Model
                     WHERE promotionId = '0' AND promotionFreeId = '0' and presence = 1 AND void = 0 and itemId = '" . $row['itemId'] . "' 
                     AND kioskUuid = '$kioskUuid' limit $loops;
                     "; 
-                   // echo  $q3;
-                    $ip3 = $this->db->query($q3)->getResultArray();
-                    foreach ($ip3 as $rec3) { 
-                        $this->db->table("cso1_kiosk_cart")->insert([
-                            "kioskUuid" => $kioskUuid,
-                            "promotionId" => $freeItem['promotionId'],
-                            "promotionFreeId" => $freeItem['promotionFreeId'],
-                            "itemId" => $freeItem['freeItemId'],
-                            "barcode" => $freeItem['freeItemId'],
-                            "price" => 0,
-                            "originPrice" => 0,
-                            "isFreeItem" => $rec3['id'], 
-                            "input_date" => date("Y-m-d H:i:s"), 
-                        ]);
-                    }
-                    // FREE ITEM INSERT :: END
+                //    // echo  $q3;
+                //     $ip3 = $this->db->query($q3)->getResultArray();
+                //     foreach ($ip3 as $rec3) { 
+                //         $this->db->table("cso1_kiosk_cart")->insert([
+                //             "kioskUuid" => $kioskUuid,
+                //             "promotionId" => $freeItem['promotionId'],
+                //             "promotionFreeId" => $freeItem['promotionFreeId'],
+                //             "itemId" => $freeItem['freeItemId'],
+                //             "barcode" => $freeItem['freeItemId'],
+                //             "price" => 0,
+                //             "originPrice" => 0,
+                //             "isFreeItem" => $rec3['id'], 
+                //             "input_date" => date("Y-m-d H:i:s"), 
+                //         ]);
+                //     }
+                //     // FREE ITEM INSERT :: END
 
                     for($i = 0 ; $i< $freeItem['qty'] ; $i++){
                         $this->db->table("cso1_kiosk_cart")->update([

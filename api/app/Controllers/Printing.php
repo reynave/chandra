@@ -112,7 +112,7 @@ class Printing extends BaseController
             }
             model("Promo")->orderByID($items);
 
- 
+
 
             $data = array(
                 "get" => $this->request->getVar(),
@@ -125,26 +125,17 @@ class Printing extends BaseController
                 where t.id= '" . $id . "' ")[0] : [],
 
                 "items" => $items,
-                "freeItem" => model("Core")->sql(" SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
-                    from (
-                        select count(td.itemId) as qty, td.itemId, sum(td.isPrintOnBill) as printOnBill
-                        from cso1_transaction_detail as td
-                        where td.presence = 1 and td.void = 0 and td.transactionId = '$id' and td.isFreeItem = 1
-                        group by td.itemId, td.price, td.isPrintOnBill
-                    ) as t1
-                    JOIN cso1_item as i on i.id = t1.itemId
-                    ORDER BY i.description
+                "freeItem" => model("Core")->sql("SELECT  
+                    f.freeItemId as 'barcode', f.freeItemId as 'itemId', k.promotionFreeId, COUNT(k.promotionFreeId) AS 'qty',
+                    (COUNT(k.promotionFreeId) / f.qty) * f.freeQty AS 'getFreeItem',
+                    i.description, i.shortDesc 
+                FROM cso1_transaction_detail AS k 
+                LEFT JOIN cso1_promotion_free AS f ON f.id = k.promotionFreeId
+                LEFT JOIN cso1_item AS i ON i.id = f.freeItemId 
+                WHERE k.transactionId = '$id'  AND k.void = 0 and k.presence = 1 AND f.freeItemId != ''  
+                GROUP BY k.promotionFreeId
                 "),
-                "freeItemWaitingScanFail" => model("Core")->sql(" SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
-                    from (
-                        select count(td.itemId) as qty, td.itemId, sum(td.isPrintOnBill) as printOnBill
-                        from cso1_transaction_detail as td
-                        where td.presence = 2 and td.transactionId = '$id' and td.isFreeItem = 1
-                        group by td.itemId, td.price, td.isPrintOnBill
-                    ) as t1
-                    JOIN cso1_item as i on i.id = t1.itemId
-                    ORDER BY i.description
-                "),
+
                 "summary" => array(
                     "nonBkp" => (int) model("Core")->select("nonBkp", "cso1_transaction", "id='$id'"),
                     "bkp" => (int) model("Core")->select("bkp", "cso1_transaction", "id='$id'"),
@@ -178,26 +169,26 @@ class Printing extends BaseController
                 ),
                 "copy" => (int) model("Core")->sql(" select count(id) as 'copy' from cso1_transaction_printlog where transactionId ='$id'")[0]['copy'],
                 "isCash" => (int) model("Core")->sql(" SELECT count(id) as 'cash' from cso1_transaction_payment WHERE paymentTypeId = 'CASH' and  transactionId ='$id'"),
-               
+
             );
 
 
             $i = 0;
-            
+
             foreach ($data['paymentMethod'] as $rec) {
                 if ($rec['paymentTypeId'] == 'VOUCHER') {
                     $voucherNumber = $rec['voucherNumber'];
-                    $data['paymentMethod'][$i]['label'] = $rec['label'].' ' . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
-                }else{
-                    $data['paymentMethod'][$i]['label'] = $rec['label'].' ' .model("Core")->select("name","cso1_payment_name","id = '". $rec['paymentNameId']."' ");
+                    $data['paymentMethod'][$i]['label'] = $rec['label'] . ' ' . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
+                } else {
+                    $data['paymentMethod'][$i]['label'] = $rec['label'] . ' ' . model("Core")->select("name", "cso1_payment_name", "id = '" . $rec['paymentNameId'] . "' ");
                 }
                 $i++;
             }
-            if( isset($data['detail']['memberId']) ){
+            if (isset($data['detail']['memberId'])) {
                 $data['detail']['member'] = strtoupper(model("Core")->select("name", "cso2_member", "id = '" . $data['detail']['memberId'] . "' "));
-         
+
             }
-            
+
             $data['promo_fixed'] = model("Promo")->promo_fixed($data['summary']['total']);
         }
         return $this->response->setJSON($data);
@@ -287,7 +278,7 @@ class Printing extends BaseController
         if ($post) {
 
             $printer = model("Core")->printer();
- 
+
 
             if ($printer != "") {
 

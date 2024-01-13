@@ -51,8 +51,8 @@ class Payment extends BaseController
         WHERE a.kioskUuid = '$kioskUuid' ";
         $kioskPaid = $this->db->query($q1)->getResultArray();
         $i = 0;
-        foreach( $kioskPaid  as $row ){
-            $kioskPaid[$i]['paymentName'] =  model("Core")->select("name","cso1_payment_name","id = '". $row['paymentNameId']."' ");
+        foreach ($kioskPaid as $row) {
+            $kioskPaid[$i]['paymentName'] = model("Core")->select("name", "cso1_payment_name", "id = '" . $row['paymentNameId'] . "' ");
             $i++;
         }
 
@@ -94,9 +94,9 @@ class Payment extends BaseController
                 "paid" => $paid,
                 "paymentTypeId" => $post['paymentMethodDetail']['id'],
                 "cardId" => $post['payment']['cardId'],
-                "approvedCode" => isset($post['approvedCode']) ?  $post['approvedCode'] : "",
-                "refCode" => isset($post['paidrRefCode']) ?  $post['paidrRefCode'] : "",
-                
+                "approvedCode" => isset($post['approvedCode']) ? $post['approvedCode'] : "",
+                "refCode" => isset($post['paidrRefCode']) ? $post['paidrRefCode'] : "",
+
                 "paymentNameId" => isset($post['paymentNameId']) ? $post['paymentNameId'] : '',
                 "input_date" => date("Y-m-d H:i:s")
             ]);
@@ -108,7 +108,7 @@ class Payment extends BaseController
                     "kioskUuid" => $post['kioskUuid'],
                     "terminalId" => $post['terminalId'],
                     "cashierId" => model("Core")->accountId(),
-                    "input_date" => date("Y-m-d H:i:s"), 
+                    "input_date" => date("Y-m-d H:i:s"),
                 ]);
             }
             $this->db->table("cso1_kiosk_uuid")->update([
@@ -124,7 +124,7 @@ class Payment extends BaseController
         }
         return $this->response->setJSON($data);
     }
- 
+
     function onSubmitDiscountBill()
     {
         $post = json_decode(file_get_contents('php://input'), true);
@@ -137,11 +137,11 @@ class Payment extends BaseController
             $this->db->table("cso1_kiosk_paid_pos")->insert([
                 "kioskUuid" => $post['kioskUuid'],
                 "paid" => $paid,
-                "paymentTypeId" => 'DISC.BILL', 
+                "paymentTypeId" => 'DISC.BILL',
                 "input_date" => date("Y-m-d H:i:s"),
-                "update_date" => date("Y-m-d H:i:s"), 
+                "update_date" => date("Y-m-d H:i:s"),
             ]);
-  
+
 
             $data = array(
                 "error" => false,
@@ -150,7 +150,7 @@ class Payment extends BaseController
         }
         return $this->response->setJSON($data);
     }
- 
+
 
     function isCloseTransaction()
     {
@@ -212,6 +212,9 @@ class Payment extends BaseController
                     "transactionId" => $id,
                     "promotionId" => $row['promotionId'],
                     "promotionItemId" => $row['promotionItemId'],
+                    "promotionFreeId" => $row['promotionFreeId'],
+                    "promotionDiscountId" => $row['promotionDiscountId'],
+
                     "barcode" => $row['barcode'],
                     "itemId" => $row['itemId'],
                     "originPrice" => $row['originPrice'],
@@ -236,29 +239,65 @@ class Payment extends BaseController
                 $this->db->table("cso1_transaction_detail")->insert($insertDetail);
             }
 
-            $q = model("Core")->sql("SELECT * FROM cso1_kiosk_cart_free_item  WHERE presence = 1 AND status = 0 AND kioskUuid = '$kioskUuid' ");
-            foreach ($q as $row) {
-                $insertDetail = array(
-                    "transactionId" => $id,
-                    "barcode" => $row['barcode'],
-                    "itemId" => $row['freeItemId'],
-                    "promotionId" => $row['promotionId'],
-                    "promotionFreeId" => $row['promotionFreeId'],
-                    "originPrice" => 0,
-                    "price" => 0,
-                    "discount" => 0,
-                    "isPriceEdit" => 0,
-                    "isFreeItem" => 1,
-                    "isSpecialPrice" => 0,
-                    "isPrintOnBill" => $row['printOnBill'],
-                    "void" => 0,
-                    "presence" => $row['scanFree'] == true ? 1 : 2,
-                    "inputDate" => $row['inputDate'],
-                    "updateDate" => time(),
-                    "updateBy" => $row['updateBy'],
-                );
-                $this->db->table("cso1_transaction_detail")->insert($insertDetail);
+            // FREE ITEMS PROMO :: START
+            $q2 = "SELECT  f.freeItemId as 'barcode', f.freeItemId , k.promotionFreeId,  COUNT(k.promotionFreeId) AS 'qty',
+            (COUNT(k.promotionFreeId) / f.qty) * f.freeQty AS 'getFreeItem',
+            i.description, i.shortDesc
+             
+            FROM cso1_kiosk_cart AS k 
+            LEFT JOIN cso1_promotion_free AS f ON f.id = k.promotionFreeId
+            LEFT JOIN cso1_item AS i ON i.id = f.freeItemId 
+            WHERE k.kioskUuid = '$kioskUuid'  AND k.void = 0 and k.presence = 1 AND f.freeItemId != ''  
+            GROUP BY k.promotionFreeId
+            ";
+            $freeItem = $this->db->query($q2)->getResultArray();
+
+            foreach ($freeItem as $row) {
+
+                for ($j = 0; $j < (int) $row['getFreeItem']; $j++) { 
+                    $insertDetail = array(
+                        "transactionId" => $id,
+                        "barcode" => $row['barcode'],
+                        "itemId" => $row['freeItemId'],
+                        "promotionId" =>  model("Core")->select("promotionId", "cso1_promotion_free", "id = '" . $row['promotionFreeId'] . "'"),
+                        "promotionFreeId" => $row['promotionFreeId'],
+                        "originPrice" => 0,
+                        "price" => 0,
+                        "discount" => 0,
+                        "isPriceEdit" => 0,
+                        "isFreeItem" => 1,
+                        "presence" => 1,
+                        "inputDate" => time(),
+                        "updateDate" => time(), 
+                    );
+                    $this->db->table("cso1_transaction_detail")->insert($insertDetail);
+                }
             }
+            // FREE ITEMS PROMO :: END
+
+            // $q = model("Core")->sql("SELECT * FROM cso1_kiosk_cart_free_item  WHERE presence = 1 AND status = 0 AND kioskUuid = '$kioskUuid' ");
+            // foreach ($q as $row) {
+            //     $insertDetail = array(
+            //         "transactionId" => $id,
+            //         "barcode" => $row['barcode'],
+            //         "itemId" => $row['freeItemId'],
+            //         "promotionId" => $row['promotionId'],
+            //         "promotionFreeId" => $row['promotionFreeId'],
+            //         "originPrice" => 0,
+            //         "price" => 0,
+            //         "discount" => 0,
+            //         "isPriceEdit" => 0,
+            //         "isFreeItem" => 1,
+            //         "isSpecialPrice" => 0,
+            //         "isPrintOnBill" => $row['printOnBill'],
+            //         "void" => 0,
+            //         "presence" => $row['scanFree'] == true ? 1 : 2,
+            //         "inputDate" => $row['inputDate'],
+            //         "updateDate" => time(),
+            //         "updateBy" => $row['updateBy'],
+            //     );
+            //     $this->db->table("cso1_transaction_detail")->insert($insertDetail);
+            // }
 
             $q = model("Core")->sql("SELECT * FROM cso1_kiosk_paid_pos WHERE kioskUuid = '$kioskUuid' order by id ASC ");
             foreach ($q as $row) {
@@ -266,8 +305,8 @@ class Payment extends BaseController
                     "transactionId" => $id,
                     "paymentTypeId" => $row['paymentTypeId'],
                     "paymentNameId" => $row['paymentNameId'],
-                    "approvedCode" => $row['approvedCode'], 
-                    "refCode" =>  $row['refCode'], 
+                    "approvedCode" => $row['approvedCode'],
+                    "refCode" => $row['refCode'],
                     "amount" => $row['paid'],
                     "voucherNumber" => $row['voucherNumber'],
                     "presence" => 1,
@@ -295,12 +334,12 @@ class Payment extends BaseController
             $this->db->table("cso1_kiosk_cart")->delete([
                 "kioskUuid" => $kioskUuid,
             ]);
-            $this->db->table("cso1_kiosk_cart_free_item")->delete([
-                "kioskUuid" => $kioskUuid,
-            ]);
+            // $this->db->table("cso1_kiosk_cart_free_item")->delete([
+            //     "kioskUuid" => $kioskUuid,
+            // ]);
             $this->db->table("cso1_kiosk_paid_pos")->delete([
                 "kioskUuid" => $kioskUuid,
-            ]); 
+            ]);
             $this->db->table("cso1_kiosk_uuid")->delete([
                 "kioskUuid" => $kioskUuid,
             ]);
@@ -338,9 +377,10 @@ class Payment extends BaseController
 
         return $this->response->setJSON($data);
     }
- 
 
-    function addBarcode(){
+
+    function addBarcode()
+    {
         $post = json_decode(file_get_contents('php://input'), true);
         $data = array(
             "error" => true,
@@ -349,21 +389,21 @@ class Payment extends BaseController
         );
         if ($post) {
             $barcode = $post['barcode'];
-            $kioskUuid =  $post['kioskUuid'];
+            $kioskUuid = $post['kioskUuid'];
             $id = model("Core")->select('id', "voucher", "number = '$barcode' and status = 0 ");
             $userId = model("Core")->select('id', "cso1_user", "id = '$barcode' and status = 1 and presence = 1 and userAccessId < 9");
             if ($id) {
- 
-                $bill = (int) model("Core")->select("sum(price)", "cso1_kiosk_cart", "kioskUuid = '$kioskUuid'") ;
-                $bill =   $bill < 0  ? 1 :   $bill;
+
+                $bill = (int) model("Core")->select("sum(price)", "cso1_kiosk_cart", "kioskUuid = '$kioskUuid'");
+                $bill = $bill < 0 ? 1 : $bill;
                 $paid = (int) model("Core")->select("sum(paid)", "cso1_kiosk_paid_pos", "kioskUuid = '$kioskUuid'");
                 $remaining = $bill - $paid;
- 
+
                 $amount = model("Core")->select('amount', "voucher", "id = '$id' ");
- 
+
                 $this->db->table("cso1_kiosk_paid_pos")->insert([
                     "kioskUuid" => $post['kioskUuid'],
-                    "paid" =>  ($remaining -  $amount) < 0 ? $remaining : $amount,
+                    "paid" => ($remaining - $amount) < 0 ? $remaining : $amount,
                     "paymentTypeId" => 'VOUCHER',
                     "voucherNumber" => $barcode,
                     "input_date" => date("Y-m-d H:i:s")
@@ -382,8 +422,7 @@ class Payment extends BaseController
                     "note" => "",
                     "reload" => true,
                 );
-            }
-            else if($userId){
+            } else if ($userId) {
                 $data = array(
                     "error" => true,
                     "post" => $post,
@@ -391,8 +430,7 @@ class Payment extends BaseController
                     "note" => "user login",
                     "reload" => false,
                 );
-            } 
-            else if( model("Core")->select('id', "voucher", "number = '$barcode' and status = 1 ") ){
+            } else if (model("Core")->select('id', "voucher", "number = '$barcode' and status = 1 ")) {
                 $data = array(
                     "error" => true,
                     "post" => $post,
@@ -401,7 +439,7 @@ class Payment extends BaseController
                     "reload" => false,
                 );
             }
-            
+
         }
         return $this->response->setJSON($data);
     }
