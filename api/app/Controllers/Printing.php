@@ -85,12 +85,17 @@ class Printing extends BaseController
     function detail()
     {
         $data = [];
-
-
+       
         if ($this->request->getVar()['id'] && $this->request->getVar()['id'] != "undefined") {
             $id = str_replace(["'", '"', "-"], "", $this->request->getVar()['id']);
             $isId = model("Core")->select("endDate", "cso1_transaction", "id='" . $id . "'");
 
+            $this->db->table("cso1_transaction_detail")->update([
+                "note" => "",
+            ]," note is null AND transactionId = '$id' ");
+
+            
+            
             $items = model("Core")->sql("SELECT t1.*, i.description, i.shortDesc, i.id as 'itemId'
                 FROM (
                     SELECT count(td.itemId) as qty, td.itemId, sum(td.price ) as 'totalPrice', td.originPrice, sum(td.isPriceEdit) as 'totalPriceEdit',
