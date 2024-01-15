@@ -19,17 +19,17 @@ class BulkInsert extends BaseController
         return $this->response->setJSON($data);
     }
 
+    // function items()
+    // {
+    //     $data = array(
+    //         "item" => self::item(),
+    //         "barcode" => self::barcode(),
+    //     );
+
+    //     return $this->response->setJSON($data);
+    // }
+
     function items()
-    {
-        $data = array(
-            "item" => self::item(),
-            "barcode" => self::barcode(),
-        );
-
-        return $this->response->setJSON($data);
-    }
-
-    function item()
     {
         if ($this->db->simpleQuery("TRUNCATE cso1_item")) {
             $truncate = 'Success!';
@@ -39,7 +39,7 @@ class BulkInsert extends BaseController
 
         $file = 'item.txt';
         // $path = $_ENV['SYNC'].'item.txt';
-        $path = './../../sync/item.txt';
+        $path = self::filePath($file);
 
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -48,7 +48,6 @@ class BulkInsert extends BaseController
         LINES TERMINATED BY '\r\n' 
         (`id`,`description`,`shortDesc`,`price1`,`price2`,`price3`,`price4`,`price5`,`price6`,`price7`,`price8`,`price9`,`price10`,
         `itemUomId`,`itemCategoryId`,`itemTaxId`,`images`)";
-
 
 
         if ($this->db->simpleQuery($bulk)) {
@@ -66,16 +65,18 @@ class BulkInsert extends BaseController
         ]);
 
 
-        $data = array(
+        $data = [];
+        $data[] = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
             "BULK" => $rest,
 
         );
-        return $data;
-
+        return $this->response->setJSON($data);
     }
+
     function barcode()
     {
         if ($this->db->simpleQuery("TRUNCATE cso1_item_barcode")) {
@@ -85,7 +86,7 @@ class BulkInsert extends BaseController
         }
 
         $file = 'barcode.txt';
-        $path = './../../sync/barcode.txt';
+        $path = self::filePath($file);
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
         INTO TABLE cso1_item_barcode  
@@ -107,17 +108,19 @@ class BulkInsert extends BaseController
             "inputDate" => time(),
         ]);
 
-
-        $data = array(
+        $data = [];
+        $data[] = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
             "BULK" => $rest,
 
         );
-        return $data;
+
+        return $this->response->setJSON($data);
     }
-  
+
     function promo()
     {
 
@@ -125,11 +128,11 @@ class BulkInsert extends BaseController
         $this->db->simpleQuery("TRUNCATE cso1_promotion_item");
         $this->db->simpleQuery("TRUNCATE cso1_promotion_free");
 
-        $data = array(
-            "promo_header" => self::promo_header(),
-            "promo_detail_item" => self::promo_detail_item(),
-            "promo_detail_free" => self::promo_detail_free(),
-        );
+
+        $data = [];
+        $data[] = self::promo_header();
+        $data[] = self::promo_detail_item();
+        $data[] = self::promo_detail_free();
 
         return $this->response->setJSON($data);
     }
@@ -143,7 +146,7 @@ class BulkInsert extends BaseController
         }
 
         $file = 'promo_header.txt';
-        $path = './../../sync/' . $file;
+        $path = self::filePath($file);
 
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -159,6 +162,7 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
+
             "path" => $path,
             "fileName" => $file,
             "result" => $rest,
@@ -169,6 +173,7 @@ class BulkInsert extends BaseController
 
 
         $data = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
@@ -188,7 +193,8 @@ class BulkInsert extends BaseController
 
 
         $file = 'promo_detail.txt';
-        $path = './../../sync/' . $file;
+        $path = self::filePath($file);
+
 
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -213,6 +219,7 @@ class BulkInsert extends BaseController
 
 
         $data = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
@@ -230,9 +237,9 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-       // $file = $_ENV['SYNC'] . 'promo_free.txt';
+        // $file = $_ENV['SYNC'] . 'promo_free.txt';
         $file = 'promo_free.txt';
-        $path = './../../sync/' . $file;
+        $path = self::filePath($file);
 
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -247,6 +254,7 @@ class BulkInsert extends BaseController
             $rest = 'Query failed!';
         }
         $this->db->table("cso1_sync")->insert([
+
             "path" => $path,
             "fileName" => $file,
             "result" => $rest,
@@ -256,6 +264,7 @@ class BulkInsert extends BaseController
         ]);
 
         $data = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
@@ -304,7 +313,7 @@ class BulkInsert extends BaseController
 
     function dir()
     {
-        echo __DIR__ ;
+        echo __DIR__;
     }
     function member()
     {
@@ -316,7 +325,7 @@ class BulkInsert extends BaseController
 
 
         $file = 'KMEMBER.txt';
-        $path = './../../sync/' . $file;
+        $path = self::filePath($file);
 
         $bulk = " LOAD DATA LOCAL INFILE  
         '$path'
@@ -340,7 +349,9 @@ class BulkInsert extends BaseController
         ]);
 
 
-        $data = array(
+        $data = [];
+        $data[] = array(
+            "id" => model("Core")->select("id", "cso1_sync", " fileName = '$file' order by inputDate DESC"),
             "error" => false,
             "file" => $file,
             "TRUNCATE" => $truncate,
@@ -352,4 +363,35 @@ class BulkInsert extends BaseController
 
     }
 
+
+    function filePath($filename)
+    {
+        $absolutePath = str_replace("api\public\\", "", FCPATH);
+        $path = $absolutePath . 'sync\\' . $filename;
+        $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+
+        return $path;
+    }
+
+    function updateTimer()
+    {
+        $post = json_decode(file_get_contents('php://input'), true);
+        $data = array(
+            "error" => true,
+            "post" => $post,
+        );
+        if ($post) {
+            foreach ($post['data'] as $row) {
+                $this->db->table("cso1_sync")->update([
+                    "totalTime" => $post['t'],
+                ], " id = " . $row['id']);
+            }
+
+            $data = array(
+                "error" => false,
+                "post" => $post,
+            );
+            return $this->response->setJSON($data);
+        }
+    }
 }
