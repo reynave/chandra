@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `cso1_item_barcode` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_item_barcode: ~0 rows (approximately)
+-- Dumping data for table pos2.cso1_item_barcode: ~572,638 rows (approximately)
 DELETE FROM `cso1_item_barcode`;
 
 -- Dumping structure for table pos2.cso1_item_category
@@ -543,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_promotion: ~0 rows (approximately)
+-- Dumping data for table pos2.cso1_promotion: ~396 rows (approximately)
 DELETE FROM `cso1_promotion`;
 
 -- Dumping structure for table pos2.cso1_promotion_discount
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `cso1_promotion_item` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_promotion_item: ~0 rows (approximately)
+-- Dumping data for table pos2.cso1_promotion_item: ~514,819 rows (approximately)
 DELETE FROM `cso1_promotion_item`;
 
 -- Dumping structure for table pos2.cso1_promo_fixed
@@ -693,13 +693,14 @@ CREATE TABLE IF NOT EXISTS `cso1_sync` (
   `path` varchar(250) NOT NULL DEFAULT '0',
   `fileName` varchar(250) DEFAULT NULL,
   `totalInsert` int(11) DEFAULT NULL,
+  `totalTime` int(11) DEFAULT NULL,
   `result` varchar(250) DEFAULT NULL,
   `lastSycn` datetime(3) DEFAULT NULL,
   `inputDate` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table pos2.cso1_sync: ~0 rows (approximately)
+-- Dumping data for table pos2.cso1_sync: ~6 rows (approximately)
 DELETE FROM `cso1_sync`;
 
 -- Dumping structure for table pos2.cso1_sync_log
