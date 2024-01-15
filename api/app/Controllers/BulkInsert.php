@@ -230,7 +230,7 @@ class BulkInsert extends BaseController
             $truncate = 'Query failed!';
         }
 
-        $file = $_ENV['SYNC'] . 'promo_free.txt';
+       // $file = $_ENV['SYNC'] . 'promo_free.txt';
         $file = 'promo_free.txt';
         $path = './../../sync/' . $file;
 
