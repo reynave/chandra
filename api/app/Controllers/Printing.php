@@ -183,7 +183,7 @@ class Printing extends BaseController
             foreach ($data['paymentMethod'] as $rec) {
                 if ($rec['paymentTypeId'] == 'VOUCHER') {
                     $voucherNumber = $rec['voucherNumber'];
-                    $data['paymentMethod'][$i]['label'] = $rec['label'] . ' ' . number_format(model("Core")->select("amount", "voucher", "number= '$voucherNumber' "));
+                    $data['paymentMethod'][$i]['label'] = $rec['label'] . ' ' . $voucherNumber;
                 } else {
                     $data['paymentMethod'][$i]['label'] = $rec['label'] . ' ' . model("Core")->select("name", "cso1_payment_name", "id = '" . $rec['paymentNameId'] . "' ");
                 }
