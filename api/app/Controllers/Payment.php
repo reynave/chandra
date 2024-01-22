@@ -254,12 +254,12 @@ class Payment extends BaseController
 
             foreach ($freeItem as $row) {
 
-                for ($j = 0; $j < (int) $row['getFreeItem']; $j++) { 
+                for ($j = 0; $j < (int) $row['getFreeItem']; $j++) {
                     $insertDetail = array(
                         "transactionId" => $id,
                         "barcode" => $row['barcode'],
                         "itemId" => $row['freeItemId'],
-                        "promotionId" =>  model("Core")->select("promotionId", "cso1_promotion_free", "id = '" . $row['promotionFreeId'] . "'"),
+                        "promotionId" => model("Core")->select("promotionId", "cso1_promotion_free", "id = '" . $row['promotionFreeId'] . "'"),
                         "promotionFreeId" => $row['promotionFreeId'],
                         "originPrice" => 0,
                         "price" => 0,
@@ -268,7 +268,7 @@ class Payment extends BaseController
                         "isFreeItem" => 1,
                         "presence" => 1,
                         "inputDate" => time(),
-                        "updateDate" => time(), 
+                        "updateDate" => time(),
                     );
                     $this->db->table("cso1_transaction_detail")->insert($insertDetail);
                 }
@@ -304,7 +304,7 @@ class Payment extends BaseController
                 $insertDetail = array(
                     "transactionId" => $id,
                     "paymentTypeId" => $row['paymentTypeId'],
-                    "paymentNameId" => $row['paymentNameId'],
+                    "paymentNameId" => isset($row['paymentNameId']) ? $row['paymentNameId'] : "",
                     "approvedCode" => $row['approvedCode'],
                     "refCode" => $row['refCode'],
                     "amount" => $row['paid'],
@@ -386,12 +386,21 @@ class Payment extends BaseController
             "error" => true,
             "post" => $post,
             "note" => "Not Found",
+            "voucher" => [],
+            "jpost" => [],
+            "promotion" => [],
         );
         if ($post) {
             $barcode = $post['barcode'];
             $kioskUuid = $post['kioskUuid'];
             $id = model("Core")->select('id', "voucher", "number = '$barcode' and status = 0 ");
             $userId = model("Core")->select('id', "cso1_user", "id = '$barcode' and status = 1 and presence = 1 and userAccessId < 9");
+
+
+
+
+
+
             if ($id) {
 
                 $bill = (int) model("Core")->select("sum(price)", "cso1_kiosk_cart", "kioskUuid = '$kioskUuid'");
@@ -424,7 +433,7 @@ class Payment extends BaseController
                 );
             } else if ($userId) {
                 $data = array(
-                    "error" => true,
+                    "error" => false,
                     "post" => $post,
                     "action" => "openPassword",
                     "note" => "user login",
@@ -438,6 +447,138 @@ class Payment extends BaseController
                     "note" => "not found",
                     "reload" => false,
                 );
+            } else {
+
+
+                $apiUrl = $_ENV['voucher'];
+                // Data JSON yang akan dikirim
+                $jpost = json_encode([
+                    "jsonrpc" => "2.0",
+                    "method" => "call",
+                    "params" => [
+                        "service" => "object",
+                        "method" => "execute",
+                        "args" => [
+                            "sandbox",
+                            "2",
+                            "4d0b7e61b8cf836959aa048cca53bae4b4031510",
+                            "loyalty.card",
+                            "search_read",
+                            [
+                                ["code", "=", $barcode],
+                                ["points", ">", 0]
+                            ]
+                        ]
+                    ],
+                    "id" => 3
+                ]);
+                // 0449-a0d9-4d79   044a-68c0-4cd6
+
+                // Set opsi cURL
+                $ch = curl_init($apiUrl);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json',
+                ]);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $jpost);
+
+                // Eksekusi cURL dan dapatkan respons
+                $response = curl_exec($ch);
+                $voucher = [];
+                // Tangani respons atau lakukan sesuatu dengan data yang diterima
+                if (curl_errno($ch)) {
+                    $data['voucher'] = curl_error($ch);
+                } else {
+                    $programId = 0;
+                    $data = array(
+                        "error" => false,
+                        "post" => $post,
+                        "action" => "voucer",
+                        "note" => $data['voucher'],
+                        "reload" => true,
+                        "discount" => false,
+                    );
+                    $voucher = json_decode($response, true);
+                    if (count(json_decode($response, true)['result']) > 0) { 
+                        $data['voucher'] = json_decode($response, true)['result'][0];
+                        $programId = $data['voucher']['program_id'][0];
+
+                        if ($programId) {
+                            $pgv = json_encode([
+                                "jsonrpc" => "2.0",
+                                "method" => "call",
+                                "params" => [
+                                    "service" => "object",
+                                    "method" => "execute",
+                                    "args" => [
+                                        "sandbox",
+                                        "2",
+                                        "4d0b7e61b8cf836959aa048cca53bae4b4031510",
+                                        "loyalty.reward",
+                                        "search_read",
+                                        [
+                                            ["program_id", "=", $programId]
+                                        ]
+                                    ]
+                                ],
+                                "id" => 3
+                            ]);
+
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                                'Content-Type: application/json',
+                            ]);
+                            curl_setopt($ch, CURLOPT_POST, true);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $pgv);
+
+                            // Eksekusi cURL dan dapatkan respons
+                            $response = curl_exec($ch);
+                            $approvedCode = "";
+                            // Tangani respons atau lakukan sesuatu dengan data yang diterima
+                            if (curl_errno($ch)) {
+                                $data['discount'] = curl_error($ch);
+                            } else {
+                                $data['discount'] = json_decode($response, true)['result'][0]['discount'];
+                                $approvedCode = json_decode($response, true)['result'][0]['id'];
+                                $data['applyVoucher'] = model("Promo")->applyVoucher($approvedCode);
+                                //  $data['description'] = json_decode($response,true)['result'][0]['description']; 
+                            }
+                        }
+                        $programId = $data['voucher']['program_id'][1];
+                    }
+                  
+                }
+
+                // Tutup koneksi cURL
+                curl_close($ch);
+                if(isset($voucher['result'][0]['id']) ) {
+                    $this->db->table("cso1_kiosk_paid_pos")->insert([
+                        "kioskUuid" => $post['kioskUuid'],
+                        "paid" => $data['discount'],
+                        "paymentTypeId" => "VOUCHER",
+                        "paymentNameId" => "",
+                        "voucherNumber" => $barcode,
+                        "note" => $programId,
+                        "approvedCode" => $voucher['result'][0]['id'],
+                        "input_date" => date("Y-m-d H:i:s")
+                    ]);
+
+                    model("Promo")->applyVoucher($voucher['result'][0]['id']);
+                }
+
+
+               
+
+                // $this->db->table("voucher")->insert([
+                //     "id" => uniqid(),
+                //     "number" => $barcode,
+                //     "amount" => $data['discount'],
+                //     "status" => 1,
+                //     "kioskUuid" => $post['kioskUuid'],
+                //     "input_date" => date("Y-m-d H:i:s")
+                // ]);
+
             }
 
         }

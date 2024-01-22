@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 use CodeIgniter\CodeIgniter;
+use Voucher;
 
 class Promo extends Model
 {
@@ -515,19 +516,20 @@ class Promo extends Model
         $q = "SELECT f.id as 'promotionFreeId', f.promotionId, f.qty, f.freeItemId, f.freeQty 
         FROM cso1_promotion_free AS f
          JOIN cso1_promotion AS p ON p.id = f.promotionId
-         AND  p.typeOfPromotion = 2  AND p.presence = 1  AND f.itemId = '".$row['itemId']."'
+         AND  p.typeOfPromotion = 2  AND p.presence = 1  AND f.itemId = '" . $row['itemId'] . "'
          AND (p.startDate < unix_timestamp(now()) AND unix_timestamp(NOW()) <  p.endDate) 
-         AND p.`status` = 1 AND p.presence = 1  AND ".$row['qty']." >= f.qty
+         AND p.`status` = 1 AND p.presence = 1  AND " . $row['qty'] . " >= f.qty
        ";
 
         $items = $this->db->query($q)->getResultArray();
-        
+
         //log_message('debug', print_r($items) );
-        return count($items ) > 0 ? $items[0] : false;
+        return count($items) > 0 ? $items[0] : false;
     }
 
 
-    function promotions_free($kioskUuid){
+    function promotions_free($kioskUuid)
+    {
 
         // PROMOTION_FREE  :: START   
         $q2 = "SELECT itemId, COUNT(itemId) AS 'qty'
@@ -538,45 +540,94 @@ class Promo extends Model
         $ip2 = $this->db->query($q2)->getResultArray();
         foreach ($ip2 as $row) {
             $freeItem = model("promo")->checkFreeItem($row);
-            if ($freeItem !== false) { 
-               
+            if ($freeItem !== false) {
+
                 if ($row['qty'] >= $freeItem['qty']) {
-                  
-                    
+
+
                     // FREE ITEM INSERT :: START
-                    $loops = (int) ($row['qty'] / $freeItem['qty']); 
+                    $loops = (int) ($row['qty'] / $freeItem['qty']);
                     $q3 = "SELECT * 
                     FROM cso1_kiosk_cart
                     WHERE promotionId = '0' AND promotionFreeId = '0' and presence = 1 AND void = 0 and itemId = '" . $row['itemId'] . "' 
                     AND kioskUuid = '$kioskUuid' limit $loops;
-                    "; 
-                //    // echo  $q3;
-                //     $ip3 = $this->db->query($q3)->getResultArray();
-                //     foreach ($ip3 as $rec3) { 
-                //         $this->db->table("cso1_kiosk_cart")->insert([
-                //             "kioskUuid" => $kioskUuid,
-                //             "promotionId" => $freeItem['promotionId'],
-                //             "promotionFreeId" => $freeItem['promotionFreeId'],
-                //             "itemId" => $freeItem['freeItemId'],
-                //             "barcode" => $freeItem['freeItemId'],
-                //             "price" => 0,
-                //             "originPrice" => 0,
-                //             "isFreeItem" => $rec3['id'], 
-                //             "input_date" => date("Y-m-d H:i:s"), 
-                //         ]);
-                //     }
-                //     // FREE ITEM INSERT :: END
+                    ";
+                    //    // echo  $q3;
+                    //     $ip3 = $this->db->query($q3)->getResultArray();
+                    //     foreach ($ip3 as $rec3) { 
+                    //         $this->db->table("cso1_kiosk_cart")->insert([
+                    //             "kioskUuid" => $kioskUuid,
+                    //             "promotionId" => $freeItem['promotionId'],
+                    //             "promotionFreeId" => $freeItem['promotionFreeId'],
+                    //             "itemId" => $freeItem['freeItemId'],
+                    //             "barcode" => $freeItem['freeItemId'],
+                    //             "price" => 0,
+                    //             "originPrice" => 0,
+                    //             "isFreeItem" => $rec3['id'], 
+                    //             "input_date" => date("Y-m-d H:i:s"), 
+                    //         ]);
+                    //     }
+                    //     // FREE ITEM INSERT :: END
 
-                    for($i = 0 ; $i< $freeItem['qty'] ; $i++){
+                    for ($i = 0; $i < $freeItem['qty']; $i++) {
                         $this->db->table("cso1_kiosk_cart")->update([
                             "promotionId" => $freeItem['promotionId'],
                             "promotionFreeId" => $freeItem['promotionFreeId'],
-                            
-                        ]," promotionId = 0 AND presence = 1 AND void = 0 and kioskUuid = '$kioskUuid'  ");
+
+                        ], " promotionId = 0 AND presence = 1 AND void = 0 and kioskUuid = '$kioskUuid'  ");
                     }
                 }
             }
         }
-  
+
+    }
+
+    function applyVoucher($id = "")
+    {
+        $data = [];
+        $apiUrl = $_ENV['voucher'];
+        $ch = curl_init($apiUrl);
+        $pgv = json_encode([
+            "jsonrpc" => "2.0",
+            "method" => "call",
+            "params" => [
+                "service" => "object",
+                "method" => "execute_kw",
+                "args" => [
+                    "sandbox",
+                    "2",
+                    "4d0b7e61b8cf836959aa048cca53bae4b4031510",
+                    "loyalty.card",
+                    "write",
+                    [
+                        [
+                            $id
+                        ],
+                        [
+                            "points" => 0
+                        ]
+                    ]
+                ]
+            ],
+            "id" => 4
+        ]);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $pgv);
+
+        // Eksekusi cURL dan dapatkan respons
+        $response = curl_exec($ch); 
+        // Tangani respons atau lakukan sesuatu dengan data yang diterima
+        if (curl_errno($ch)) {
+            $data = curl_error($ch);
+        } else {
+            $data = json_decode($response,true);
+        }
+        curl_close($ch);
+        return $data;
     }
 }
